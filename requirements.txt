@@ -1,0 +1,25 @@
+# Core data manipulation & numerical computation
+pandas>=2.2.0
+numpy>=1.26.0
+
+# Visualization
+matplotlib>=3.8.0
+
+# Statistical time series forecasting
+statsmodels>=0.14.0
+
+# Machine learning & tabular forecasting
+scikit-learn>=1.4.0
+xgboost>=2.0.0
+
+# Deep learning
+torch>=2.2.0
+
+# Interactive notebooks & exploration
+jupyter>=1.0.0
+
+# Configuration & utilities
+pyyaml>=6.0.1
+
+# Testing
+pytest>=8.0.0

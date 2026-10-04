@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=65.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "steam-player-forecasting"
+version = "0.1.0"
+description = "Forecasting monthly Steam player counts using statistical, machine learning, and deep learning time-series models."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+    { name = "JoshiMinh" }
+]
+keywords = [
+    "time-series",
+    "forecasting",
+    "steam",
+    "machine-learning",
+    "deep-learning",
+    "arima",
+    "xgboost",
+    "lstm",
+    "gru",
+    "pytorch"
+]
+dependencies = [
+    "pandas>=2.2.0",
+    "numpy>=1.26.0",
+    "matplotlib>=3.8.0",
+    "statsmodels>=0.14.0",
+    "scikit-learn>=1.4.0",
+    "xgboost>=2.0.0",
+    "torch>=2.2.0",
+    "pyyaml>=6.0.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "jupyter>=1.0.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-v --strict-markers"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::UserWarning",
+]

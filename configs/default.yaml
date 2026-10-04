@@ -1,0 +1,84 @@
+# Default project configuration for steam-player-forecasting
+# Designed for reproducible, leakage-free time-series forecasting
+
+project:
+  name: "steam-player-forecasting"
+  seed: 42
+
+data:
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  raw_filename: "All_Steam_Games.csv"
+  target_column: "Avg_players"
+  secondary_target: "Peak_Players"
+  date_column: "Month_Year"
+  game_identifier_column: "Game_Name"
+  frequency: "MS"
+
+candidate_games:
+  - "Counter-Strike: Global Offensive"
+  - "Dota 2"
+  - "Team Fortress 2"
+  - "Rust"
+  - "Warframe"
+  - "Apex Legends"
+  - "Tom Clancy's Rainbow Six Siege"
+  - "Grand Theft Auto V"
+
+split:
+  test_months: 12
+  val_months: 12
+  forecast_horizon: 12
+
+features:
+  lags: [1, 2, 3, 6, 12]
+  rolling_windows: [3, 6, 12]
+  rolling_metrics: ["mean", "std"]
+  seasonal_features:
+    - "month"
+    - "quarter"
+
+models:
+  statistical:
+    naive:
+      strategy: "last_value"
+    seasonal_naive:
+      seasonal_period: 12
+    holt_winters:
+      seasonal_periods: 12
+      trend: "add"
+      seasonal: "add"
+    sarima:
+      order: [1, 1, 1]
+      seasonal_order: [1, 1, 1, 12]
+      auto_arima: false
+  machine_learning:
+    ridge:
+      alpha: 1.0
+    random_forest:
+      n_estimators: 100
+      max_depth: 10
+      random_state: 42
+    xgboost:
+      n_estimators: 100
+      max_depth: 4
+      learning_rate: 0.05
+      random_state: 42
+  deep_learning:
+    sequence_length: 12
+    batch_size: 16
+    epochs: 50
+    learning_rate: 0.001
+    hidden_dim: 64
+    num_layers: 2
+    dropout: 0.1
+    device: "cpu"
+
+evaluation:
+  metrics:
+    - "MAE"
+    - "RMSE"
+    - "MAPE"
+  optional_metrics:
+    - "sMAPE"
+    - "MASE"

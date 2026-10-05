@@ -1,12 +1,14 @@
-# Byte-compiled / optimized / DLL files
+# ==============================================================================
+# Git Ignore Configuration: steam-player-forecasting
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Python Bytecode, Compilations & Package Build
+# ------------------------------------------------------------------------------
 __pycache__/
 *.py[cod]
 *$py.class
-
-# C extensions
 *.so
-
-# Distribution / packaging
 .Python
 build/
 develop-eggs/
@@ -26,69 +28,130 @@ share/python-wheels/
 *.egg
 MANIFEST
 
-# Virtual environments
+# ------------------------------------------------------------------------------
+# 2. Virtual Environments
+# ------------------------------------------------------------------------------
 .venv/
 venv/
 ENV/
 env/
+env.bak/
+venv.bak/
 
-# Jupyter Notebook
-.ipynb_checkpoints
-*/.ipynb_checkpoints/*
-
-# Pytest & Coverage
+# ------------------------------------------------------------------------------
+# 3. Testing, Coverage & Linters
+# ------------------------------------------------------------------------------
 .pytest_cache/
 .pytest_temp/
 .coverage
 .coverage.*
 htmlcov/
+coverage.xml
 .tox/
 .nox/
-
-# Type checking / Linters
 .mypy_cache/
 .ruff_cache/
+.hypothesis/
 
-# Raw and processed datasets (preserve folder structure with .gitkeep)
+# ------------------------------------------------------------------------------
+# 4. Datasets & Raw Data (Preserve Directory Skeleton with .gitkeep)
+# ------------------------------------------------------------------------------
+# Raw scraped tables & downloads
 data/raw/*
 !data/raw/.gitkeep
+
+# Processed intermediate & combined datasets
 data/processed/*
 !data/processed/.gitkeep
-*.csv
+
+# Large binary / archive data formats
 *.parquet
 *.feather
 *.h5
+*.hdf5
 *.zip
 *.tar.gz
+*.tgz
+*.rar
+*.7z
 
-# Saved models and checkpoints
+# Data-specific CSVs (allow benchmark tables in report/)
+data/**/*.csv
+!data/**/*.gitkeep
+
+# ------------------------------------------------------------------------------
+# 5. Machine Learning Models & Serialized Checkpoints
+# ------------------------------------------------------------------------------
 models/*
 !models/.gitkeep
 *.pt
 *.pth
+*.ckpt
 *.joblib
 *.pkl
 *.bin
 *.onnx
 
-# Generated figures and media
+# ------------------------------------------------------------------------------
+# 6. Training Logs & Experiment Tracking
+# ------------------------------------------------------------------------------
+logs/
+runs/
+wandb/
+.mlflow/
+
+# ------------------------------------------------------------------------------
+# 7. Figures & Visualizations (Track Exported Figures)
+# ------------------------------------------------------------------------------
 figures/*
 !figures/.gitkeep
 !figures/*.png
+!figures/*.jpg
+!figures/*.jpeg
+!figures/*.svg
+!figures/*.pdf
 
-# Operating System files
+# ------------------------------------------------------------------------------
+# 8. Jupyter Notebooks & Streamlit
+# ------------------------------------------------------------------------------
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+.streamlit/
+
+# ------------------------------------------------------------------------------
+# 9. Operating System Artifacts
+# ------------------------------------------------------------------------------
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
 desktop.ini
 
-# IDEs and editors
+# ------------------------------------------------------------------------------
+# 10. IDEs & Code Editors
+# ------------------------------------------------------------------------------
 .idea/
 .vscode/
 *.swp
 *.swo
 *~
+*.sublime-workspace
+*.sublime-project
 
-# Environment variables & secrets
+# ------------------------------------------------------------------------------
+# 11. Environment Secrets & API Credentials
+# ------------------------------------------------------------------------------
 .env
 .env.*
 !.env.example
+kaggle.json
+
+# ------------------------------------------------------------------------------
+# 12. Local AI Agent Indexes & Temporary Scratchpad Files
+# ------------------------------------------------------------------------------
+.codegraph/
+*.tmp
+*.bak

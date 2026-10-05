@@ -1,0 +1,55 @@
+# Phase 4 Machine Learning & Deep Learning Validation Benchmarks
+
+Multi-step (H=12) validation error metrics across all 7 candidate Steam games.
+
+| Game | Model | Paradigm | MAE | RMSE | MAPE | sMAPE | MASE |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Counter-Strike: Global Offensive | SARIMA | Econometric | 7968.89 | 8997.64 | 1.37 | 1.37 | 0.147 |
+| Counter-Strike: Global Offensive | Ridge | Linear ML | 10586.72 | 11410.3 | 1.82 | 1.81 | 0.195 |
+| Counter-Strike: Global Offensive | Random Forest | Tree Ensemble ML | 31035.45 | 37580.44 | 5.15 | 5.34 | 0.573 |
+| Counter-Strike: Global Offensive | XGBoost | Gradient Boosted ML | 32862.5 | 40172.44 | 5.45 | 5.67 | 0.606 |
+| Counter-Strike: Global Offensive | RNN | Recurrent DL | 21885.32 | 30462.82 | 3.63 | 3.75 | 0.404 |
+| Counter-Strike: Global Offensive | LSTM | Recurrent DL | 29835.28 | 40552.76 | 4.94 | 5.16 | 0.551 |
+| Counter-Strike: Global Offensive | GRU | Recurrent DL | 23691.6 | 26655.21 | 4.01 | 4.02 | 0.437 |
+| Dota 2 | SARIMA | Econometric | 13004.39 | 14951.1 | 3.14 | 3.16 | 0.463 |
+| Dota 2 | Ridge | Linear ML | 32877.2 | 37322.82 | 7.96 | 8.39 | 1.172 |
+| Dota 2 | Random Forest | Tree Ensemble ML | 33490.1 | 38857.04 | 7.82 | 8.25 | 1.193 |
+| Dota 2 | XGBoost | Gradient Boosted ML | 31112.35 | 36959.68 | 7.41 | 7.82 | 1.109 |
+| Dota 2 | RNN | Recurrent DL | 37929.65 | 45309.79 | 9.09 | 9.73 | 1.352 |
+| Dota 2 | LSTM | Recurrent DL | 36388.96 | 43947.89 | 8.36 | 8.87 | 1.297 |
+| Dota 2 | GRU | Recurrent DL | 41033.72 | 50498.7 | 9.76 | 10.29 | 1.462 |
+| Grand Theft Auto V | SARIMA | Econometric | 6223.54 | 8941.08 | 5.51 | 5.8 | 0.477 |
+| Grand Theft Auto V | Ridge | Linear ML | 7073.77 | 8439.57 | 6.91 | 6.69 | 0.542 |
+| Grand Theft Auto V | Random Forest | Tree Ensemble ML | 11294.43 | 14009.7 | 9.98 | 10.69 | 0.866 |
+| Grand Theft Auto V | XGBoost | Gradient Boosted ML | 11892.76 | 14693.68 | 10.49 | 11.3 | 0.912 |
+| Grand Theft Auto V | RNN | Recurrent DL | 14850.72 | 18505.41 | 13.17 | 14.61 | 1.139 |
+| Grand Theft Auto V | LSTM | Recurrent DL | 11575.18 | 14846.56 | 10.22 | 11.06 | 0.887 |
+| Grand Theft Auto V | GRU | Recurrent DL | 12800.46 | 16870.55 | 11.22 | 12.37 | 0.981 |
+| Rust | SARIMA | Econometric | 4008.22 | 5302.95 | 5.35 | 5.12 | 0.394 |
+| Rust | Ridge | Linear ML | 4549.14 | 5569.78 | 6.01 | 5.82 | 0.448 |
+| Rust | Random Forest | Tree Ensemble ML | 5096.55 | 6154.29 | 6.4 | 6.56 | 0.501 |
+| Rust | XGBoost | Gradient Boosted ML | 5238.96 | 6278.87 | 6.59 | 6.75 | 0.515 |
+| Rust | RNN | Recurrent DL | 4723.01 | 5987.49 | 5.9 | 6.12 | 0.465 |
+| Rust | LSTM | Recurrent DL | 5631.23 | 7553.89 | 6.85 | 7.27 | 0.554 |
+| Rust | GRU | Recurrent DL | 5049.29 | 6435.37 | 6.33 | 6.53 | 0.497 |
+| Team Fortress 2 | SARIMA | Econometric | 3561.85 | 5784.58 | 7.61 | 6.9 | 0.845 |
+| Team Fortress 2 | Ridge | Linear ML | 3096.93 | 5029.19 | 6.57 | 6.04 | 0.735 |
+| Team Fortress 2 | Random Forest | Tree Ensemble ML | 4216.45 | 5258.36 | 8.37 | 8.03 | 1.0 |
+| Team Fortress 2 | XGBoost | Gradient Boosted ML | 3628.22 | 5381.64 | 7.49 | 6.98 | 0.861 |
+| Team Fortress 2 | RNN | Recurrent DL | 6061.84 | 7610.55 | 12.02 | 11.13 | 1.438 |
+| Team Fortress 2 | LSTM | Recurrent DL | 6521.0 | 8445.82 | 13.0 | 11.88 | 1.547 |
+| Team Fortress 2 | GRU | Recurrent DL | 7338.68 | 8776.14 | 14.24 | 13.36 | 1.741 |
+| Tom Clancy's Rainbow Six Siege | SARIMA | Econometric | 7666.51 | 8940.34 | 9.52 | 9.52 | 0.605 |
+| Tom Clancy's Rainbow Six Siege | Ridge | Linear ML | 7156.66 | 8390.73 | 8.49 | 8.91 | 0.565 |
+| Tom Clancy's Rainbow Six Siege | Random Forest | Tree Ensemble ML | 10322.2 | 11762.59 | 12.24 | 12.91 | 0.815 |
+| Tom Clancy's Rainbow Six Siege | XGBoost | Gradient Boosted ML | 10509.47 | 12304.99 | 12.3 | 13.17 | 0.83 |
+| Tom Clancy's Rainbow Six Siege | RNN | Recurrent DL | 10924.65 | 12929.06 | 12.72 | 13.93 | 0.863 |
+| Tom Clancy's Rainbow Six Siege | LSTM | Recurrent DL | 9894.25 | 11796.26 | 11.52 | 12.44 | 0.781 |
+| Tom Clancy's Rainbow Six Siege | GRU | Recurrent DL | 8973.16 | 10017.13 | 10.77 | 11.14 | 0.709 |
+| Warframe | SARIMA | Econometric | 2050.94 | 2918.23 | 4.34 | 4.26 | 0.467 |
+| Warframe | Ridge | Linear ML | 3089.22 | 3946.91 | 6.59 | 6.41 | 0.704 |
+| Warframe | Random Forest | Tree Ensemble ML | 4431.46 | 5127.37 | 8.89 | 9.19 | 1.01 |
+| Warframe | XGBoost | Gradient Boosted ML | 4496.11 | 5120.77 | 9.08 | 9.33 | 1.025 |
+| Warframe | RNN | Recurrent DL | 3956.21 | 5353.87 | 7.75 | 8.11 | 0.902 |
+| Warframe | LSTM | Recurrent DL | 3996.54 | 5313.25 | 7.92 | 8.18 | 0.911 |
+| Warframe | GRU | Recurrent DL | 4348.87 | 5110.52 | 8.88 | 8.93 | 0.991 |

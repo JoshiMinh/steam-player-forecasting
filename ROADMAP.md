@@ -9,8 +9,8 @@ Each phase is provided as a **self-contained AI Agent Prompt** designed to be co
 
 1. [X]  **Phase 1:** Dataset Acquisition & Validation *(Completed)*
 2. [X]  **Phase 2:** EDA & Time-Series Preprocessing *(Completed)*
-3. [ ]  **Phase 3:** Statistical Forecasting
-4. [ ]  **Phase 4:** Machine Learning & Deep Learning
+3. [X]  **Phase 3:** Statistical Forecasting *(Completed)*
+4. [X]  **Phase 4:** Machine Learning & Deep Learning *(Completed)*
 5. [ ]  **Phase 5:** Final Evaluation, Report & Demo
 
 ---
@@ -166,6 +166,20 @@ You are an expert econometrician and statistical forecaster. Your objective is t
 ---
 
 ## Phase 4 — Machine Learning & Deep Learning
+
+**Status:** Completed `[x]` (Commit: `feat(models): complete phase 4 machine learning and deep learning forecasting`)
+
+- [X]  Leakage-safe tabular feature engineering (`create_lag_features()`, `create_rolling_features()`, `create_calendar_features()`, `build_tabular_feature_matrix()`, `TabularFeatureExtractor`) in `src/steam_player_forecasting/features/tabular.py`
+- [X]  Tabular ML models with recursive multi-step forecasting (`RidgeForecaster`, `RandomForestForecaster`, `XGBoostForecaster`, `TabularForecaster`) in `src/steam_player_forecasting/models/tabular.py`
+- [X]  Chronological validation hyperparameter tuning (`tune_tabular_forecaster()`) in `src/steam_player_forecasting/models/tabular.py`
+- [X]  PyTorch sequence dataset with sliding windows (`TimeSeriesSequenceDataset`) in `src/steam_player_forecasting/models/deep_learning.py`
+- [X]  Recurrent neural network architectures (`RNNModel`, `LSTMModel`, `GRUModel`) in `src/steam_player_forecasting/models/deep_learning.py`
+- [X]  PyTorch forecaster wrappers with early stopping, LR scheduling, train-only scaling, and determinism (`RNNForecaster`, `LSTMForecaster`, `GRUForecaster`) in `src/steam_player_forecasting/models/deep_learning.py`
+- [X]  Intermediate validation benchmarking across all 7 games comparing the Core Quartet: **SARIMA vs XGBoost vs LSTM vs GRU** (`scripts/run_phase4_benchmarks.py`)
+- [X]  Validation benchmark reports in `report/` (`ml_dl_validation_benchmarks.csv/.md`, `core_quartet_comparison.csv/.md`)
+- [X]  3 high-resolution 300 DPI publication figures in `figures/` (Figures 14, 15, 16)
+- [X]  Interactive demonstration and analysis notebook in `notebooks/03_ml_and_dl_forecasting.ipynb`
+- [X]  Comprehensive unit test suite for tabular features, model forecasters, and PyTorch architectures (`tests/test_tabular.py`, `tests/test_deep_learning.py`) with 100% pass rate
 
 ### AI Agent Prompt
 

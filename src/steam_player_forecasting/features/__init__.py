@@ -13,6 +13,13 @@ from steam_player_forecasting.features.split import (
     split_by_game,
     train_val_test_split,
 )
+from steam_player_forecasting.features.tabular import (
+    TabularFeatureExtractor,
+    build_tabular_feature_matrix,
+    create_calendar_features,
+    create_lag_features,
+    create_rolling_features,
+)
 from steam_player_forecasting.features.transforms import (
     BoxCoxTransformer,
     DifferencingTransformer,
@@ -41,4 +48,11 @@ __all__ = [
     "compute_acf_pacf",
     "decompose_time_series",
     "compute_rolling_stats",
+    # Tabular Features
+    "create_lag_features",
+    "create_rolling_features",
+    "create_calendar_features",
+    "build_tabular_feature_matrix",
+    "TabularFeatureExtractor",
 ]
+

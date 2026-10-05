@@ -162,3 +162,6 @@ def select_sarima_order(
 
 # Alias
 grid_search_sarima = select_sarima_order
+
+# Re-export tabular tuning for unified model selection interface
+from steam_player_forecasting.models.tabular import tune_tabular_forecaster

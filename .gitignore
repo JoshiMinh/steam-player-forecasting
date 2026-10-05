@@ -38,6 +38,7 @@ env/
 
 # Pytest & Coverage
 .pytest_cache/
+.pytest_temp/
 .coverage
 .coverage.*
 htmlcov/

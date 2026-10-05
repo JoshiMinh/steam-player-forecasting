@@ -48,7 +48,7 @@ where = ["src"]
 minversion = "8.0"
 testpaths = ["tests"]
 pythonpath = ["src"]
-addopts = "-v --strict-markers"
+addopts = "-v --strict-markers --basetemp=.pytest_temp"
 filterwarnings = [
     "ignore::DeprecationWarning",
     "ignore::UserWarning",

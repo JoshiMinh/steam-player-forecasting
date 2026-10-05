@@ -30,8 +30,8 @@ The project follows a strict 5-phase sequential architecture documented in [`ROA
 | **0** | Repository Initialization | **Completed `[x]`** | Directory skeleton, CI workflows, packaging, configs |
 | **1** | Dataset Acquisition & Validation | **Completed `[x]`** | Kaggle ingestion, synthetic fallback, cleaning, game selection |
 | **2** | EDA & Time-Series Preprocessing | **Completed `[x]`** | EDA notebook, 9 figures, STL decomposition, ADF/KPSS, transforms, scalers |
-| **3** | Statistical Forecasting | **NEXT `[ ]`** | Baselines (Naive, SNaive, Holt-Winters), AR, ARIMA, SARIMA |
-| **4** | Machine Learning & Deep Learning | Pending `[ ]` | Lag matrices, XGBoost, PyTorch datasets, LSTM, GRU |
+| **3** | Statistical Forecasting | **Completed `[x]`** | Baselines (Naive, SNaive, Holt-Winters), AR, ARIMA, SARIMA, diagnostics, benchmarks |
+| **4** | Machine Learning & Deep Learning | **NEXT `[ ]`** | Lag matrices, XGBoost, PyTorch datasets, LSTM, GRU |
 | **5** | Final Evaluation, Report & Demo | Pending `[ ]` | Holdout test evaluation, leaderboard, report, Streamlit UI |
 
 > [!IMPORTANT]

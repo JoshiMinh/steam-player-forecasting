@@ -115,6 +115,19 @@ You are an expert time-series data scientist. Your objective is to complete **Ph
 
 ## Phase 3 — Statistical Forecasting
 
+**Status:** Completed `[x]` (Commit: `feat(models): complete phase 3 statistical forecasting baselines`)
+
+- [X]  Reusable baseline forecasters (`NaiveForecaster`, `SeasonalNaiveForecaster`, `HoltWintersForecaster`) in `src/steam_player_forecasting/models/statistical.py`
+- [X]  Autoregressive, ARIMA, and SARIMA models (`ARForecaster`, `ARIMAForecaster`, `SARIMAForecaster`) in `src/steam_player_forecasting/models/statistical.py`
+- [X]  Leakage-safe transformed meta-forecaster (`TransformedForecaster`) in `src/steam_player_forecasting/models/base.py`
+- [X]  Econometric residual diagnostics (`evaluate_residuals()`, `plot_residual_diagnostics()`) with Ljung-Box and Jarque-Bera tests in `src/steam_player_forecasting/models/diagnostics.py`
+- [X]  Systematic SARIMA order selection and grid search (`select_sarima_order()`, `grid_search_sarima()`) in `src/steam_player_forecasting/models/selection.py`
+- [X]  Strict chronological validation evaluation on 12-month horizon (2019-09 to 2020-08) across all 7 games, keeping holdout test set untouched
+- [X]  Benchmark evaluation tables exported to `report/` (`statistical_validation_benchmarks.csv`, `sarima_order_selection.csv`, `sarima_residual_diagnostics.csv`)
+- [X]  4 high-resolution 300 DPI publication figures in `figures/` (Figures 10, 11, 12, 13)
+- [X]  Demonstration and diagnostic notebook fully executed in `notebooks/02_statistical_forecasting.ipynb`
+- [X]  Unit tests covering all models, shapes, confidence intervals, inversions, and residual diagnostics (`tests/test_models.py`)
+
 ### AI Agent Prompt
 
 ```markdown

@@ -104,7 +104,13 @@ def load_processed_data(
     df = pd.read_csv(target_path, parse_dates=["Month_Year"])
 
     if game_name is not None and "Game_Name" in df.columns:
-        df = df[df["Game_Name"].str.lower() == game_name.strip().lower()].copy()
+        match_mask = df["Game_Name"].str.lower() == game_name.strip().lower()
+        if not match_mask.any():
+            slug_input = re.sub(r"[^a-zA-Z0-9]+", "_", game_name.strip()).strip("_").lower()
+            match_mask = df["Game_Name"].apply(
+                lambda s: re.sub(r"[^a-zA-Z0-9]+", "_", str(s).strip()).strip("_").lower() == slug_input
+            )
+        df = df[match_mask].copy()
         if df.empty:
             raise ValueError(f"No records found for game '{game_name}' in {target_path}")
 

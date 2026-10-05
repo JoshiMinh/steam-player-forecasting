@@ -13,9 +13,12 @@ import pandas as pd
 from steam_player_forecasting.data.loader import get_project_root
 
 
-def execute_and_populate_notebook() -> None:
+import sys
+
+
+def execute_and_populate_notebook(notebook_filename: str = "01_eda_and_preprocessing.ipynb") -> None:
     root = get_project_root()
-    notebook_path = root / "notebooks" / "01_eda_and_preprocessing.ipynb"
+    notebook_path = root / "notebooks" / notebook_filename
 
     with open(notebook_path, "r", encoding="utf-8") as f:
         nb = json.load(f)
@@ -92,8 +95,9 @@ def execute_and_populate_notebook() -> None:
     with open(notebook_path, "w", encoding="utf-8") as f:
         json.dump(nb, f, indent=2)
 
-    print("Successfully executed notebook and saved all outputs!")
+    print(f"Successfully executed {notebook_filename} and saved all outputs!")
 
 
 if __name__ == "__main__":
-    execute_and_populate_notebook()
+    nb_name = sys.argv[1] if len(sys.argv) > 1 else "01_eda_and_preprocessing.ipynb"
+    execute_and_populate_notebook(nb_name)

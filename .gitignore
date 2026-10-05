@@ -74,6 +74,7 @@ models/*
 # Generated figures and media
 figures/*
 !figures/.gitkeep
+!figures/*.png
 
 # Operating System files
 .DS_Store

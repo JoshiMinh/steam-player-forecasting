@@ -7,11 +7,11 @@ Each phase is provided as a **self-contained AI Agent Prompt** designed to be co
 
 ## Overview of Phases
 
-1. [x] **Phase 1:** Dataset Acquisition & Validation *(Completed)*
-2. [ ] **Phase 2:** EDA & Time-Series Preprocessing
-3. [ ] **Phase 3:** Statistical Forecasting
-4. [ ] **Phase 4:** Machine Learning & Deep Learning
-5. [ ] **Phase 5:** Final Evaluation, Report & Demo
+1. [X]  **Phase 1:** Dataset Acquisition & Validation *(Completed)*
+2. [X]  **Phase 2:** EDA & Time-Series Preprocessing *(Completed)*
+3. [ ]  **Phase 3:** Statistical Forecasting
+4. [ ]  **Phase 4:** Machine Learning & Deep Learning
+5. [ ]  **Phase 5:** Final Evaluation, Report & Demo
 
 ---
 
@@ -19,13 +19,13 @@ Each phase is provided as a **self-contained AI Agent Prompt** designed to be co
 
 **Status:** Completed `[x]` (Commit: `d0174fa` | `feat(data): complete phase 1 dataset acquisition and validation`)
 
-- [x] Ingestion logic with Kaggle API & automated reproducible fallback (`src/steam_player_forecasting/data/ingestion.py`)
-- [x] Raw schema inspection, artifact cleaning ("Last 30 Days"), and date standardization (`src/steam_player_forecasting/data/validation.py`)
-- [x] Representative game selection across genres (7 titles, 5.8–9.2 years history) (`src/steam_player_forecasting/data/selection.py`)
-- [x] Standardized processed data pipeline (`data/processed/steam_games_monthly.csv` and individual CSVs) (`src/steam_player_forecasting/data/pipeline.py`)
-- [x] Reusable data loaders (`load_processed_data()`, `load_raw_data()`, `get_available_games()`) (`src/steam_player_forecasting/data/loader.py`)
-- [x] Unit test suite with 100% pass rate (`tests/test_data.py`)
-- [x] Dataset cleaning decisions and chosen titles documented (`data/README.md`)
+- [X]  Ingestion logic with Kaggle API & automated reproducible fallback (`src/steam_player_forecasting/data/ingestion.py`)
+- [X]  Raw schema inspection, artifact cleaning ("Last 30 Days"), and date standardization (`src/steam_player_forecasting/data/validation.py`)
+- [X]  Representative game selection across genres (7 titles, 5.8–9.2 years history) (`src/steam_player_forecasting/data/selection.py`)
+- [X]  Standardized processed data pipeline (`data/processed/steam_games_monthly.csv` and individual CSVs) (`src/steam_player_forecasting/data/pipeline.py`)
+- [X]  Reusable data loaders (`load_processed_data()`, `load_raw_data()`, `get_available_games()`) (`src/steam_player_forecasting/data/loader.py`)
+- [X]  Unit test suite with 100% pass rate (`tests/test_data.py`)
+- [X]  Dataset cleaning decisions and chosen titles documented (`data/README.md`)
 
 ### AI Agent Prompt
 
@@ -63,6 +63,19 @@ You are an expert data engineer and time-series specialist. Your objective is to
 ---
 
 ## Phase 2 — EDA & Time-Series Preprocessing
+
+**Status:** Completed `[x]` (Commit: `pending` | `feat(features): complete phase 2 eda and time-series preprocessing`)
+
+- [X]  Comprehensive exploratory analysis notebook (`notebooks/01_eda_and_preprocessing.ipynb`) analyzing trends, seasonality, rolling mean/variance, outliers, and structural breaks
+- [X]  9 high-resolution 300 DPI exploratory figures exported to `figures/` (trajectories, peak/avg ratios, rolling statistics, seasonality boxplots, subseries plots, STL decomposition, ACF/PACF, transformations, chronological splits)
+- [X]  STL and classical decomposition separating Trend, Seasonal, and Residual components (`src/steam_player_forecasting/features/diagnostics.py`)
+- [X]  Joint Augmented Dickey-Fuller (ADF) and KPSS stationarity tests with unit-root diagnostics (`check_stationarity()`)
+- [X]  Autocorrelation (ACF) and Partial Autocorrelation (PACF) computations with confidence intervals (`compute_acf_pacf()`)
+- [X]  Leakage-safe transformations: `LogTransformer`, `BoxCoxTransformer`, and stateful `DifferencingTransformer` with exact inverse reconstruction
+- [X]  Train-only fitted scalers: `TimeSeriesScaler` (`minmax`, `standard`, `robust`) preserving index/columns without lookahead leakage
+- [X]  Chronological train/validation/test split utilities (`train_val_test_split()`, `split_by_game()`, `expanding_window_cv()`)
+- [X]  Unit test suite with 100% pass rate covering all scalers, transformations, diagnostics, and split routines (`tests/test_features.py`)
+- [X]  Automated figure generation and notebook execution scripts (`scripts/generate_eda_and_figures.py`, `scripts/build_notebook.py`, `scripts/execute_notebook.py`)
 
 ### AI Agent Prompt
 

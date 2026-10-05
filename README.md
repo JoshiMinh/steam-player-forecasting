@@ -143,7 +143,7 @@ The project is structured into five sequential phases documented in [`ROADMAP.md
 
 - [x] **Phase 0:** Repository Initialization & Standards Setup *(Completed)*
 - [x] **Phase 1:** Dataset Acquisition & Validation *(Completed)*
-- [ ] **Phase 2:** EDA & Time-Series Preprocessing
+- [x] **Phase 2:** EDA & Time-Series Preprocessing *(Completed)*
 - [ ] **Phase 3:** Statistical Forecasting (Baselines & SARIMA)
 - [ ] **Phase 4:** Machine Learning & Deep Learning (XGBoost, LSTM, GRU)
 - [ ] **Phase 5:** Final Evaluation, Report & Interactive Demo
@@ -152,6 +152,6 @@ The project is structured into five sequential phases documented in [`ROADMAP.md
 
 ## Current Status
 
-- **Status:** **Phase 1 Complete**
-- **Ready for:** **Phase 2 (EDA & Time-Series Preprocessing)**
-- Standardized datasets (`steam_games_monthly.csv` and individual game CSVs) generated and validated in `data/processed/`. All unit tests passing.
+- **Status:** **Phase 2 Complete**
+- **Ready for:** **Phase 3 (Statistical Forecasting Baselines & SARIMA)**
+- Leakage-safe preprocessing pipelines (transforms, scalers, chronological train/val/test splits), exploratory analysis notebook (`notebooks/01_eda_and_preprocessing.ipynb`), 9 high-resolution figures (`figures/`), and statistical diagnostics (STL, ADF, KPSS, ACF/PACF) implemented and tested with 100% pass rate.

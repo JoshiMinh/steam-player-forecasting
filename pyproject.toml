@@ -33,6 +33,7 @@ dependencies = [
     "xgboost>=2.0.0",
     "torch>=2.2.0",
     "pyyaml>=6.0.1",
+    "streamlit>=1.30.0",
 ]
 
 [project.optional-dependencies]

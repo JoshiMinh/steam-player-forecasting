@@ -1,0 +1,925 @@
+Game,Model,Horizon_Step,Month,Absolute_Error,Percentage_Error
+Counter-Strike: Global Offensive,Naive,1,2020-09,16922.93,2.79
+Counter-Strike: Global Offensive,Naive,2,2020-10,5344.13,0.9
+Counter-Strike: Global Offensive,Naive,3,2020-11,38753.88,6.17
+Counter-Strike: Global Offensive,Naive,4,2020-12,94882.37,13.87
+Counter-Strike: Global Offensive,Naive,5,2021-01,86582.36,12.81
+Counter-Strike: Global Offensive,Naive,6,2021-02,95456.68,13.94
+Counter-Strike: Global Offensive,Naive,7,2021-03,48422.05,7.6
+Counter-Strike: Global Offensive,Naive,8,2021-04,42844.76,6.78
+Counter-Strike: Global Offensive,Naive,9,2021-05,32675.99,5.26
+Counter-Strike: Global Offensive,Naive,10,2021-06,54873.2,8.52
+Counter-Strike: Global Offensive,Naive,11,2021-07,82530.94,12.29
+Counter-Strike: Global Offensive,Naive,12,2021-08,43048.89,6.81
+Counter-Strike: Global Offensive,Seasonal Naive,1,2020-09,67037.65,11.06
+Counter-Strike: Global Offensive,Seasonal Naive,2,2020-10,40230.4,6.77
+Counter-Strike: Global Offensive,Seasonal Naive,3,2020-11,41116.36,6.55
+Counter-Strike: Global Offensive,Seasonal Naive,4,2020-12,66790.46,9.77
+Counter-Strike: Global Offensive,Seasonal Naive,5,2021-01,38675.26,5.72
+Counter-Strike: Global Offensive,Seasonal Naive,6,2021-02,66540.02,9.72
+Counter-Strike: Global Offensive,Seasonal Naive,7,2021-03,46345.2,7.27
+Counter-Strike: Global Offensive,Seasonal Naive,8,2021-04,52114.21,8.25
+Counter-Strike: Global Offensive,Seasonal Naive,9,2021-05,65059.69,10.46
+Counter-Strike: Global Offensive,Seasonal Naive,10,2021-06,70621.19,10.97
+Counter-Strike: Global Offensive,Seasonal Naive,11,2021-07,86445.11,12.87
+Counter-Strike: Global Offensive,Seasonal Naive,12,2021-08,43048.89,6.81
+Counter-Strike: Global Offensive,Holt-Winters,1,2020-09,17761.23,2.93
+Counter-Strike: Global Offensive,Holt-Winters,2,2020-10,5650.02,0.95
+Counter-Strike: Global Offensive,Holt-Winters,3,2020-11,8493.4,1.35
+Counter-Strike: Global Offensive,Holt-Winters,4,2020-12,32774.36,4.79
+Counter-Strike: Global Offensive,Holt-Winters,5,2021-01,3580.53,0.53
+Counter-Strike: Global Offensive,Holt-Winters,6,2021-02,29463.55,4.3
+Counter-Strike: Global Offensive,Holt-Winters,7,2021-03,1341.0,0.21
+Counter-Strike: Global Offensive,Holt-Winters,8,2021-04,16185.19,2.56
+Counter-Strike: Global Offensive,Holt-Winters,9,2021-05,2671.83,0.43
+Counter-Strike: Global Offensive,Holt-Winters,10,2021-06,9667.61,1.5
+Counter-Strike: Global Offensive,Holt-Winters,11,2021-07,35069.3,5.22
+Counter-Strike: Global Offensive,Holt-Winters,12,2021-08,11135.69,1.76
+Counter-Strike: Global Offensive,"ARIMA(1,1,1)",1,2020-09,16507.96,2.72
+Counter-Strike: Global Offensive,"ARIMA(1,1,1)",2,2020-10,4890.3,0.82
+Counter-Strike: Global Offensive,"ARIMA(1,1,1)",3,2020-11,38296.41,6.1
+Counter-Strike: Global Offensive,"ARIMA(1,1,1)",4,2020-12,94424.56,13.81
+Counter-Strike: Global Offensive,"ARIMA(1,1,1)",5,2021-01,86124.52,12.75
+Counter-Strike: Global Offensive,"ARIMA(1,1,1)",6,2021-02,94998.84,13.88
+Counter-Strike: Global Offensive,"ARIMA(1,1,1)",7,2021-03,47964.21,7.52
+Counter-Strike: Global Offensive,"ARIMA(1,1,1)",8,2021-04,42386.92,6.71
+Counter-Strike: Global Offensive,"ARIMA(1,1,1)",9,2021-05,32218.15,5.18
+Counter-Strike: Global Offensive,"ARIMA(1,1,1)",10,2021-06,54415.36,8.45
+Counter-Strike: Global Offensive,"ARIMA(1,1,1)",11,2021-07,82073.1,12.22
+Counter-Strike: Global Offensive,"ARIMA(1,1,1)",12,2021-08,42591.05,6.74
+Counter-Strike: Global Offensive,SARIMA,1,2020-09,32353.5,5.34
+Counter-Strike: Global Offensive,SARIMA,2,2020-10,6483.92,1.09
+Counter-Strike: Global Offensive,SARIMA,3,2020-11,20372.01,3.24
+Counter-Strike: Global Offensive,SARIMA,4,2020-12,42856.85,6.27
+Counter-Strike: Global Offensive,SARIMA,5,2021-01,14241.53,2.11
+Counter-Strike: Global Offensive,SARIMA,6,2021-02,44643.68,6.52
+Counter-Strike: Global Offensive,SARIMA,7,2021-03,17711.18,2.78
+Counter-Strike: Global Offensive,SARIMA,8,2021-04,35410.54,5.6
+Counter-Strike: Global Offensive,SARIMA,9,2021-05,35583.12,5.72
+Counter-Strike: Global Offensive,SARIMA,10,2021-06,44200.95,6.86
+Counter-Strike: Global Offensive,SARIMA,11,2021-07,68029.42,10.13
+Counter-Strike: Global Offensive,SARIMA,12,2021-08,15794.56,2.5
+Counter-Strike: Global Offensive,Ridge,1,2020-09,8409.81,1.39
+Counter-Strike: Global Offensive,Ridge,2,2020-10,13473.82,2.27
+Counter-Strike: Global Offensive,Ridge,3,2020-11,3247.79,0.52
+Counter-Strike: Global Offensive,Ridge,4,2020-12,30021.97,4.39
+Counter-Strike: Global Offensive,Ridge,5,2021-01,992.76,0.15
+Counter-Strike: Global Offensive,Ridge,6,2021-02,28180.64,4.12
+Counter-Strike: Global Offensive,Ridge,7,2021-03,4146.47,0.65
+Counter-Strike: Global Offensive,Ridge,8,2021-04,9153.65,1.45
+Counter-Strike: Global Offensive,Ridge,9,2021-05,4005.12,0.64
+Counter-Strike: Global Offensive,Ridge,10,2021-06,15939.84,2.48
+Counter-Strike: Global Offensive,Ridge,11,2021-07,34328.1,5.11
+Counter-Strike: Global Offensive,Ridge,12,2021-08,7570.22,1.2
+Counter-Strike: Global Offensive,Random Forest,1,2020-09,22087.5,3.64
+Counter-Strike: Global Offensive,Random Forest,2,2020-10,4655.97,0.78
+Counter-Strike: Global Offensive,Random Forest,3,2020-11,20990.12,3.34
+Counter-Strike: Global Offensive,Random Forest,4,2020-12,75757.45,11.08
+Counter-Strike: Global Offensive,Random Forest,5,2021-01,66173.5,9.79
+Counter-Strike: Global Offensive,Random Forest,6,2021-02,77156.18,11.27
+Counter-Strike: Global Offensive,Random Forest,7,2021-03,31154.46,4.89
+Counter-Strike: Global Offensive,Random Forest,8,2021-04,27605.16,4.37
+Counter-Strike: Global Offensive,Random Forest,9,2021-05,33055.67,5.32
+Counter-Strike: Global Offensive,Random Forest,10,2021-06,41854.19,6.5
+Counter-Strike: Global Offensive,Random Forest,11,2021-07,68143.4,10.15
+Counter-Strike: Global Offensive,Random Forest,12,2021-08,26369.33,4.17
+Counter-Strike: Global Offensive,XGBoost,1,2020-09,20512.48,3.38
+Counter-Strike: Global Offensive,XGBoost,2,2020-10,3579.69,0.6
+Counter-Strike: Global Offensive,XGBoost,3,2020-11,3144.87,0.5
+Counter-Strike: Global Offensive,XGBoost,4,2020-12,56826.11,8.31
+Counter-Strike: Global Offensive,XGBoost,5,2021-01,51972.48,7.69
+Counter-Strike: Global Offensive,XGBoost,6,2021-02,77886.61,11.38
+Counter-Strike: Global Offensive,XGBoost,7,2021-03,33342.54,5.23
+Counter-Strike: Global Offensive,XGBoost,8,2021-04,35373.69,5.6
+Counter-Strike: Global Offensive,XGBoost,9,2021-05,39492.67,6.35
+Counter-Strike: Global Offensive,XGBoost,10,2021-06,52109.13,8.09
+Counter-Strike: Global Offensive,XGBoost,11,2021-07,52370.74,7.8
+Counter-Strike: Global Offensive,XGBoost,12,2021-08,11318.76,1.79
+Counter-Strike: Global Offensive,RNN,1,2020-09,24319.73,4.01
+Counter-Strike: Global Offensive,RNN,2,2020-10,843.81,0.14
+Counter-Strike: Global Offensive,RNN,3,2020-11,19641.81,3.13
+Counter-Strike: Global Offensive,RNN,4,2020-12,60905.61,8.9
+Counter-Strike: Global Offensive,RNN,5,2021-01,47447.23,7.02
+Counter-Strike: Global Offensive,RNN,6,2021-02,42120.98,6.15
+Counter-Strike: Global Offensive,RNN,7,2021-03,4911.6,0.77
+Counter-Strike: Global Offensive,RNN,8,2021-04,3002.31,0.48
+Counter-Strike: Global Offensive,RNN,9,2021-05,195.11,0.03
+Counter-Strike: Global Offensive,RNN,10,2021-06,36139.57,5.61
+Counter-Strike: Global Offensive,RNN,11,2021-07,59518.37,8.86
+Counter-Strike: Global Offensive,RNN,12,2021-08,1626.38,0.26
+Counter-Strike: Global Offensive,LSTM,1,2020-09,18980.8,3.13
+Counter-Strike: Global Offensive,LSTM,2,2020-10,4431.44,0.75
+Counter-Strike: Global Offensive,LSTM,3,2020-11,29445.81,4.69
+Counter-Strike: Global Offensive,LSTM,4,2020-12,85126.8,12.45
+Counter-Strike: Global Offensive,LSTM,5,2021-01,73177.29,10.83
+Counter-Strike: Global Offensive,LSTM,6,2021-02,76535.23,11.18
+Counter-Strike: Global Offensive,LSTM,7,2021-03,18590.29,2.92
+Counter-Strike: Global Offensive,LSTM,8,2021-04,3330.13,0.53
+Counter-Strike: Global Offensive,LSTM,9,2021-05,13996.95,2.25
+Counter-Strike: Global Offensive,LSTM,10,2021-06,4989.26,0.77
+Counter-Strike: Global Offensive,LSTM,11,2021-07,42955.62,6.4
+Counter-Strike: Global Offensive,LSTM,12,2021-08,1577.37,0.25
+Counter-Strike: Global Offensive,GRU,1,2020-09,8293.48,1.37
+Counter-Strike: Global Offensive,GRU,2,2020-10,5815.06,0.98
+Counter-Strike: Global Offensive,GRU,3,2020-11,20960.69,3.34
+Counter-Strike: Global Offensive,GRU,4,2020-12,70153.36,10.26
+Counter-Strike: Global Offensive,GRU,5,2021-01,56444.48,8.35
+Counter-Strike: Global Offensive,GRU,6,2021-02,57877.36,8.46
+Counter-Strike: Global Offensive,GRU,7,2021-03,2348.6,0.37
+Counter-Strike: Global Offensive,GRU,8,2021-04,5258.25,0.83
+Counter-Strike: Global Offensive,GRU,9,2021-05,22353.7,3.6
+Counter-Strike: Global Offensive,GRU,10,2021-06,357.38,0.06
+Counter-Strike: Global Offensive,GRU,11,2021-07,28679.74,4.27
+Counter-Strike: Global Offensive,GRU,12,2021-08,13784.49,2.18
+Dota 2,Naive,1,2020-09,6302.21,1.64
+Dota 2,Naive,2,2020-10,43967.39,10.11
+Dota 2,Naive,3,2020-11,39224.82,9.12
+Dota 2,Naive,4,2020-12,103176.84,20.88
+Dota 2,Naive,5,2021-01,81800.99,17.3
+Dota 2,Naive,6,2021-02,107801.32,21.61
+Dota 2,Naive,7,2021-03,52881.42,11.91
+Dota 2,Naive,8,2021-04,33216.28,7.83
+Dota 2,Naive,9,2021-05,57146.06,12.75
+Dota 2,Naive,10,2021-06,30167.58,7.16
+Dota 2,Naive,11,2021-07,26629.26,6.38
+Dota 2,Naive,12,2021-08,32031.7,7.57
+Dota 2,Seasonal Naive,1,2020-09,5455.51,1.42
+Dota 2,Seasonal Naive,2,2020-10,79534.86,18.29
+Dota 2,Seasonal Naive,3,2020-11,23719.59,5.51
+Dota 2,Seasonal Naive,4,2020-12,47686.88,9.65
+Dota 2,Seasonal Naive,5,2021-01,14471.3,3.06
+Dota 2,Seasonal Naive,6,2021-02,34884.79,6.99
+Dota 2,Seasonal Naive,7,2021-03,17336.82,3.91
+Dota 2,Seasonal Naive,8,2021-04,13398.06,3.16
+Dota 2,Seasonal Naive,9,2021-05,66661.81,14.88
+Dota 2,Seasonal Naive,10,2021-06,3591.72,0.85
+Dota 2,Seasonal Naive,11,2021-07,29801.18,7.14
+Dota 2,Seasonal Naive,12,2021-08,32031.7,7.57
+Dota 2,Holt-Winters,1,2020-09,8560.07,2.23
+Dota 2,Holt-Winters,2,2020-10,41290.87,9.49
+Dota 2,Holt-Winters,3,2020-11,7581.52,1.76
+Dota 2,Holt-Winters,4,2020-12,26178.34,5.3
+Dota 2,Holt-Winters,5,2021-01,15776.67,3.34
+Dota 2,Holt-Winters,6,2021-02,35019.53,7.02
+Dota 2,Holt-Winters,7,2021-03,11290.42,2.54
+Dota 2,Holt-Winters,8,2021-04,3864.84,0.91
+Dota 2,Holt-Winters,9,2021-05,55166.84,12.31
+Dota 2,Holt-Winters,10,2021-06,17563.49,4.17
+Dota 2,Holt-Winters,11,2021-07,11872.14,2.84
+Dota 2,Holt-Winters,12,2021-08,4568.81,1.08
+Dota 2,"ARIMA(1,1,1)",1,2020-09,14662.53,3.81
+Dota 2,"ARIMA(1,1,1)",2,2020-10,31429.25,7.23
+Dota 2,"ARIMA(1,1,1)",3,2020-11,24598.93,5.72
+Dota 2,"ARIMA(1,1,1)",4,2020-12,87507.67,17.71
+Dota 2,"ARIMA(1,1,1)",5,2021-01,65610.47,13.88
+Dota 2,"ARIMA(1,1,1)",6,2021-02,91350.27,18.32
+Dota 2,"ARIMA(1,1,1)",7,2021-03,36300.17,8.18
+Dota 2,"ARIMA(1,1,1)",8,2021-04,16569.97,3.91
+Dota 2,"ARIMA(1,1,1)",9,2021-05,40467.24,9.03
+Dota 2,"ARIMA(1,1,1)",10,2021-06,13472.52,3.2
+Dota 2,"ARIMA(1,1,1)",11,2021-07,9926.08,2.38
+Dota 2,"ARIMA(1,1,1)",12,2021-08,15324.46,3.62
+Dota 2,SARIMA,1,2020-09,12884.09,3.35
+Dota 2,SARIMA,2,2020-10,57909.86,13.32
+Dota 2,SARIMA,3,2020-11,12823.73,2.98
+Dota 2,SARIMA,4,2020-12,28393.68,5.75
+Dota 2,SARIMA,5,2021-01,6409.05,1.36
+Dota 2,SARIMA,6,2021-02,30167.94,6.05
+Dota 2,SARIMA,7,2021-03,5443.37,1.23
+Dota 2,SARIMA,8,2021-04,18944.06,4.47
+Dota 2,SARIMA,9,2021-05,44218.53,9.87
+Dota 2,SARIMA,10,2021-06,20445.12,4.85
+Dota 2,SARIMA,11,2021-07,33015.46,7.91
+Dota 2,SARIMA,12,2021-08,10911.47,2.58
+Dota 2,Ridge,1,2020-09,13879.02,3.61
+Dota 2,Ridge,2,2020-10,46787.95,10.76
+Dota 2,Ridge,3,2020-11,1472.73,0.34
+Dota 2,Ridge,4,2020-12,14901.1,3.02
+Dota 2,Ridge,5,2021-01,22419.12,4.74
+Dota 2,Ridge,6,2021-02,24182.47,4.85
+Dota 2,Ridge,7,2021-03,14800.73,3.33
+Dota 2,Ridge,8,2021-04,1500.44,0.35
+Dota 2,Ridge,9,2021-05,36241.41,8.09
+Dota 2,Ridge,10,2021-06,22252.41,5.28
+Dota 2,Ridge,11,2021-07,28930.6,6.93
+Dota 2,Ridge,12,2021-08,3041.52,0.72
+Dota 2,Random Forest,1,2020-09,23355.79,6.07
+Dota 2,Random Forest,2,2020-10,39096.42,8.99
+Dota 2,Random Forest,3,2020-11,5295.78,1.23
+Dota 2,Random Forest,4,2020-12,51162.77,10.35
+Dota 2,Random Forest,5,2021-01,28129.17,5.95
+Dota 2,Random Forest,6,2021-02,60727.58,12.18
+Dota 2,Random Forest,7,2021-03,11400.59,2.57
+Dota 2,Random Forest,8,2021-04,8873.42,2.09
+Dota 2,Random Forest,9,2021-05,33003.5,7.37
+Dota 2,Random Forest,10,2021-06,4130.29,0.98
+Dota 2,Random Forest,11,2021-07,13668.71,3.27
+Dota 2,Random Forest,12,2021-08,2463.51,0.58
+Dota 2,XGBoost,1,2020-09,20803.69,5.41
+Dota 2,XGBoost,2,2020-10,48136.5,11.07
+Dota 2,XGBoost,3,2020-11,5835.6,1.36
+Dota 2,XGBoost,4,2020-12,43908.55,8.89
+Dota 2,XGBoost,5,2021-01,21768.91,4.6
+Dota 2,XGBoost,6,2021-02,52171.87,10.46
+Dota 2,XGBoost,7,2021-03,22734.06,5.12
+Dota 2,XGBoost,8,2021-04,12946.36,3.05
+Dota 2,XGBoost,9,2021-05,44126.64,9.85
+Dota 2,XGBoost,10,2021-06,8656.34,2.06
+Dota 2,XGBoost,11,2021-07,15768.28,3.78
+Dota 2,XGBoost,12,2021-08,7965.22,1.88
+Dota 2,RNN,1,2020-09,6597.37,1.72
+Dota 2,RNN,2,2020-10,65337.25,15.02
+Dota 2,RNN,3,2020-11,37253.53,8.66
+Dota 2,RNN,4,2020-12,60218.58,12.19
+Dota 2,RNN,5,2021-01,17586.23,3.72
+Dota 2,RNN,6,2021-02,51640.46,10.35
+Dota 2,RNN,7,2021-03,14880.19,3.35
+Dota 2,RNN,8,2021-04,13132.92,3.1
+Dota 2,RNN,9,2021-05,35114.8,7.84
+Dota 2,RNN,10,2021-06,13444.96,3.19
+Dota 2,RNN,11,2021-07,23169.03,5.55
+Dota 2,RNN,12,2021-08,2667.19,0.63
+Dota 2,LSTM,1,2020-09,5710.35,1.48
+Dota 2,LSTM,2,2020-10,39928.44,9.18
+Dota 2,LSTM,3,2020-11,27393.53,6.37
+Dota 2,LSTM,4,2020-12,53043.2,10.73
+Dota 2,LSTM,5,2021-01,14180.98,3.0
+Dota 2,LSTM,6,2021-02,53283.09,10.68
+Dota 2,LSTM,7,2021-03,17894.53,4.03
+Dota 2,LSTM,8,2021-04,4023.3,0.95
+Dota 2,LSTM,9,2021-05,25526.45,5.7
+Dota 2,LSTM,10,2021-06,24726.24,5.87
+Dota 2,LSTM,11,2021-07,37190.88,8.91
+Dota 2,LSTM,12,2021-08,17343.31,4.1
+Dota 2,GRU,1,2020-09,6367.25,1.66
+Dota 2,GRU,2,2020-10,76486.03,17.59
+Dota 2,GRU,3,2020-11,15047.71,3.5
+Dota 2,GRU,4,2020-12,21289.14,4.31
+Dota 2,GRU,5,2021-01,22691.43,4.8
+Dota 2,GRU,6,2021-02,56571.78,11.34
+Dota 2,GRU,7,2021-03,35991.25,8.11
+Dota 2,GRU,8,2021-04,34202.42,8.06
+Dota 2,GRU,9,2021-05,22232.39,4.96
+Dota 2,GRU,10,2021-06,43647.37,10.36
+Dota 2,GRU,11,2021-07,75005.56,17.96
+Dota 2,GRU,12,2021-08,22424.88,5.3
+Grand Theft Auto V,Naive,1,2020-09,23917.77,24.19
+Grand Theft Auto V,Naive,2,2020-10,14299.28,13.18
+Grand Theft Auto V,Naive,3,2020-11,1079.89,0.89
+Grand Theft Auto V,Naive,4,2020-12,1081.04,0.87
+Grand Theft Auto V,Naive,5,2021-01,23975.17,16.34
+Grand Theft Auto V,Naive,6,2021-02,1027.29,0.84
+Grand Theft Auto V,Naive,7,2021-03,3634.88,3.05
+Grand Theft Auto V,Naive,8,2021-04,18968.04,18.27
+Grand Theft Auto V,Naive,9,2021-05,15739.79,14.7
+Grand Theft Auto V,Naive,10,2021-06,7160.73,6.19
+Grand Theft Auto V,Naive,11,2021-07,342.84,0.28
+Grand Theft Auto V,Naive,12,2021-08,4899.44,4.16
+Grand Theft Auto V,Seasonal Naive,1,2020-09,8083.49,8.18
+Grand Theft Auto V,Seasonal Naive,2,2020-10,13076.72,12.05
+Grand Theft Auto V,Seasonal Naive,3,2020-11,17887.43,14.7
+Grand Theft Auto V,Seasonal Naive,4,2020-12,9263.23,7.48
+Grand Theft Auto V,Seasonal Naive,5,2021-01,22722.44,15.48
+Grand Theft Auto V,Seasonal Naive,6,2021-02,2734.52,2.25
+Grand Theft Auto V,Seasonal Naive,7,2021-03,12438.97,10.44
+Grand Theft Auto V,Seasonal Naive,8,2021-04,10282.56,9.91
+Grand Theft Auto V,Seasonal Naive,9,2021-05,6846.43,6.4
+Grand Theft Auto V,Seasonal Naive,10,2021-06,12415.62,10.74
+Grand Theft Auto V,Seasonal Naive,11,2021-07,15424.98,12.53
+Grand Theft Auto V,Seasonal Naive,12,2021-08,4899.44,4.16
+Grand Theft Auto V,Holt-Winters,1,2020-09,8192.81,8.29
+Grand Theft Auto V,Holt-Winters,2,2020-10,2813.25,2.59
+Grand Theft Auto V,Holt-Winters,3,2020-11,2921.64,2.4
+Grand Theft Auto V,Holt-Winters,4,2020-12,3780.1,3.05
+Grand Theft Auto V,Holt-Winters,5,2021-01,17221.53,11.74
+Grand Theft Auto V,Holt-Winters,6,2021-02,5790.54,4.76
+Grand Theft Auto V,Holt-Winters,7,2021-03,1847.45,1.55
+Grand Theft Auto V,Holt-Winters,8,2021-04,8152.76,7.85
+Grand Theft Auto V,Holt-Winters,9,2021-05,8111.08,7.58
+Grand Theft Auto V,Holt-Winters,10,2021-06,3674.78,3.18
+Grand Theft Auto V,Holt-Winters,11,2021-07,4248.8,3.45
+Grand Theft Auto V,Holt-Winters,12,2021-08,2621.89,2.22
+Grand Theft Auto V,"ARIMA(1,1,1)",1,2020-09,18325.45,18.54
+Grand Theft Auto V,"ARIMA(1,1,1)",2,2020-10,5935.23,5.47
+Grand Theft Auto V,"ARIMA(1,1,1)",3,2020-11,8657.93,7.11
+Grand Theft Auto V,"ARIMA(1,1,1)",4,2020-12,11499.74,9.28
+Grand Theft Auto V,"ARIMA(1,1,1)",5,2021-01,34731.34,23.67
+Grand Theft Auto V,"ARIMA(1,1,1)",6,2021-02,9896.14,8.13
+Grand Theft Auto V,"ARIMA(1,1,1)",7,2021-03,7371.45,6.19
+Grand Theft Auto V,"ARIMA(1,1,1)",8,2021-04,7920.62,7.63
+Grand Theft Auto V,"ARIMA(1,1,1)",9,2021-05,4672.01,4.36
+Grand Theft Auto V,"ARIMA(1,1,1)",10,2021-06,3917.15,3.39
+Grand Theft Auto V,"ARIMA(1,1,1)",11,2021-07,11425.72,9.28
+Grand Theft Auto V,"ARIMA(1,1,1)",12,2021-08,6185.92,5.25
+Grand Theft Auto V,SARIMA,1,2020-09,4818.03,4.87
+Grand Theft Auto V,SARIMA,2,2020-10,4193.18,3.87
+Grand Theft Auto V,SARIMA,3,2020-11,9710.71,7.98
+Grand Theft Auto V,SARIMA,4,2020-12,1365.83,1.1
+Grand Theft Auto V,SARIMA,5,2021-01,19379.64,13.21
+Grand Theft Auto V,SARIMA,6,2021-02,1866.17,1.53
+Grand Theft Auto V,SARIMA,7,2021-03,5267.17,4.42
+Grand Theft Auto V,SARIMA,8,2021-04,627.21,0.6
+Grand Theft Auto V,SARIMA,9,2021-05,1979.23,1.85
+Grand Theft Auto V,SARIMA,10,2021-06,3672.22,3.18
+Grand Theft Auto V,SARIMA,11,2021-07,10799.78,8.77
+Grand Theft Auto V,SARIMA,12,2021-08,3110.42,2.64
+Grand Theft Auto V,Ridge,1,2020-09,11597.01,11.73
+Grand Theft Auto V,Ridge,2,2020-10,8322.91,7.67
+Grand Theft Auto V,Ridge,3,2020-11,11049.13,9.08
+Grand Theft Auto V,Ridge,4,2020-12,2350.35,1.9
+Grand Theft Auto V,Ridge,5,2021-01,14552.45,9.92
+Grand Theft Auto V,Ridge,6,2021-02,7906.18,6.49
+Grand Theft Auto V,Ridge,7,2021-03,5043.76,4.23
+Grand Theft Auto V,Ridge,8,2021-04,8465.32,8.15
+Grand Theft Auto V,Ridge,9,2021-05,112.81,0.11
+Grand Theft Auto V,Ridge,10,2021-06,748.87,0.65
+Grand Theft Auto V,Ridge,11,2021-07,2515.53,2.04
+Grand Theft Auto V,Ridge,12,2021-08,509.65,0.43
+Grand Theft Auto V,Random Forest,1,2020-09,4244.38,4.29
+Grand Theft Auto V,Random Forest,2,2020-10,87.09,0.08
+Grand Theft Auto V,Random Forest,3,2020-11,6548.6,5.38
+Grand Theft Auto V,Random Forest,4,2020-12,7285.14,5.88
+Grand Theft Auto V,Random Forest,5,2021-01,30167.1,20.56
+Grand Theft Auto V,Random Forest,6,2021-02,6046.93,4.97
+Grand Theft Auto V,Random Forest,7,2021-03,4276.7,3.59
+Grand Theft Auto V,Random Forest,8,2021-04,7718.15,7.43
+Grand Theft Auto V,Random Forest,9,2021-05,7751.14,7.24
+Grand Theft Auto V,Random Forest,10,2021-06,39.1,0.03
+Grand Theft Auto V,Random Forest,11,2021-07,7504.66,6.1
+Grand Theft Auto V,Random Forest,12,2021-08,1908.54,1.62
+Grand Theft Auto V,XGBoost,1,2020-09,539.8,0.55
+Grand Theft Auto V,XGBoost,2,2020-10,4446.97,4.1
+Grand Theft Auto V,XGBoost,3,2020-11,15984.77,13.13
+Grand Theft Auto V,XGBoost,4,2020-12,11229.9,9.07
+Grand Theft Auto V,XGBoost,5,2021-01,31816.36,21.68
+Grand Theft Auto V,XGBoost,6,2021-02,7195.52,5.91
+Grand Theft Auto V,XGBoost,7,2021-03,6601.38,5.54
+Grand Theft Auto V,XGBoost,8,2021-04,7840.52,7.55
+Grand Theft Auto V,XGBoost,9,2021-05,5020.22,4.69
+Grand Theft Auto V,XGBoost,10,2021-06,4449.62,3.85
+Grand Theft Auto V,XGBoost,11,2021-07,11953.19,9.71
+Grand Theft Auto V,XGBoost,12,2021-08,6557.2,5.56
+Grand Theft Auto V,RNN,1,2020-09,9747.26,9.86
+Grand Theft Auto V,RNN,2,2020-10,8701.25,8.02
+Grand Theft Auto V,RNN,3,2020-11,13316.0,10.94
+Grand Theft Auto V,RNN,4,2020-12,5046.84,4.07
+Grand Theft Auto V,RNN,5,2021-01,28049.81,19.11
+Grand Theft Auto V,RNN,6,2021-02,3423.73,2.81
+Grand Theft Auto V,RNN,7,2021-03,3722.31,3.12
+Grand Theft Auto V,RNN,8,2021-04,364.54,0.35
+Grand Theft Auto V,RNN,9,2021-05,4609.19,4.31
+Grand Theft Auto V,RNN,10,2021-06,6250.75,5.41
+Grand Theft Auto V,RNN,11,2021-07,7414.83,6.02
+Grand Theft Auto V,RNN,12,2021-08,5429.68,4.61
+Grand Theft Auto V,LSTM,1,2020-09,7202.82,7.29
+Grand Theft Auto V,LSTM,2,2020-10,528.05,0.49
+Grand Theft Auto V,LSTM,3,2020-11,10864.75,8.93
+Grand Theft Auto V,LSTM,4,2020-12,6274.19,5.07
+Grand Theft Auto V,LSTM,5,2021-01,29113.57,19.84
+Grand Theft Auto V,LSTM,6,2021-02,1079.39,0.89
+Grand Theft Auto V,LSTM,7,2021-03,2569.37,2.16
+Grand Theft Auto V,LSTM,8,2021-04,11649.32,11.22
+Grand Theft Auto V,LSTM,9,2021-05,6746.57,6.3
+Grand Theft Auto V,LSTM,10,2021-06,1716.27,1.48
+Grand Theft Auto V,LSTM,11,2021-07,6784.09,5.51
+Grand Theft Auto V,LSTM,12,2021-08,3019.57,2.56
+Grand Theft Auto V,GRU,1,2020-09,8690.0,8.79
+Grand Theft Auto V,GRU,2,2020-10,4976.83,4.59
+Grand Theft Auto V,GRU,3,2020-11,11062.65,9.09
+Grand Theft Auto V,GRU,4,2020-12,8306.63,6.71
+Grand Theft Auto V,GRU,5,2021-01,30703.68,20.92
+Grand Theft Auto V,GRU,6,2021-02,1105.93,0.91
+Grand Theft Auto V,GRU,7,2021-03,4606.53,3.87
+Grand Theft Auto V,GRU,8,2021-04,12738.57,12.27
+Grand Theft Auto V,GRU,9,2021-05,8451.89,7.9
+Grand Theft Auto V,GRU,10,2021-06,2593.9,2.24
+Grand Theft Auto V,GRU,11,2021-07,4977.52,4.04
+Grand Theft Auto V,GRU,12,2021-08,1021.51,0.87
+Rust,Naive,1,2020-09,1573.74,1.88
+Rust,Naive,2,2020-10,1310.94,1.56
+Rust,Naive,3,2020-11,6895.5,8.81
+Rust,Naive,4,2020-12,10451.69,10.93
+Rust,Naive,5,2021-01,12042.75,12.39
+Rust,Naive,6,2021-02,996.92,1.16
+Rust,Naive,7,2021-03,2811.56,3.2
+Rust,Naive,8,2021-04,511.31,0.6
+Rust,Naive,9,2021-05,1323.24,1.53
+Rust,Naive,10,2021-06,2318.83,2.65
+Rust,Naive,11,2021-07,4831.44,5.37
+Rust,Naive,12,2021-08,9652.41,10.18
+Rust,Seasonal Naive,1,2020-09,16298.31,19.51
+Rust,Seasonal Naive,2,2020-10,15600.13,18.61
+Rust,Seasonal Naive,3,2020-11,4030.13,5.15
+Rust,Seasonal Naive,4,2020-12,13873.88,14.52
+Rust,Seasonal Naive,5,2021-01,12521.98,12.89
+Rust,Seasonal Naive,6,2021-02,2347.12,2.73
+Rust,Seasonal Naive,7,2021-03,16690.1,18.98
+Rust,Seasonal Naive,8,2021-04,6761.41,7.9
+Rust,Seasonal Naive,9,2021-05,13210.93,15.28
+Rust,Seasonal Naive,10,2021-06,8101.41,9.26
+Rust,Seasonal Naive,11,2021-07,15381.99,17.1
+Rust,Seasonal Naive,12,2021-08,9652.41,10.18
+Rust,Holt-Winters,1,2020-09,9107.22,10.9
+Rust,Holt-Winters,2,2020-10,2998.65,3.58
+Rust,Holt-Winters,3,2020-11,6101.35,7.8
+Rust,Holt-Winters,4,2020-12,4117.47,4.31
+Rust,Holt-Winters,5,2021-01,868.39,0.89
+Rust,Holt-Winters,6,2021-02,9126.01,10.6
+Rust,Holt-Winters,7,2021-03,1197.48,1.36
+Rust,Holt-Winters,8,2021-04,249.91,0.29
+Rust,Holt-Winters,9,2021-05,4206.6,4.87
+Rust,Holt-Winters,10,2021-06,1016.44,1.16
+Rust,Holt-Winters,11,2021-07,1756.54,1.95
+Rust,Holt-Winters,12,2021-08,3957.4,4.18
+Rust,"ARIMA(1,1,1)",1,2020-09,1653.14,1.98
+Rust,"ARIMA(1,1,1)",2,2020-10,2972.54,3.55
+Rust,"ARIMA(1,1,1)",3,2020-11,2266.06,2.9
+Rust,"ARIMA(1,1,1)",4,2020-12,15194.41,15.9
+Rust,"ARIMA(1,1,1)",5,2021-01,16822.57,17.31
+Rust,"ARIMA(1,1,1)",6,2021-02,5788.88,6.72
+Rust,"ARIMA(1,1,1)",7,2021-03,7607.5,8.65
+Rust,"ARIMA(1,1,1)",8,2021-04,5308.55,6.2
+Rust,"ARIMA(1,1,1)",9,2021-05,6120.91,7.08
+Rust,"ARIMA(1,1,1)",10,2021-06,7116.64,8.14
+Rust,"ARIMA(1,1,1)",11,2021-07,9629.29,10.7
+Rust,"ARIMA(1,1,1)",12,2021-08,14450.28,15.25
+Rust,SARIMA,1,2020-09,7869.3,9.42
+Rust,SARIMA,2,2020-10,4414.17,5.27
+Rust,SARIMA,3,2020-11,5095.05,6.51
+Rust,SARIMA,4,2020-12,4840.56,5.06
+Rust,SARIMA,5,2021-01,2496.39,2.57
+Rust,SARIMA,6,2021-02,7522.28,8.73
+Rust,SARIMA,7,2021-03,677.79,0.77
+Rust,SARIMA,8,2021-04,202.47,0.24
+Rust,SARIMA,9,2021-05,4812.77,5.57
+Rust,SARIMA,10,2021-06,585.28,0.67
+Rust,SARIMA,11,2021-07,2909.31,3.23
+Rust,SARIMA,12,2021-08,5233.58,5.52
+Rust,Ridge,1,2020-09,7796.51,9.33
+Rust,Ridge,2,2020-10,6151.36,7.34
+Rust,Ridge,3,2020-11,4229.46,5.41
+Rust,Ridge,4,2020-12,6434.13,6.73
+Rust,Ridge,5,2021-01,4015.09,4.13
+Rust,Ridge,6,2021-02,5791.39,6.72
+Rust,Ridge,7,2021-03,1380.93,1.57
+Rust,Ridge,8,2021-04,648.12,0.76
+Rust,Ridge,9,2021-05,4369.99,5.05
+Rust,Ridge,10,2021-06,2939.21,3.36
+Rust,Ridge,11,2021-07,6133.79,6.82
+Rust,Ridge,12,2021-08,9432.35,9.95
+Rust,Random Forest,1,2020-09,5429.53,6.5
+Rust,Random Forest,2,2020-10,3454.19,4.12
+Rust,Random Forest,3,2020-11,1898.23,2.43
+Rust,Random Forest,4,2020-12,14289.45,14.95
+Rust,Random Forest,5,2021-01,14729.7,15.16
+Rust,Random Forest,6,2021-02,3512.67,4.08
+Rust,Random Forest,7,2021-03,7064.03,8.03
+Rust,Random Forest,8,2021-04,3520.55,4.11
+Rust,Random Forest,9,2021-05,5588.37,6.46
+Rust,Random Forest,10,2021-06,6029.29,6.89
+Rust,Random Forest,11,2021-07,8968.69,9.97
+Rust,Random Forest,12,2021-08,13145.43,13.87
+Rust,XGBoost,1,2020-09,7544.92,9.03
+Rust,XGBoost,2,2020-10,1259.32,1.5
+Rust,XGBoost,3,2020-11,1050.05,1.34
+Rust,XGBoost,4,2020-12,17504.75,18.31
+Rust,XGBoost,5,2021-01,18233.33,18.76
+Rust,XGBoost,6,2021-02,8067.05,9.37
+Rust,XGBoost,7,2021-03,9943.3,11.31
+Rust,XGBoost,8,2021-04,8417.83,9.83
+Rust,XGBoost,9,2021-05,8912.04,10.31
+Rust,XGBoost,10,2021-06,10087.95,11.54
+Rust,XGBoost,11,2021-07,12564.56,13.97
+Rust,XGBoost,12,2021-08,17160.6,18.11
+Rust,RNN,1,2020-09,10215.79,12.23
+Rust,RNN,2,2020-10,11402.92,13.6
+Rust,RNN,3,2020-11,3760.08,4.81
+Rust,RNN,4,2020-12,16650.52,17.42
+Rust,RNN,5,2021-01,15257.98,15.7
+Rust,RNN,6,2021-02,3517.28,4.08
+Rust,RNN,7,2021-03,8158.17,9.28
+Rust,RNN,8,2021-04,8156.98,9.52
+Rust,RNN,9,2021-05,7193.24,8.32
+Rust,RNN,10,2021-06,4181.87,4.78
+Rust,RNN,11,2021-07,8537.27,9.49
+Rust,RNN,12,2021-08,12083.75,12.75
+Rust,LSTM,1,2020-09,8724.52,10.44
+Rust,LSTM,2,2020-10,8688.99,10.37
+Rust,LSTM,3,2020-11,1544.6,1.97
+Rust,LSTM,4,2020-12,18010.91,18.84
+Rust,LSTM,5,2021-01,18816.68,19.36
+Rust,LSTM,6,2021-02,5877.0,6.82
+Rust,LSTM,7,2021-03,8275.66,9.41
+Rust,LSTM,8,2021-04,5448.95,6.36
+Rust,LSTM,9,2021-05,4986.51,5.77
+Rust,LSTM,10,2021-06,4511.74,5.16
+Rust,LSTM,11,2021-07,7836.24,8.71
+Rust,LSTM,12,2021-08,9962.68,10.51
+Rust,GRU,1,2020-09,5509.57,6.59
+Rust,GRU,2,2020-10,5936.69,7.08
+Rust,GRU,3,2020-11,121.69,0.16
+Rust,GRU,4,2020-12,16273.03,17.03
+Rust,GRU,5,2021-01,14561.94,14.99
+Rust,GRU,6,2021-02,4838.07,5.62
+Rust,GRU,7,2021-03,4792.07,5.45
+Rust,GRU,8,2021-04,4597.69,5.37
+Rust,GRU,9,2021-05,5063.88,5.86
+Rust,GRU,10,2021-06,4677.73,5.35
+Rust,GRU,11,2021-07,7552.15,8.39
+Rust,GRU,12,2021-08,10445.56,11.02
+Team Fortress 2,Naive,1,2020-09,5314.63,11.48
+Team Fortress 2,Naive,2,2020-10,13567.94,24.88
+Team Fortress 2,Naive,3,2020-11,17298.1,29.69
+Team Fortress 2,Naive,4,2020-12,16135.56,28.25
+Team Fortress 2,Naive,5,2021-01,19814.39,32.6
+Team Fortress 2,Naive,6,2021-02,25080.95,37.97
+Team Fortress 2,Naive,7,2021-03,14092.64,25.59
+Team Fortress 2,Naive,8,2021-04,20076.97,32.89
+Team Fortress 2,Naive,9,2021-05,11660.03,22.15
+Team Fortress 2,Naive,10,2021-06,14597.57,26.27
+Team Fortress 2,Naive,11,2021-07,19805.81,32.59
+Team Fortress 2,Naive,12,2021-08,13708.04,25.07
+Team Fortress 2,Seasonal Naive,1,2020-09,8843.13,19.1
+Team Fortress 2,Seasonal Naive,2,2020-10,969.7,1.78
+Team Fortress 2,Seasonal Naive,3,2020-11,1410.72,2.42
+Team Fortress 2,Seasonal Naive,4,2020-12,6690.88,11.72
+Team Fortress 2,Seasonal Naive,5,2021-01,3730.04,6.14
+Team Fortress 2,Seasonal Naive,6,2021-02,1075.82,1.63
+Team Fortress 2,Seasonal Naive,7,2021-03,2226.87,4.04
+Team Fortress 2,Seasonal Naive,8,2021-04,9575.16,15.68
+Team Fortress 2,Seasonal Naive,9,2021-05,702.16,1.33
+Team Fortress 2,Seasonal Naive,10,2021-06,12165.21,21.89
+Team Fortress 2,Seasonal Naive,11,2021-07,4798.96,7.9
+Team Fortress 2,Seasonal Naive,12,2021-08,13708.04,25.07
+Team Fortress 2,Holt-Winters,1,2020-09,5212.1,11.26
+Team Fortress 2,Holt-Winters,2,2020-10,198.31,0.36
+Team Fortress 2,Holt-Winters,3,2020-11,1606.95,2.76
+Team Fortress 2,Holt-Winters,4,2020-12,7993.67,14.0
+Team Fortress 2,Holt-Winters,5,2021-01,1277.16,2.1
+Team Fortress 2,Holt-Winters,6,2021-02,3701.38,5.6
+Team Fortress 2,Holt-Winters,7,2021-03,1447.58,2.63
+Team Fortress 2,Holt-Winters,8,2021-04,8065.75,13.21
+Team Fortress 2,Holt-Winters,9,2021-05,1287.58,2.45
+Team Fortress 2,Holt-Winters,10,2021-06,3324.91,5.98
+Team Fortress 2,Holt-Winters,11,2021-07,6770.52,11.14
+Team Fortress 2,Holt-Winters,12,2021-08,41.48,0.08
+Team Fortress 2,"ARIMA(1,1,1)",1,2020-09,479.51,1.04
+Team Fortress 2,"ARIMA(1,1,1)",2,2020-10,10861.72,19.91
+Team Fortress 2,"ARIMA(1,1,1)",3,2020-11,13654.53,23.43
+Team Fortress 2,"ARIMA(1,1,1)",4,2020-12,12904.71,22.6
+Team Fortress 2,"ARIMA(1,1,1)",5,2021-01,16401.82,26.98
+Team Fortress 2,"ARIMA(1,1,1)",6,2021-02,21748.39,32.93
+Team Fortress 2,"ARIMA(1,1,1)",7,2021-03,10724.85,19.48
+Team Fortress 2,"ARIMA(1,1,1)",8,2021-04,16724.69,27.39
+Team Fortress 2,"ARIMA(1,1,1)",9,2021-05,8300.92,15.77
+Team Fortress 2,"ARIMA(1,1,1)",10,2021-06,11241.47,20.23
+Team Fortress 2,"ARIMA(1,1,1)",11,2021-07,16448.38,27.06
+Team Fortress 2,"ARIMA(1,1,1)",12,2021-08,10351.2,18.93
+Team Fortress 2,SARIMA,1,2020-09,7567.58,16.35
+Team Fortress 2,SARIMA,2,2020-10,1059.37,1.94
+Team Fortress 2,SARIMA,3,2020-11,985.53,1.69
+Team Fortress 2,SARIMA,4,2020-12,6528.06,11.43
+Team Fortress 2,SARIMA,5,2021-01,3900.51,6.42
+Team Fortress 2,SARIMA,6,2021-02,3246.45,4.91
+Team Fortress 2,SARIMA,7,2021-03,3101.9,5.63
+Team Fortress 2,SARIMA,8,2021-04,7608.85,12.46
+Team Fortress 2,SARIMA,9,2021-05,941.53,1.79
+Team Fortress 2,SARIMA,10,2021-06,6364.68,11.45
+Team Fortress 2,SARIMA,11,2021-07,5845.28,9.62
+Team Fortress 2,SARIMA,12,2021-08,6132.34,11.21
+Team Fortress 2,Ridge,1,2020-09,8110.33,17.52
+Team Fortress 2,Ridge,2,2020-10,3415.6,6.26
+Team Fortress 2,Ridge,3,2020-11,481.46,0.83
+Team Fortress 2,Ridge,4,2020-12,5666.57,9.92
+Team Fortress 2,Ridge,5,2021-01,4146.53,6.82
+Team Fortress 2,Ridge,6,2021-02,7510.32,11.37
+Team Fortress 2,Ridge,7,2021-03,1472.67,2.67
+Team Fortress 2,Ridge,8,2021-04,8808.5,14.43
+Team Fortress 2,Ridge,9,2021-05,1485.36,2.82
+Team Fortress 2,Ridge,10,2021-06,3540.15,6.37
+Team Fortress 2,Ridge,11,2021-07,7829.43,12.88
+Team Fortress 2,Ridge,12,2021-08,759.7,1.39
+Team Fortress 2,Random Forest,1,2020-09,4827.96,10.43
+Team Fortress 2,Random Forest,2,2020-10,3872.14,7.1
+Team Fortress 2,Random Forest,3,2020-11,5255.3,9.02
+Team Fortress 2,Random Forest,4,2020-12,2169.17,3.8
+Team Fortress 2,Random Forest,5,2021-01,1364.02,2.24
+Team Fortress 2,Random Forest,6,2021-02,10544.86,15.96
+Team Fortress 2,Random Forest,7,2021-03,2223.45,4.04
+Team Fortress 2,Random Forest,8,2021-04,10943.39,17.93
+Team Fortress 2,Random Forest,9,2021-05,2876.58,5.47
+Team Fortress 2,Random Forest,10,2021-06,5724.12,10.3
+Team Fortress 2,Random Forest,11,2021-07,9242.49,15.21
+Team Fortress 2,Random Forest,12,2021-08,3254.8,5.95
+Team Fortress 2,XGBoost,1,2020-09,4360.97,9.42
+Team Fortress 2,XGBoost,2,2020-10,3892.03,7.14
+Team Fortress 2,XGBoost,3,2020-11,4143.31,7.11
+Team Fortress 2,XGBoost,4,2020-12,2914.33,5.1
+Team Fortress 2,XGBoost,5,2021-01,3117.64,5.13
+Team Fortress 2,XGBoost,6,2021-02,10297.95,15.59
+Team Fortress 2,XGBoost,7,2021-03,1777.65,3.23
+Team Fortress 2,XGBoost,8,2021-04,10887.47,17.83
+Team Fortress 2,XGBoost,9,2021-05,3147.15,5.98
+Team Fortress 2,XGBoost,10,2021-06,5564.84,10.01
+Team Fortress 2,XGBoost,11,2021-07,9567.24,15.74
+Team Fortress 2,XGBoost,12,2021-08,3743.87,6.85
+Team Fortress 2,RNN,1,2020-09,6232.57,13.46
+Team Fortress 2,RNN,2,2020-10,1520.35,2.79
+Team Fortress 2,RNN,3,2020-11,1453.29,2.49
+Team Fortress 2,RNN,4,2020-12,5953.46,10.42
+Team Fortress 2,RNN,5,2021-01,300.37,0.49
+Team Fortress 2,RNN,6,2021-02,271.31,0.41
+Team Fortress 2,RNN,7,2021-03,5736.24,10.42
+Team Fortress 2,RNN,8,2021-04,6368.29,10.43
+Team Fortress 2,RNN,9,2021-05,1098.03,2.09
+Team Fortress 2,RNN,10,2021-06,5664.05,10.19
+Team Fortress 2,RNN,11,2021-07,13677.86,22.5
+Team Fortress 2,RNN,12,2021-08,1238.47,2.26
+Team Fortress 2,LSTM,1,2020-09,3743.71,8.09
+Team Fortress 2,LSTM,2,2020-10,3133.06,5.74
+Team Fortress 2,LSTM,3,2020-11,330.81,0.57
+Team Fortress 2,LSTM,4,2020-12,6016.33,10.53
+Team Fortress 2,LSTM,5,2021-01,4196.93,6.9
+Team Fortress 2,LSTM,6,2021-02,3434.47,5.2
+Team Fortress 2,LSTM,7,2021-03,1374.58,2.5
+Team Fortress 2,LSTM,8,2021-04,9395.95,15.39
+Team Fortress 2,LSTM,9,2021-05,1496.65,2.84
+Team Fortress 2,LSTM,10,2021-06,3266.3,5.88
+Team Fortress 2,LSTM,11,2021-07,7871.04,12.95
+Team Fortress 2,LSTM,12,2021-08,2893.81,5.29
+Team Fortress 2,GRU,1,2020-09,8977.2,19.39
+Team Fortress 2,GRU,2,2020-10,1374.82,2.52
+Team Fortress 2,GRU,3,2020-11,3362.57,5.77
+Team Fortress 2,GRU,4,2020-12,4836.83,8.47
+Team Fortress 2,GRU,5,2021-01,5209.4,8.57
+Team Fortress 2,GRU,6,2021-02,2151.02,3.26
+Team Fortress 2,GRU,7,2021-03,6090.12,11.06
+Team Fortress 2,GRU,8,2021-04,8930.66,14.63
+Team Fortress 2,GRU,9,2021-05,30.1,0.06
+Team Fortress 2,GRU,10,2021-06,4538.68,8.17
+Team Fortress 2,GRU,11,2021-07,7743.56,12.74
+Team Fortress 2,GRU,12,2021-08,1145.76,2.1
+Tom Clancy's Rainbow Six Siege,Naive,1,2020-09,4859.3,5.31
+Tom Clancy's Rainbow Six Siege,Naive,2,2020-10,12797.87,12.87
+Tom Clancy's Rainbow Six Siege,Naive,3,2020-11,3795.47,4.2
+Tom Clancy's Rainbow Six Siege,Naive,4,2020-12,15817.72,15.44
+Tom Clancy's Rainbow Six Siege,Naive,5,2021-01,31388.89,26.59
+Tom Clancy's Rainbow Six Siege,Naive,6,2021-02,8985.54,9.4
+Tom Clancy's Rainbow Six Siege,Naive,7,2021-03,17822.05,17.06
+Tom Clancy's Rainbow Six Siege,Naive,8,2021-04,646.67,0.74
+Tom Clancy's Rainbow Six Siege,Naive,9,2021-05,7471.39,7.94
+Tom Clancy's Rainbow Six Siege,Naive,10,2021-06,8938.67,9.35
+Tom Clancy's Rainbow Six Siege,Naive,11,2021-07,7308.49,7.78
+Tom Clancy's Rainbow Six Siege,Naive,12,2021-08,6695.77,7.17
+Tom Clancy's Rainbow Six Siege,Seasonal Naive,1,2020-09,28650.84,31.31
+Tom Clancy's Rainbow Six Siege,Seasonal Naive,2,2020-10,19181.49,19.29
+Tom Clancy's Rainbow Six Siege,Seasonal Naive,3,2020-11,1598.33,1.77
+Tom Clancy's Rainbow Six Siege,Seasonal Naive,4,2020-12,17568.88,17.15
+Tom Clancy's Rainbow Six Siege,Seasonal Naive,5,2021-01,27924.84,23.66
+Tom Clancy's Rainbow Six Siege,Seasonal Naive,6,2021-02,369.39,0.39
+Tom Clancy's Rainbow Six Siege,Seasonal Naive,7,2021-03,33328.09,31.9
+Tom Clancy's Rainbow Six Siege,Seasonal Naive,8,2021-04,18257.27,20.92
+Tom Clancy's Rainbow Six Siege,Seasonal Naive,9,2021-05,15499.23,16.47
+Tom Clancy's Rainbow Six Siege,Seasonal Naive,10,2021-06,2444.94,2.56
+Tom Clancy's Rainbow Six Siege,Seasonal Naive,11,2021-07,10066.31,10.71
+Tom Clancy's Rainbow Six Siege,Seasonal Naive,12,2021-08,6695.77,7.17
+Tom Clancy's Rainbow Six Siege,Holt-Winters,1,2020-09,9332.72,10.2
+Tom Clancy's Rainbow Six Siege,Holt-Winters,2,2020-10,14176.36,14.26
+Tom Clancy's Rainbow Six Siege,Holt-Winters,3,2020-11,4641.62,5.13
+Tom Clancy's Rainbow Six Siege,Holt-Winters,4,2020-12,6086.52,5.94
+Tom Clancy's Rainbow Six Siege,Holt-Winters,5,2021-01,12278.97,10.4
+Tom Clancy's Rainbow Six Siege,Holt-Winters,6,2021-02,5115.68,5.35
+Tom Clancy's Rainbow Six Siege,Holt-Winters,7,2021-03,12566.62,12.03
+Tom Clancy's Rainbow Six Siege,Holt-Winters,8,2021-04,296.45,0.34
+Tom Clancy's Rainbow Six Siege,Holt-Winters,9,2021-05,1527.35,1.62
+Tom Clancy's Rainbow Six Siege,Holt-Winters,10,2021-06,1784.19,1.87
+Tom Clancy's Rainbow Six Siege,Holt-Winters,11,2021-07,4804.26,5.11
+Tom Clancy's Rainbow Six Siege,Holt-Winters,12,2021-08,4500.95,4.82
+Tom Clancy's Rainbow Six Siege,"ARIMA(1,1,1)",1,2020-09,6632.98,7.25
+Tom Clancy's Rainbow Six Siege,"ARIMA(1,1,1)",2,2020-10,15065.35,15.15
+Tom Clancy's Rainbow Six Siege,"ARIMA(1,1,1)",3,2020-11,6200.42,6.86
+Tom Clancy's Rainbow Six Siege,"ARIMA(1,1,1)",4,2020-12,18260.94,17.82
+Tom Clancy's Rainbow Six Siege,"ARIMA(1,1,1)",5,2021-01,33842.77,28.67
+Tom Clancy's Rainbow Six Siege,"ARIMA(1,1,1)",6,2021-02,11442.38,11.97
+Tom Clancy's Rainbow Six Siege,"ARIMA(1,1,1)",7,2021-03,20279.72,19.41
+Tom Clancy's Rainbow Six Siege,"ARIMA(1,1,1)",8,2021-04,3104.57,3.56
+Tom Clancy's Rainbow Six Siege,"ARIMA(1,1,1)",9,2021-05,9929.35,10.55
+Tom Clancy's Rainbow Six Siege,"ARIMA(1,1,1)",10,2021-06,11396.65,11.92
+Tom Clancy's Rainbow Six Siege,"ARIMA(1,1,1)",11,2021-07,9766.48,10.4
+Tom Clancy's Rainbow Six Siege,"ARIMA(1,1,1)",12,2021-08,9153.76,9.81
+Tom Clancy's Rainbow Six Siege,SARIMA,1,2020-09,14273.43,15.6
+Tom Clancy's Rainbow Six Siege,SARIMA,2,2020-10,4804.08,4.83
+Tom Clancy's Rainbow Six Siege,SARIMA,3,2020-11,12779.08,14.13
+Tom Clancy's Rainbow Six Siege,SARIMA,4,2020-12,3191.47,3.11
+Tom Clancy's Rainbow Six Siege,SARIMA,5,2021-01,13547.43,11.48
+Tom Clancy's Rainbow Six Siege,SARIMA,6,2021-02,14008.02,14.65
+Tom Clancy's Rainbow Six Siege,SARIMA,7,2021-03,18950.68,18.14
+Tom Clancy's Rainbow Six Siege,SARIMA,8,2021-04,3879.86,4.44
+Tom Clancy's Rainbow Six Siege,SARIMA,9,2021-05,1121.82,1.19
+Tom Clancy's Rainbow Six Siege,SARIMA,10,2021-06,11932.47,12.48
+Tom Clancy's Rainbow Six Siege,SARIMA,11,2021-07,4311.1,4.59
+Tom Clancy's Rainbow Six Siege,SARIMA,12,2021-08,7681.64,8.23
+Tom Clancy's Rainbow Six Siege,Ridge,1,2020-09,1277.58,1.4
+Tom Clancy's Rainbow Six Siege,Ridge,2,2020-10,3641.07,3.66
+Tom Clancy's Rainbow Six Siege,Ridge,3,2020-11,2767.17,3.06
+Tom Clancy's Rainbow Six Siege,Ridge,4,2020-12,11641.83,11.36
+Tom Clancy's Rainbow Six Siege,Ridge,5,2021-01,9835.66,8.33
+Tom Clancy's Rainbow Six Siege,Ridge,6,2021-02,7379.93,7.72
+Tom Clancy's Rainbow Six Siege,Ridge,7,2021-03,13867.87,13.28
+Tom Clancy's Rainbow Six Siege,Ridge,8,2021-04,2159.17,2.47
+Tom Clancy's Rainbow Six Siege,Ridge,9,2021-05,1431.16,1.52
+Tom Clancy's Rainbow Six Siege,Ridge,10,2021-06,4436.86,4.64
+Tom Clancy's Rainbow Six Siege,Ridge,11,2021-07,543.91,0.58
+Tom Clancy's Rainbow Six Siege,Ridge,12,2021-08,2811.39,3.01
+Tom Clancy's Rainbow Six Siege,Random Forest,1,2020-09,7225.48,7.9
+Tom Clancy's Rainbow Six Siege,Random Forest,2,2020-10,13198.81,13.27
+Tom Clancy's Rainbow Six Siege,Random Forest,3,2020-11,5173.22,5.72
+Tom Clancy's Rainbow Six Siege,Random Forest,4,2020-12,16885.09,16.48
+Tom Clancy's Rainbow Six Siege,Random Forest,5,2021-01,31823.09,26.96
+Tom Clancy's Rainbow Six Siege,Random Forest,6,2021-02,9053.63,9.47
+Tom Clancy's Rainbow Six Siege,Random Forest,7,2021-03,18871.82,18.07
+Tom Clancy's Rainbow Six Siege,Random Forest,8,2021-04,1326.56,1.52
+Tom Clancy's Rainbow Six Siege,Random Forest,9,2021-05,7377.38,7.84
+Tom Clancy's Rainbow Six Siege,Random Forest,10,2021-06,8441.83,8.83
+Tom Clancy's Rainbow Six Siege,Random Forest,11,2021-07,8014.6,8.53
+Tom Clancy's Rainbow Six Siege,Random Forest,12,2021-08,8132.07,8.71
+Tom Clancy's Rainbow Six Siege,XGBoost,1,2020-09,2729.37,2.98
+Tom Clancy's Rainbow Six Siege,XGBoost,2,2020-10,12588.76,12.66
+Tom Clancy's Rainbow Six Siege,XGBoost,3,2020-11,4242.44,4.69
+Tom Clancy's Rainbow Six Siege,XGBoost,4,2020-12,18874.25,18.42
+Tom Clancy's Rainbow Six Siege,XGBoost,5,2021-01,34210.08,28.98
+Tom Clancy's Rainbow Six Siege,XGBoost,6,2021-02,11411.66,11.93
+Tom Clancy's Rainbow Six Siege,XGBoost,7,2021-03,21038.26,20.14
+Tom Clancy's Rainbow Six Siege,XGBoost,8,2021-04,4471.81,5.12
+Tom Clancy's Rainbow Six Siege,XGBoost,9,2021-05,10776.04,11.45
+Tom Clancy's Rainbow Six Siege,XGBoost,10,2021-06,10815.85,11.32
+Tom Clancy's Rainbow Six Siege,XGBoost,11,2021-07,9988.18,10.63
+Tom Clancy's Rainbow Six Siege,XGBoost,12,2021-08,9683.33,10.37
+Tom Clancy's Rainbow Six Siege,RNN,1,2020-09,20964.29,22.91
+Tom Clancy's Rainbow Six Siege,RNN,2,2020-10,24383.72,24.52
+Tom Clancy's Rainbow Six Siege,RNN,3,2020-11,9694.51,10.72
+Tom Clancy's Rainbow Six Siege,RNN,4,2020-12,25352.82,24.74
+Tom Clancy's Rainbow Six Siege,RNN,5,2021-01,33652.54,28.51
+Tom Clancy's Rainbow Six Siege,RNN,6,2021-02,11515.08,12.04
+Tom Clancy's Rainbow Six Siege,RNN,7,2021-03,24379.92,23.34
+Tom Clancy's Rainbow Six Siege,RNN,8,2021-04,3767.82,4.32
+Tom Clancy's Rainbow Six Siege,RNN,9,2021-05,10490.96,11.15
+Tom Clancy's Rainbow Six Siege,RNN,10,2021-06,2142.28,2.24
+Tom Clancy's Rainbow Six Siege,RNN,11,2021-07,93.01,0.1
+Tom Clancy's Rainbow Six Siege,RNN,12,2021-08,67.05,0.07
+Tom Clancy's Rainbow Six Siege,LSTM,1,2020-09,13670.01,14.94
+Tom Clancy's Rainbow Six Siege,LSTM,2,2020-10,19251.94,19.36
+Tom Clancy's Rainbow Six Siege,LSTM,3,2020-11,7028.87,7.77
+Tom Clancy's Rainbow Six Siege,LSTM,4,2020-12,14652.01,14.3
+Tom Clancy's Rainbow Six Siege,LSTM,5,2021-01,28409.71,24.07
+Tom Clancy's Rainbow Six Siege,LSTM,6,2021-02,141.77,0.15
+Tom Clancy's Rainbow Six Siege,LSTM,7,2021-03,12853.67,12.3
+Tom Clancy's Rainbow Six Siege,LSTM,8,2021-04,2570.53,2.94
+Tom Clancy's Rainbow Six Siege,LSTM,9,2021-05,1437.52,1.53
+Tom Clancy's Rainbow Six Siege,LSTM,10,2021-06,790.81,0.83
+Tom Clancy's Rainbow Six Siege,LSTM,11,2021-07,1260.98,1.34
+Tom Clancy's Rainbow Six Siege,LSTM,12,2021-08,2105.27,2.26
+Tom Clancy's Rainbow Six Siege,GRU,1,2020-09,11450.2,12.51
+Tom Clancy's Rainbow Six Siege,GRU,2,2020-10,18136.79,18.24
+Tom Clancy's Rainbow Six Siege,GRU,3,2020-11,1394.43,1.54
+Tom Clancy's Rainbow Six Siege,GRU,4,2020-12,12304.89,12.01
+Tom Clancy's Rainbow Six Siege,GRU,5,2021-01,25582.79,21.67
+Tom Clancy's Rainbow Six Siege,GRU,6,2021-02,2755.73,2.88
+Tom Clancy's Rainbow Six Siege,GRU,7,2021-03,8140.05,7.79
+Tom Clancy's Rainbow Six Siege,GRU,8,2021-04,4046.85,4.64
+Tom Clancy's Rainbow Six Siege,GRU,9,2021-05,574.56,0.61
+Tom Clancy's Rainbow Six Siege,GRU,10,2021-06,2871.29,3.0
+Tom Clancy's Rainbow Six Siege,GRU,11,2021-07,3293.51,3.51
+Tom Clancy's Rainbow Six Siege,GRU,12,2021-08,3849.77,4.12
+Warframe,Naive,1,2020-09,3880.29,8.4
+Warframe,Naive,2,2020-10,1795.83,3.46
+Warframe,Naive,3,2020-11,459.96,0.93
+Warframe,Naive,4,2020-12,4523.71,8.29
+Warframe,Naive,5,2021-01,6563.53,11.59
+Warframe,Naive,6,2021-02,5270.29,9.53
+Warframe,Naive,7,2021-03,7218.0,12.6
+Warframe,Naive,8,2021-04,2551.62,4.85
+Warframe,Naive,9,2021-05,6065.63,10.81
+Warframe,Naive,10,2021-06,9638.39,16.15
+Warframe,Naive,11,2021-07,766.68,1.56
+Warframe,Naive,12,2021-08,2508.1,4.77
+Warframe,Seasonal Naive,1,2020-09,6428.05,13.92
+Warframe,Seasonal Naive,2,2020-10,7148.44,13.79
+Warframe,Seasonal Naive,3,2020-11,3518.35,7.09
+Warframe,Seasonal Naive,4,2020-12,803.96,1.47
+Warframe,Seasonal Naive,5,2021-01,2422.92,4.28
+Warframe,Seasonal Naive,6,2021-02,3790.62,6.85
+Warframe,Seasonal Naive,7,2021-03,5434.13,9.49
+Warframe,Seasonal Naive,8,2021-04,10152.1,19.3
+Warframe,Seasonal Naive,9,2021-05,6995.5,12.46
+Warframe,Seasonal Naive,10,2021-06,14008.04,23.47
+Warframe,Seasonal Naive,11,2021-07,1771.98,3.59
+Warframe,Seasonal Naive,12,2021-08,2508.1,4.77
+Warframe,Holt-Winters,1,2020-09,2445.11,5.29
+Warframe,Holt-Winters,2,2020-10,2839.69,5.48
+Warframe,Holt-Winters,3,2020-11,1535.76,3.1
+Warframe,Holt-Winters,4,2020-12,111.91,0.21
+Warframe,Holt-Winters,5,2021-01,981.51,1.73
+Warframe,Holt-Winters,6,2021-02,2840.0,5.13
+Warframe,Holt-Winters,7,2021-03,4316.72,7.54
+Warframe,Holt-Winters,8,2021-04,2616.91,4.97
+Warframe,Holt-Winters,9,2021-05,4529.11,8.07
+Warframe,Holt-Winters,10,2021-06,7162.01,12.0
+Warframe,Holt-Winters,11,2021-07,1834.41,3.72
+Warframe,Holt-Winters,12,2021-08,293.99,0.56
+Warframe,"ARIMA(1,1,1)",1,2020-09,2691.59,5.83
+Warframe,"ARIMA(1,1,1)",2,2020-10,3209.22,6.19
+Warframe,"ARIMA(1,1,1)",3,2020-11,995.91,2.01
+Warframe,"ARIMA(1,1,1)",4,2020-12,5987.61,10.97
+Warframe,"ARIMA(1,1,1)",5,2021-01,8028.94,14.18
+Warframe,"ARIMA(1,1,1)",6,2021-02,6735.99,12.17
+Warframe,"ARIMA(1,1,1)",7,2021-03,8683.75,15.16
+Warframe,"ARIMA(1,1,1)",8,2021-04,4017.38,7.64
+Warframe,"ARIMA(1,1,1)",9,2021-05,7531.4,13.42
+Warframe,"ARIMA(1,1,1)",10,2021-06,11104.16,18.6
+Warframe,"ARIMA(1,1,1)",11,2021-07,699.09,1.42
+Warframe,"ARIMA(1,1,1)",12,2021-08,3973.87,7.56
+Warframe,SARIMA,1,2020-09,1109.57,2.4
+Warframe,SARIMA,2,2020-10,3114.72,6.01
+Warframe,SARIMA,3,2020-11,287.34,0.58
+Warframe,SARIMA,4,2020-12,1627.69,2.98
+Warframe,SARIMA,5,2021-01,1851.02,3.27
+Warframe,SARIMA,6,2021-02,5137.45,9.29
+Warframe,SARIMA,7,2021-03,2555.6,4.46
+Warframe,SARIMA,8,2021-04,4548.2,8.64
+Warframe,SARIMA,9,2021-05,3959.78,7.06
+Warframe,SARIMA,10,2021-06,10484.29,17.56
+Warframe,SARIMA,11,2021-07,1820.37,3.69
+Warframe,SARIMA,12,2021-08,1923.36,3.66
+Warframe,Ridge,1,2020-09,3358.58,7.27
+Warframe,Ridge,2,2020-10,2231.44,4.3
+Warframe,Ridge,3,2020-11,2049.39,4.13
+Warframe,Ridge,4,2020-12,553.05,1.01
+Warframe,Ridge,5,2021-01,1792.22,3.17
+Warframe,Ridge,6,2021-02,858.06,1.55
+Warframe,Ridge,7,2021-03,3095.16,5.4
+Warframe,Ridge,8,2021-04,2218.21,4.22
+Warframe,Ridge,9,2021-05,5036.54,8.97
+Warframe,Ridge,10,2021-06,7615.12,12.76
+Warframe,Ridge,11,2021-07,2162.53,4.39
+Warframe,Ridge,12,2021-08,797.26,1.52
+Warframe,Random Forest,1,2020-09,1805.39,3.91
+Warframe,Random Forest,2,2020-10,6250.55,12.05
+Warframe,Random Forest,3,2020-11,1407.87,2.84
+Warframe,Random Forest,4,2020-12,2342.28,4.29
+Warframe,Random Forest,5,2021-01,2173.04,3.84
+Warframe,Random Forest,6,2021-02,480.33,0.87
+Warframe,Random Forest,7,2021-03,2760.36,4.82
+Warframe,Random Forest,8,2021-04,8404.21,15.97
+Warframe,Random Forest,9,2021-05,5590.58,9.96
+Warframe,Random Forest,10,2021-06,11881.45,19.9
+Warframe,Random Forest,11,2021-07,1026.87,2.08
+Warframe,Random Forest,12,2021-08,2010.07,3.82
+Warframe,XGBoost,1,2020-09,271.72,0.59
+Warframe,XGBoost,2,2020-10,4192.34,8.08
+Warframe,XGBoost,3,2020-11,1008.28,2.03
+Warframe,XGBoost,4,2020-12,2669.06,4.89
+Warframe,XGBoost,5,2021-01,3716.65,6.56
+Warframe,XGBoost,6,2021-02,2945.95,5.32
+Warframe,XGBoost,7,2021-03,6971.38,12.17
+Warframe,XGBoost,8,2021-04,6737.05,12.81
+Warframe,XGBoost,9,2021-05,5495.05,9.79
+Warframe,XGBoost,10,2021-06,11379.13,19.06
+Warframe,XGBoost,11,2021-07,666.85,1.35
+Warframe,XGBoost,12,2021-08,3324.69,6.32
+Warframe,RNN,1,2020-09,662.1,1.43
+Warframe,RNN,2,2020-10,6251.07,12.05
+Warframe,RNN,3,2020-11,3656.59,7.37
+Warframe,RNN,4,2020-12,4210.48,7.71
+Warframe,RNN,5,2021-01,1836.59,3.24
+Warframe,RNN,6,2021-02,3225.27,5.83
+Warframe,RNN,7,2021-03,5928.07,10.35
+Warframe,RNN,8,2021-04,4773.34,9.07
+Warframe,RNN,9,2021-05,8455.54,15.07
+Warframe,RNN,10,2021-06,10159.95,17.02
+Warframe,RNN,11,2021-07,53.38,0.11
+Warframe,RNN,12,2021-08,1787.78,3.4
+Warframe,LSTM,1,2020-09,992.5,2.15
+Warframe,LSTM,2,2020-10,4398.96,8.48
+Warframe,LSTM,3,2020-11,2159.38,4.35
+Warframe,LSTM,4,2020-12,6419.14,11.76
+Warframe,LSTM,5,2021-01,8406.58,14.85
+Warframe,LSTM,6,2021-02,6001.16,10.85
+Warframe,LSTM,7,2021-03,7401.3,12.92
+Warframe,LSTM,8,2021-04,3070.18,5.84
+Warframe,LSTM,9,2021-05,6346.55,11.31
+Warframe,LSTM,10,2021-06,9328.01,15.63
+Warframe,LSTM,11,2021-07,913.97,1.85
+Warframe,LSTM,12,2021-08,1503.01,2.86
+Warframe,GRU,1,2020-09,910.67,1.97
+Warframe,GRU,2,2020-10,3443.92,6.64
+Warframe,GRU,3,2020-11,1080.69,2.18
+Warframe,GRU,4,2020-12,3683.55,6.75
+Warframe,GRU,5,2021-01,4352.24,7.69
+Warframe,GRU,6,2021-02,2007.67,3.63
+Warframe,GRU,7,2021-03,4575.22,7.99
+Warframe,GRU,8,2021-04,15.58,0.03
+Warframe,GRU,9,2021-05,4833.29,8.61
+Warframe,GRU,10,2021-06,8881.11,14.88
+Warframe,GRU,11,2021-07,707.39,1.44
+Warframe,GRU,12,2021-08,2365.84,4.5

@@ -1,0 +1,78 @@
+Game,Model,Paradigm,MAE,RMSE,MAPE,sMAPE,MASE
+Counter-Strike: Global Offensive,Naive,Naive Baseline,53528.18,60794.51,8.15,8.59,1.002
+Counter-Strike: Global Offensive,Seasonal Naive,Seasonal Baseline,57002.04,58876.46,8.85,9.29,1.067
+Counter-Strike: Global Offensive,Holt-Winters,Exponential Smoothing,14482.81,18468.04,2.21,2.25,0.271
+Counter-Strike: Global Offensive,"ARIMA(1,1,1)",Econometric Baseline,53074.28,60392.81,8.07,8.51,0.993
+Counter-Strike: Global Offensive,SARIMA,Econometric,31473.44,35591.83,4.85,5.0,0.589
+Counter-Strike: Global Offensive,Ridge,Linear ML,13289.18,17238.76,2.03,2.06,0.249
+Counter-Strike: Global Offensive,Random Forest,Tree Ensemble ML,41250.25,47379.04,6.28,6.54,0.772
+Counter-Strike: Global Offensive,XGBoost,Gradient Boosted ML,36494.15,42767.78,5.56,5.78,0.683
+Counter-Strike: Global Offensive,RNN,Recurrent DL Baseline,25056.04,33661.55,3.78,3.91,0.469
+Counter-Strike: Global Offensive,LSTM,Recurrent DL,31094.75,42944.99,4.68,4.89,0.582
+Counter-Strike: Global Offensive,GRU,Recurrent DL,24360.55,33596.54,3.67,3.78,0.456
+Dota 2,Naive,Naive Baseline,51195.49,59357.74,11.19,12.05,1.77
+Dota 2,Seasonal Naive,Seasonal Baseline,30714.52,38154.83,6.87,7.21,1.062
+Dota 2,Holt-Winters,Exponential Smoothing,19894.46,25252.65,4.42,4.54,0.688
+Dota 2,"ARIMA(1,1,1)",Econometric Baseline,37268.3,46421.82,8.08,8.58,1.289
+Dota 2,SARIMA,Econometric,23463.86,28006.33,5.31,5.44,0.811
+Dota 2,Ridge,Linear ML,19200.79,23397.85,4.34,4.38,0.664
+Dota 2,Random Forest,Tree Ensemble ML,23442.29,29870.12,5.14,5.31,0.811
+Dota 2,XGBoost,Gradient Boosted ML,25401.84,30174.97,5.63,5.81,0.878
+Dota 2,RNN,Recurrent DL Baseline,28420.21,34945.46,6.28,6.55,0.983
+Dota 2,LSTM,Recurrent DL,26687.03,30976.34,5.92,6.04,0.923
+Dota 2,GRU,Recurrent DL,35996.43,42109.82,8.16,8.26,1.245
+Grand Theft Auto V,Naive,Naive Baseline,9677.18,13073.08,8.58,8.18,0.772
+Grand Theft Auto V,Seasonal Naive,Seasonal Baseline,11339.65,12547.62,9.53,10.07,0.905
+Grand Theft Auto V,Holt-Winters,Exponential Smoothing,5781.39,7083.28,4.89,4.86,0.461
+Grand Theft Auto V,"ARIMA(1,1,1)",Econometric Baseline,10878.22,13557.01,9.02,9.27,0.868
+Grand Theft Auto V,SARIMA,Econometric,5565.8,7571.12,4.5,4.64,0.444
+Grand Theft Auto V,Ridge,Linear ML,6097.83,7691.51,5.2,5.2,0.486
+Grand Theft Auto V,Random Forest,Tree Ensemble ML,6964.79,10240.86,5.6,5.8,0.556
+Grand Theft Auto V,XGBoost,Gradient Boosted ML,9469.62,12253.15,7.61,8.01,0.755
+Grand Theft Auto V,RNN,Recurrent DL Baseline,8006.35,10530.86,6.55,6.81,0.639
+Grand Theft Auto V,LSTM,Recurrent DL,7295.66,10425.31,5.98,6.13,0.582
+Grand Theft Auto V,GRU,Recurrent DL,8269.64,11266.03,6.85,7.01,0.66
+Rust,Naive,Naive Baseline,4560.03,6047.1,5.02,5.18,0.462
+Rust,Seasonal Naive,Seasonal Baseline,11205.82,12159.52,12.67,13.7,1.135
+Rust,Holt-Winters,Exponential Smoothing,3725.29,4735.71,4.32,4.34,0.377
+Rust,"ARIMA(1,1,1)",Econometric Baseline,7910.9,9308.53,8.7,9.23,0.801
+Rust,SARIMA,Econometric,3888.24,4595.99,4.46,4.51,0.394
+Rust,Ridge,Linear ML,4943.53,5509.29,5.6,5.74,0.501
+Rust,Random Forest,Tree Ensemble ML,7302.51,8473.6,8.05,8.49,0.74
+Rust,XGBoost,Gradient Boosted ML,10062.14,11426.71,11.11,11.95,1.019
+Rust,RNN,Recurrent DL Baseline,9092.99,9967.32,10.17,10.81,0.921
+Rust,LSTM,Recurrent DL,8557.04,9878.69,9.48,10.09,0.867
+Rust,GRU,Recurrent DL,7030.84,8284.8,7.74,8.17,0.712
+Team Fortress 2,Naive,Naive Baseline,15929.39,16644.55,27.45,32.13,3.719
+Team Fortress 2,Seasonal Naive,Seasonal Baseline,5491.39,7053.59,9.89,10.34,1.282
+Team Fortress 2,Holt-Winters,Exponential Smoothing,3410.62,4422.71,5.96,6.0,0.796
+Team Fortress 2,"ARIMA(1,1,1)",Econometric Baseline,12486.85,13481.18,21.31,24.24,2.915
+Team Fortress 2,SARIMA,Econometric,4440.17,5069.64,7.91,7.96,1.037
+Team Fortress 2,Ridge,Linear ML,4435.55,5321.02,7.77,7.86,1.035
+Team Fortress 2,Random Forest,Tree Ensemble ML,5191.53,6092.62,8.95,9.41,1.212
+Team Fortress 2,XGBoost,Gradient Boosted ML,5284.54,6080.79,9.09,9.55,1.234
+Team Fortress 2,RNN,Recurrent DL Baseline,4126.19,5584.5,7.33,7.51,0.963
+Team Fortress 2,LSTM,Recurrent DL,3929.47,4681.14,6.82,6.97,0.917
+Team Fortress 2,GRU,Recurrent DL,4532.56,5382.6,8.06,8.02,1.058
+Tom Clancy's Rainbow Six Siege,Naive,Naive Baseline,10543.99,13133.99,10.32,11.15,0.795
+Tom Clancy's Rainbow Six Siege,Seasonal Naive,Seasonal Baseline,15132.11,18521.18,15.27,17.24,1.141
+Tom Clancy's Rainbow Six Siege,Holt-Winters,Exponential Smoothing,6425.97,7802.06,6.42,6.65,0.485
+Tom Clancy's Rainbow Six Siege,"ARIMA(1,1,1)",Econometric Baseline,12922.95,15131.88,12.78,13.92,0.975
+Tom Clancy's Rainbow Six Siege,SARIMA,Econometric,9206.76,10706.21,9.41,9.49,0.694
+Tom Clancy's Rainbow Six Siege,Ridge,Linear ML,5149.47,6684.54,5.09,5.21,0.388
+Tom Clancy's Rainbow Six Siege,Random Forest,Tree Ensemble ML,11293.63,13683.69,11.11,12.02,0.852
+Tom Clancy's Rainbow Six Siege,XGBoost,Gradient Boosted ML,12569.17,15082.99,12.39,13.52,0.948
+Tom Clancy's Rainbow Six Siege,RNN,Recurrent DL Baseline,13875.33,17699.22,13.72,15.37,1.046
+Tom Clancy's Rainbow Six Siege,LSTM,Recurrent DL,8681.09,12278.92,8.48,9.21,0.655
+Tom Clancy's Rainbow Six Siege,GRU,Recurrent DL,7866.74,10771.72,7.71,8.22,0.593
+Warframe,Naive,Naive Baseline,4270.17,5041.43,7.74,8.11,0.98
+Warframe,Seasonal Naive,Seasonal Baseline,5415.18,6537.53,10.04,10.78,1.242
+Warframe,Holt-Winters,Exponential Smoothing,2625.59,3242.73,4.82,4.92,0.602
+Warframe,"ARIMA(1,1,1)",Econometric Baseline,5304.91,6137.83,9.6,10.2,1.217
+Warframe,SARIMA,Econometric,3201.62,4116.17,5.8,5.96,0.734
+Warframe,Ridge,Linear ML,2647.3,3264.49,4.89,4.99,0.607
+Warframe,Random Forest,Tree Ensemble ML,3844.42,5086.9,7.03,7.48,0.882
+Warframe,XGBoost,Gradient Boosted ML,4114.85,5110.84,7.42,7.85,0.944
+Warframe,RNN,Recurrent DL Baseline,4250.01,5165.87,7.72,8.18,0.975
+Warframe,LSTM,Recurrent DL,4745.06,5533.83,8.57,9.08,1.089
+Warframe,GRU,Recurrent DL,3071.43,3869.37,5.52,5.76,0.705

@@ -17,6 +17,7 @@ torch>=2.2.0
 
 # Interactive notebooks & exploration
 jupyter>=1.0.0
+streamlit>=1.30.0
 
 # Configuration & utilities
 pyyaml>=6.0.1

@@ -1,0 +1,29 @@
+Game,Model,Paradigm,MAE,RMSE,MAPE,sMAPE,MASE
+Counter-Strike: Global Offensive,SARIMA,Econometric,31473.44,35591.83,4.85,5.0,0.589
+Counter-Strike: Global Offensive,XGBoost,Gradient Boosted ML,36494.15,42767.78,5.56,5.78,0.683
+Counter-Strike: Global Offensive,LSTM,Recurrent DL,31094.75,42944.99,4.68,4.89,0.582
+Counter-Strike: Global Offensive,GRU,Recurrent DL,24360.55,33596.54,3.67,3.78,0.456
+Dota 2,SARIMA,Econometric,23463.86,28006.33,5.31,5.44,0.811
+Dota 2,XGBoost,Gradient Boosted ML,25401.84,30174.97,5.63,5.81,0.878
+Dota 2,LSTM,Recurrent DL,26687.03,30976.34,5.92,6.04,0.923
+Dota 2,GRU,Recurrent DL,35996.43,42109.82,8.16,8.26,1.245
+Grand Theft Auto V,SARIMA,Econometric,5565.8,7571.12,4.5,4.64,0.444
+Grand Theft Auto V,XGBoost,Gradient Boosted ML,9469.62,12253.15,7.61,8.01,0.755
+Grand Theft Auto V,LSTM,Recurrent DL,7295.66,10425.31,5.98,6.13,0.582
+Grand Theft Auto V,GRU,Recurrent DL,8269.64,11266.03,6.85,7.01,0.66
+Rust,SARIMA,Econometric,3888.24,4595.99,4.46,4.51,0.394
+Rust,XGBoost,Gradient Boosted ML,10062.14,11426.71,11.11,11.95,1.019
+Rust,LSTM,Recurrent DL,8557.04,9878.69,9.48,10.09,0.867
+Rust,GRU,Recurrent DL,7030.84,8284.8,7.74,8.17,0.712
+Team Fortress 2,SARIMA,Econometric,4440.17,5069.64,7.91,7.96,1.037
+Team Fortress 2,XGBoost,Gradient Boosted ML,5284.54,6080.79,9.09,9.55,1.234
+Team Fortress 2,LSTM,Recurrent DL,3929.47,4681.14,6.82,6.97,0.917
+Team Fortress 2,GRU,Recurrent DL,4532.56,5382.6,8.06,8.02,1.058
+Tom Clancy's Rainbow Six Siege,SARIMA,Econometric,9206.76,10706.21,9.41,9.49,0.694
+Tom Clancy's Rainbow Six Siege,XGBoost,Gradient Boosted ML,12569.17,15082.99,12.39,13.52,0.948
+Tom Clancy's Rainbow Six Siege,LSTM,Recurrent DL,8681.09,12278.92,8.48,9.21,0.655
+Tom Clancy's Rainbow Six Siege,GRU,Recurrent DL,7866.74,10771.72,7.71,8.22,0.593
+Warframe,SARIMA,Econometric,3201.62,4116.17,5.8,5.96,0.734
+Warframe,XGBoost,Gradient Boosted ML,4114.85,5110.84,7.42,7.85,0.944
+Warframe,LSTM,Recurrent DL,4745.06,5533.83,8.57,9.08,1.089
+Warframe,GRU,Recurrent DL,3071.43,3869.37,5.52,5.76,0.705

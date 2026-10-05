@@ -142,7 +142,7 @@ steam-player-forecasting/
 The project is structured into five sequential phases documented in [`ROADMAP.md`](ROADMAP.md). Each phase contains a copy-pasteable AI Agent Prompt:
 
 - [x] **Phase 0:** Repository Initialization & Standards Setup *(Completed)*
-- [ ] **Phase 1:** Dataset Acquisition & Validation
+- [x] **Phase 1:** Dataset Acquisition & Validation *(Completed)*
 - [ ] **Phase 2:** EDA & Time-Series Preprocessing
 - [ ] **Phase 3:** Statistical Forecasting (Baselines & SARIMA)
 - [ ] **Phase 4:** Machine Learning & Deep Learning (XGBoost, LSTM, GRU)
@@ -152,6 +152,6 @@ The project is structured into five sequential phases documented in [`ROADMAP.md
 
 ## Current Status
 
-- **Status:** **Initialization Complete**
-- **Ready for:** **Phase 1 (Dataset Acquisition & Validation)**
-- Raw datasets are omitted from version control; all directory structures, CI pipelines, smoke tests, metric functions, and roadmap prompts are configured.
+- **Status:** **Phase 1 Complete**
+- **Ready for:** **Phase 2 (EDA & Time-Series Preprocessing)**
+- Standardized datasets (`steam_games_monthly.csv` and individual game CSVs) generated and validated in `data/processed/`. All unit tests passing.

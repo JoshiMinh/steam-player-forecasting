@@ -1,5 +1,9 @@
 """Data ingestion, validation, and loading module."""
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from steam_player_forecasting.data.ingestion import (
     acquire_dataset,
     download_from_kaggle,
@@ -12,10 +16,6 @@ from steam_player_forecasting.data.loader import (
     load_processed_data,
     load_raw_data,
 )
-from steam_player_forecasting.data.pipeline import (
-    run_phase1_pipeline,
-    slugify_game_name,
-)
 from steam_player_forecasting.data.selection import (
     check_game_continuity,
     get_game_coverage_summary,
@@ -27,6 +27,12 @@ from steam_player_forecasting.data.validation import (
     standardize_columns,
     validate_cleaned_data,
 )
+
+if TYPE_CHECKING:
+    from steam_player_forecasting.data.pipeline import (
+        run_phase1_pipeline,
+        slugify_game_name,
+    )
 
 __all__ = [
     "acquire_dataset",
@@ -47,3 +53,16 @@ __all__ = [
     "standardize_columns",
     "validate_cleaned_data",
 ]
+
+
+def __getattr__(name: str):
+    if name in ("run_phase1_pipeline", "slugify_game_name"):
+        from steam_player_forecasting.data.pipeline import (
+            run_phase1_pipeline,
+            slugify_game_name,
+        )
+
+        globals()["run_phase1_pipeline"] = run_phase1_pipeline
+        globals()["slugify_game_name"] = slugify_game_name
+        return globals()[name]
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

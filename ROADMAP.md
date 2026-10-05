@@ -7,15 +7,25 @@ Each phase is provided as a **self-contained AI Agent Prompt** designed to be co
 
 ## Overview of Phases
 
-1. **Phase 1:** Dataset Acquisition & Validation
-2. **Phase 2:** EDA & Time-Series Preprocessing
-3. **Phase 3:** Statistical Forecasting
-4. **Phase 4:** Machine Learning & Deep Learning
-5. **Phase 5:** Final Evaluation, Report & Demo
+1. [x] **Phase 1:** Dataset Acquisition & Validation *(Completed)*
+2. [ ] **Phase 2:** EDA & Time-Series Preprocessing
+3. [ ] **Phase 3:** Statistical Forecasting
+4. [ ] **Phase 4:** Machine Learning & Deep Learning
+5. [ ] **Phase 5:** Final Evaluation, Report & Demo
 
 ---
 
 ## Phase 1 — Dataset Acquisition & Validation
+
+**Status:** Completed `[x]` (Commit: `d0174fa` | `feat(data): complete phase 1 dataset acquisition and validation`)
+
+- [x] Ingestion logic with Kaggle API & automated reproducible fallback (`src/steam_player_forecasting/data/ingestion.py`)
+- [x] Raw schema inspection, artifact cleaning ("Last 30 Days"), and date standardization (`src/steam_player_forecasting/data/validation.py`)
+- [x] Representative game selection across genres (7 titles, 5.8–9.2 years history) (`src/steam_player_forecasting/data/selection.py`)
+- [x] Standardized processed data pipeline (`data/processed/steam_games_monthly.csv` and individual CSVs) (`src/steam_player_forecasting/data/pipeline.py`)
+- [x] Reusable data loaders (`load_processed_data()`, `load_raw_data()`, `get_available_games()`) (`src/steam_player_forecasting/data/loader.py`)
+- [x] Unit test suite with 100% pass rate (`tests/test_data.py`)
+- [x] Dataset cleaning decisions and chosen titles documented (`data/README.md`)
 
 ### AI Agent Prompt
 

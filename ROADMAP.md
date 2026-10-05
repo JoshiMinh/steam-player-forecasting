@@ -64,7 +64,7 @@ You are an expert data engineer and time-series specialist. Your objective is to
 
 ## Phase 2 — EDA & Time-Series Preprocessing
 
-**Status:** Completed `[x]` (Commit: `pending` | `feat(features): complete phase 2 eda and time-series preprocessing`)
+**Status:** Completed `[x]` (Commit: `dcfdfd2` | `feat(features): complete phase 2 eda and time-series preprocessing`)
 
 - [X]  Comprehensive exploratory analysis notebook (`notebooks/01_eda_and_preprocessing.ipynb`) analyzing trends, seasonality, rolling mean/variance, outliers, and structural breaks
 - [X]  9 high-resolution 300 DPI exploratory figures exported to `figures/` (trajectories, peak/avg ratios, rolling statistics, seasonality boxplots, subseries plots, STL decomposition, ACF/PACF, transformations, chronological splits)

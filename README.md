@@ -148,10 +148,6 @@ steam-player-forecasting/
 
 ## Interactive Demo (Streamlit)
 
-<p align="center">
-  <img src="assets/screenshot.png" alt="Steam Forecasting Lab Dashboard" width="100%" />
-</p>
-
 Launch the interactive forecasting dashboard to explore historical trajectories, compare models, inspect 95% SARIMA confidence intervals, and review error diagnostics:
 
 ```bash
@@ -159,13 +155,11 @@ streamlit run app/app.py
 ```
 
 **Demo Capabilities:**
-- **Interactive Vector Visualizations (Altair):** Hover tooltips (dates, actuals, predictions, error %), zoom, pan, SARIMA 95% confidence interval shaded area band, and holdout boundary lines.
-- **Dynamic Evaluation Horizon ($H = 1 \dots 12$ Months):** Truncate the holdout window in real-time to inspect short-term vs long-range multi-step performance.
-- **Metric Pivot & Real-Time Re-ranking:** Instant re-ranking of model cards by MASE, MAE, RMSE, MAPE, or sMAPE with dynamic winner badge attribution.
-- **Model Group Presets:** Instant selection between Core Quartet, Econometric Baselines, Machine Learning / Deep Learning, or All 11 Candidates.
-- **Scenario Shock Simulator:** Project What-If exogenous demand surges or churn shocks ($\pm 30\%$) and examine model trajectories.
-- **Multi-Step Error Compounding:** Inspect step-by-step error accumulation ($h = 1 \dots 12$) to compare recursive tree drift against direct sequence head stability.
-- **One-Click CSV Export:** Export month-by-month predictions and error percentages for any game and active horizon.
+- Select any of the 7 evaluated Steam multiplayer flagships.
+- Toggle between Core Quartet models (SARIMA, XGBoost, LSTM, GRU) and baseline forecasters.
+- Adjust historical context windows (6 to 36 months).
+- Review real-time performance scorecards and monthly error breakdowns.
+- Inspect peak-to-average player ratios, historical volatility, and documented structural breaks.
 
 ---
 

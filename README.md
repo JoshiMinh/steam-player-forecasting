@@ -1,10 +1,19 @@
-# Steam Player Forecasting
+<p align="center">
+  <img src="assets/steam_logo.png" alt="Steam Logo" width="110" />
+</p>
 
-[![CI](https://github.com/JoshiMinh/steam-player-forecasting/actions/workflows/ci.yml/badge.svg)](https://github.com/JoshiMinh/steam-player-forecasting/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+<h1 align="center">Steam Player Forecasting</h1>
 
-A reproducible benchmarking framework comparing statistical, machine learning, and deep learning time-series models for forecasting monthly Steam player counts.
+<p align="center">
+  <b>A reproducible benchmarking framework comparing statistical, machine learning, and deep learning time-series models for forecasting monthly Steam player counts.</b>
+</p>
+
+<p align="center">
+  <a href="https://github.com/JoshiMinh/steam-player-forecasting/actions/workflows/ci.yml"><img src="https://github.com/JoshiMinh/steam-player-forecasting/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT" /></a>
+  <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.11+-blue.svg" alt="Python 3.11+" /></a>
+  <a href="#interactive-steam-store-demonstration"><img src="https://img.shields.io/badge/Streamlit-Steam%20UI-1b2838?logo=steam" alt="Steam Store UI" /></a>
+</p>
 
 ---
 
@@ -139,6 +148,10 @@ steam-player-forecasting/
 
 ## Interactive Demo (Streamlit)
 
+<p align="center">
+  <img src="assets/screenshot.png" alt="Steam Forecasting Lab Dashboard" width="100%" />
+</p>
+
 Launch the interactive forecasting dashboard to explore historical trajectories, compare models, inspect 95% SARIMA confidence intervals, and review error diagnostics:
 
 ```bash
@@ -146,11 +159,13 @@ streamlit run app/app.py
 ```
 
 **Demo Capabilities:**
-- Select any of the 7 evaluated Steam multiplayer flagships.
-- Toggle between Core Quartet models (SARIMA, XGBoost, LSTM, GRU) and baseline forecasters.
-- Adjust historical context windows (6 to 36 months).
-- Review real-time performance scorecards and monthly error breakdowns.
-- Inspect peak-to-average player ratios, historical volatility, and documented structural breaks.
+- **Interactive Vector Visualizations (Altair):** Hover tooltips (dates, actuals, predictions, error %), zoom, pan, SARIMA 95% confidence interval shaded area band, and holdout boundary lines.
+- **Dynamic Evaluation Horizon ($H = 1 \dots 12$ Months):** Truncate the holdout window in real-time to inspect short-term vs long-range multi-step performance.
+- **Metric Pivot & Real-Time Re-ranking:** Instant re-ranking of model cards by MASE, MAE, RMSE, MAPE, or sMAPE with dynamic winner badge attribution.
+- **Model Group Presets:** Instant selection between Core Quartet, Econometric Baselines, Machine Learning / Deep Learning, or All 11 Candidates.
+- **Scenario Shock Simulator:** Project What-If exogenous demand surges or churn shocks ($\pm 30\%$) and examine model trajectories.
+- **Multi-Step Error Compounding:** Inspect step-by-step error accumulation ($h = 1 \dots 12$) to compare recursive tree drift against direct sequence head stability.
+- **One-Click CSV Export:** Export month-by-month predictions and error percentages for any game and active horizon.
 
 ---
 

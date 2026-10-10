@@ -115,8 +115,8 @@ figures/*
 # 8. Jupyter Notebooks & Streamlit
 # ------------------------------------------------------------------------------
 .ipynb_checkpoints
-*/.ipynb_checkpoints/*
-.streamlit/
+.streamlit/*
+!.streamlit/config.toml
 
 # ------------------------------------------------------------------------------
 # 9. Operating System Artifacts
@@ -153,5 +153,7 @@ kaggle.json
 # 12. Local AI Agent Indexes & Temporary Scratchpad Files
 # ------------------------------------------------------------------------------
 .codegraph/
+.agents/
+.claude/
 *.tmp
 *.bak

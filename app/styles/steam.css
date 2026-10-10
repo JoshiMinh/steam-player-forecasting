@@ -1,0 +1,212 @@
+/* Steam Store Theme for Streamlit Dashboard */
+
+/* App Canvas & Background */
+.stApp {
+    background: radial-gradient(120% 120% at 50% 0%, #1b2838 0%, #171a21 65%, #0e141b 100%) !important;
+    color: #c7d5e0 !important;
+}
+
+/* Sidebar Styling */
+[data-testid="stSidebar"] {
+    background-color: #171a21 !important;
+    border-right: 1px solid #2a475e !important;
+}
+
+[data-testid="stSidebar"] h1, 
+[data-testid="stSidebar"] h2, 
+[data-testid="stSidebar"] h3 {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px;
+}
+
+[data-testid="stSidebar"] label {
+    color: #c7d5e0 !important;
+    font-weight: 600 !important;
+}
+
+/* Steam Top Header Bar */
+.steam-header-bar {
+    background: #171a21;
+    border: 1px solid #2a475e;
+    border-radius: 6px;
+    padding: 0.9rem 1.4rem;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.steam-header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.steam-header-logo {
+    width: 40px;
+    height: 40px;
+}
+
+.steam-header-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin: 0;
+    line-height: 1.15;
+}
+
+.steam-header-subtitle {
+    font-size: 0.8rem;
+    color: #66c0f4;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.steam-header-badge {
+    background: #2a475e;
+    color: #c7d5e0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 3px;
+    letter-spacing: 0.5px;
+}
+
+/* Steam Game Capsule Banner */
+.steam-capsule {
+    background: linear-gradient(135deg, #0e141b 0%, #16202d 100%);
+    border: 1px solid #2a475e;
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+.steam-capsule-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 0.4rem;
+}
+
+.steam-capsule-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0;
+}
+
+.steam-tag-group {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.steam-pill {
+    background: rgba(102, 192, 244, 0.12);
+    color: #66c0f4;
+    border: 1px solid rgba(102, 192, 244, 0.3);
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.steam-capsule-meta {
+    color: #8f98a0;
+    font-size: 0.88rem;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+}
+
+.steam-capsule-specs {
+    display: flex;
+    gap: 16px;
+    font-size: 0.82rem;
+    color: #8f98a0;
+    border-top: 1px solid #2a475e;
+    padding-top: 6px;
+    flex-wrap: wrap;
+}
+
+/* Steam Top Performer Ribbon */
+.steam-winner-ribbon {
+    background: rgba(164, 208, 7, 0.1);
+    border: 1px solid #a4d007;
+    border-radius: 4px;
+    padding: 0.7rem 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.steam-discount-badge {
+    background: #a4d007;
+    color: #111111;
+    font-weight: 800;
+    font-size: 0.75rem;
+    padding: 2px 7px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Streamlit Tabs Customization */
+[data-testid="stTabs"] [role="tablist"] {
+    background: #171a21 !important;
+    border-bottom: 2px solid #2a475e !important;
+    padding: 0 0.5rem !important;
+    gap: 8px !important;
+}
+
+[data-testid="stTabs"] button[role="tab"] {
+    color: #8f98a0 !important;
+    font-weight: 700 !important;
+    font-size: 0.9rem !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 4px 4px 0 0 !important;
+    border: 1px solid transparent !important;
+    transition: all 0.2s ease !important;
+}
+
+[data-testid="stTabs"] button[role="tab"]:hover {
+    color: #ffffff !important;
+    background: rgba(42, 71, 94, 0.4) !important;
+}
+
+[data-testid="stTabs"] button[role="tab"][aria-selected="true"] {
+    color: #ffffff !important;
+    background: #1b2838 !important;
+    border: 1px solid #2a475e !important;
+    border-bottom: 2px solid #66c0f4 !important;
+}
+
+/* Steam Callout Box */
+.steam-callout-box {
+    background: #16202d;
+    border-left: 4px solid #66c0f4;
+    border-radius: 4px;
+    padding: 0.8rem 1rem;
+    color: #c7d5e0;
+    font-size: 0.88rem;
+    line-height: 1.45;
+    margin-bottom: 1rem;
+}
+
+/* Container Border Overrides */
+[data-testid="stVerticalBlockBorderWrapper"] {
+    border-color: #2a475e !important;
+    background-color: #16202d !important;
+}

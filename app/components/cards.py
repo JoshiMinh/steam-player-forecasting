@@ -63,11 +63,11 @@ def render_game_capsule(game_name: str, meta: dict[str, str], game_cache: dict[s
                 f"<div style='text-align: right; display: flex; gap: 6px; justify-content: flex-end; flex-wrap: wrap;'>"
                 f"<span style='background: rgba(102,192,244,0.15); color: #66c0f4; border: 1px solid rgba(102,192,244,0.3); font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 3px; text-transform: uppercase;'>{genre}</span>"
                 f"<span style='background: rgba(102,192,244,0.15); color: #66c0f4; border: 1px solid rgba(102,192,244,0.3); font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 3px; text-transform: uppercase;'>Release: {release}</span>"
-                f"<span style='background: rgba(102,192,244,0.15); color: #66c0f4; border: 1px solid rgba(102,192,244,0.3); font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 3px; text-transform: uppercase;'>12-Mo Horizon</span>"
+                f"<span style='background: rgba(102,192,244,0.15); color: #66c0f4; border: 1px solid rgba(102,192,244,0.3); font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 3px; text-transform: uppercase;'>12-Month Horizon</span>"
                 f"</div>",
                 unsafe_allow_html=True,
             )
-        st.markdown(f"**Historical Context & Regime Shifts:** {notes}")
+        st.markdown(f"**Historical context & regime shifts:** {notes}")
         st.markdown(
             f"<div style='border-top: 1px solid #2a475e; padding-top: 6px; margin-top: 6px; display: flex; gap: 20px; font-size: 0.85rem; color: #8f98a0;'>"
             f"<span><strong>Optimal SARIMA:</strong> <code style='color: #66c0f4; background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 2px;'>{sarima_order}</code></span>"

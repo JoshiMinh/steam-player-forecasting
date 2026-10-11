@@ -6,14 +6,14 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from steam_player_forecasting.features.tabular import (
+from src.features.tabular import (
     TabularFeatureExtractor,
     build_tabular_feature_matrix,
     create_calendar_features,
     create_lag_features,
     create_rolling_features,
 )
-from steam_player_forecasting.models.tabular import (
+from src.models.tabular import (
     RandomForestForecaster,
     RidgeForecaster,
     TabularForecaster,

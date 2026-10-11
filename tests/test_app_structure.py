@@ -8,21 +8,17 @@ import pytest
 
 
 def test_steam_logo_assets_exist_and_valid() -> None:
-    """Verify that steam_logo.png exists in both assets and app/assets and is valid."""
+    """Verify that steam_logo.png exists in images directory and is valid."""
     root = Path(__file__).resolve().parent.parent
-    logo1 = root / "assets" / "steam_logo.png"
-    logo2 = root / "app" / "assets" / "steam_logo.png"
+    logo = root / "images" / "steam_logo.png"
 
-    assert logo1.exists(), f"Missing {logo1}"
-    assert logo2.exists(), f"Missing {logo2}"
-
-    for p in [logo1, logo2]:
-        assert p.stat().st_size > 1000, f"File {p} is suspiciously small: {p.stat().st_size} bytes"
-        with Image.open(p) as img:
-            assert img.format == "PNG"
-            assert img.width > 0
-            assert img.height > 0
-            assert img.mode in ("RGBA", "RGB")
+    assert logo.exists(), f"Missing {logo}"
+    assert logo.stat().st_size > 1000, f"File {logo} is suspiciously small: {logo.stat().st_size} bytes"
+    with Image.open(logo) as img:
+        assert img.format == "PNG"
+        assert img.width > 0
+        assert img.height > 0
+        assert img.mode in ("RGBA", "RGB")
 
 
 def test_steam_stylesheet_exists() -> None:
@@ -43,7 +39,7 @@ def test_component_imports_and_helpers() -> None:
     from app.components.plots import STEAM_PALETTE, apply_steam_chart_style
 
     root = Path(__file__).resolve().parent.parent
-    logo_path = root / "app" / "assets" / "steam_logo.png"
+    logo_path = root / "images" / "steam_logo.png"
 
     # Base64 logo encoding
     b64_str = get_base64_logo(logo_path)

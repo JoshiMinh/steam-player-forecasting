@@ -3,9 +3,9 @@
 import numpy as np
 import pytest
 
-import steam_player_forecasting
-from steam_player_forecasting.data.loader import get_project_root, load_config
-from steam_player_forecasting.evaluation.metrics import (
+import src
+from src.data.loader import get_project_root, load_config
+from src.evaluation.metrics import (
     calculate_metrics,
     mean_absolute_error,
     mean_absolute_percentage_error,
@@ -17,16 +17,16 @@ from steam_player_forecasting.evaluation.metrics import (
 
 def test_package_metadata():
     """Verify package import and version presence."""
-    assert hasattr(steam_player_forecasting, "__version__")
-    assert isinstance(steam_player_forecasting.__version__, str)
-    assert steam_player_forecasting.__version__ == "0.1.0"
+    assert hasattr(src, "__version__")
+    assert isinstance(src.__version__, str)
+    assert src.__version__ == "0.1.0"
 
 
 def test_project_root_and_config():
     """Verify project root path resolver and default configuration loading."""
     root = get_project_root()
     assert root.exists()
-    assert (root / "configs" / "default.yaml").exists()
+    assert (root / "default.yaml").exists()
 
     config = load_config()
     assert isinstance(config, dict)
@@ -43,15 +43,14 @@ def test_project_directories_exist():
     """Verify expected directory tree exists."""
     root = get_project_root()
     expected_dirs = [
-        "configs",
         "data/raw",
         "data/processed",
         "notebooks",
-        "src/steam_player_forecasting",
-        "models",
-        "figures",
+        "src",
+        "assets/figures",
+        "assets/reports",
+        "images",
         "app",
-        "report",
         "tests",
     ]
     for d in expected_dirs:

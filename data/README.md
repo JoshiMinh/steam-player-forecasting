@@ -108,11 +108,11 @@ To run the complete ingestion, validation, and processing pipeline:
 
 ```bash
 # Using project virtual environment
-python -m steam_player_forecasting.data.pipeline
+python -m src.data.pipeline
 ```
 
 Options:
-- `--config <path>`: Specify alternative config YAML (defaults to `configs/default.yaml`).
+- `--config <path>`: Specify alternative config YAML (defaults to `default.yaml`).
 - `--force-download`: Re-fetch or regenerate raw data from scratch.
 
 ### Ingestion Logic & Fallback Behavior
@@ -123,10 +123,10 @@ Options:
 
 ### Programmatic Data Loading
 
-Reusable functions are exposed in `steam_player_forecasting.data`:
+Reusable functions are exposed in `src.data`:
 
 ```python
-from steam_player_forecasting.data import (
+from src.data import (
     load_processed_data,
     load_raw_data,
     get_available_games,

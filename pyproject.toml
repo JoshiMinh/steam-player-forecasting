@@ -42,13 +42,17 @@ dev = [
     "jupyter>=1.0.0",
 ]
 
+[project.scripts]
+steam-forecast = "src.cli.main:main"
+
 [tool.setuptools.packages.find]
-where = ["src"]
+where = ["."]
+include = ["src*"]
 
 [tool.pytest.ini_options]
 minversion = "8.0"
 testpaths = ["tests"]
-pythonpath = ["src"]
+pythonpath = [".", "src"]
 addopts = "-v --strict-markers --basetemp=.pytest_temp"
 filterwarnings = [
     "ignore::DeprecationWarning",

@@ -6,12 +6,12 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from steam_player_forecasting.features.scalers import TimeSeriesScaler
-from steam_player_forecasting.features.transforms import BoxCoxTransformer, LogTransformer
-from steam_player_forecasting.models.base import TransformedForecaster
-from steam_player_forecasting.models.diagnostics import evaluate_residuals
-from steam_player_forecasting.models.selection import select_sarima_order
-from steam_player_forecasting.models.statistical import (
+from src.features.scalers import TimeSeriesScaler
+from src.features.transforms import BoxCoxTransformer, LogTransformer
+from src.models.base import TransformedForecaster
+from src.models.diagnostics import evaluate_residuals
+from src.models.selection import select_sarima_order
+from src.models.statistical import (
     ARForecaster,
     ARIMAForecaster,
     HoltWintersForecaster,

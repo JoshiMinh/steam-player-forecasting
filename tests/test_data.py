@@ -9,24 +9,24 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from steam_player_forecasting.data.ingestion import (
+from src.data.ingestion import (
     acquire_dataset,
     generate_synthetic_raw_data,
     has_kaggle_credentials,
 )
-from steam_player_forecasting.data.loader import (
+from src.data.loader import (
     get_available_games,
     load_config,
     load_processed_data,
     load_raw_data,
 )
-from steam_player_forecasting.data.pipeline import run_phase1_pipeline, slugify_game_name
-from steam_player_forecasting.data.selection import (
+from src.data.pipeline import run_phase1_pipeline, slugify_game_name
+from src.data.selection import (
     check_game_continuity,
     get_game_coverage_summary,
     select_representative_games,
 )
-from steam_player_forecasting.data.validation import (
+from src.data.validation import (
     clean_raw_data,
     inspect_raw_schema,
     standardize_columns,

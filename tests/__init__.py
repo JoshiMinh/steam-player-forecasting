@@ -1,1 +1,1 @@
-"""Test suite for steam_player_forecasting."""
+"""Test suite for steam player forecasting."""

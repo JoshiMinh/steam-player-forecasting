@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/steam_logo.png" alt="Steam Logo" width="110" />
+  <img src="images/steam_logo.png" alt="Steam Logo" width="110" />
 </p>
 
 <h1 align="center">Steam Player Forecasting</h1>
@@ -78,31 +78,30 @@ steam-player-forecasting/
 ├── .github/
 │   └── workflows/
 │       └── ci.yml               # GitHub Actions continuous integration workflow
-├── configs/
-│   └── default.yaml             # Central configuration (splits, hyperparameters, seeds)
+├── default.yaml             # Central configuration (splits, hyperparameters, seeds)
 ├── data/
 │   ├── raw/                     # Raw untouched datasets (.gitignore)
 │   ├── processed/               # Cleaned & standardized datasets (.gitignore)
 │   └── README.md                # Data documentation and download guide
+├── assets/
+│   ├── figures/                 # 20 publication figures (300 DPI)
+│   └── reports/                 # Benchmark tables, JSON cache & final_report.md
+├── images/                      # Static branding logos and app screenshots
 ├── notebooks/                   # Jupyter exploration and benchmark notebooks
 ├── src/
-│   └── steam_player_forecasting/
-│       ├── __init__.py          # Package root
-│       ├── data/                # Data ingestion, schema validation & loaders
-│       ├── features/            # Preprocessing, scalers, and lag generators
-│       ├── models/              # Statistical, ML, and PyTorch model implementations
-│       └── evaluation/          # Metrics (MAE, RMSE, MAPE, sMAPE, MASE)
-├── models/                      # Serialized model checkpoints (.gitignore)
-├── figures/                     # Exported evaluation and EDA plots (.gitignore)
+│   ├── __init__.py              # Package root
+│   ├── cli/                     # Console CLI commands and runners
+│   ├── data/                    # Data ingestion, schema validation & loaders
+│   ├── features/                # Preprocessing, scalers, and lag generators
+│   ├── models/                  # Statistical, ML, and PyTorch model implementations
+│   └── evaluation/              # Metrics (MAE, RMSE, MAPE, sMAPE, MASE)
 ├── app/                         # Lightweight interactive demonstration (Streamlit)
-├── report/                      # Technical reports and tabular benchmark outputs
 ├── tests/                       # Automated test suite (pytest)
 ├── .gitignore                   # Git ignore specifications
 ├── LICENSE                      # MIT License
 ├── pyproject.toml               # Build system configuration & dependencies
 ├── requirements.txt             # Project requirements
-├── README.md                    # Project documentation
-└── ROADMAP.md                   # 5-phase execution plan with AI agent prompts
+└── README.md                    # Project documentation
 ```
 
 ---
@@ -205,13 +204,13 @@ streamlit run app/app.py
 | **Tom Clancy's Rainbow Six Siege** | 9,206.8 (0.694) | 12,569.2 (0.948) | 8,681.1 (0.655) | **7,866.7 (0.593)** | **GRU (DL)** |
 | **Warframe** | 3,201.6 (0.734) | 4,114.9 (0.944) | 4,745.1 (1.089) | **3,071.4 (0.705)** | **GRU (DL)** |
 
-Detailed discussion and qualitative case studies available in [`report/final_report.md`](report/final_report.md).
+Detailed discussion and qualitative case studies available in [`assets/reports/final_report.md`](assets/reports/final_report.md).
 
 ---
 
-## Roadmap & Execution History
+## Execution History
 
-The project followed a strict 5-phase sequential architecture documented in [`ROADMAP.md`](ROADMAP.md):
+The project followed a strict 5-phase sequential architecture:
 
 - [x] **Phase 0:** Repository Initialization & Standards Setup *(Completed)*
 - [x] **Phase 1:** Dataset Acquisition & Validation *(Completed)*
@@ -224,22 +223,20 @@ The project followed a strict 5-phase sequential architecture documented in [`RO
 
 ## End-to-End Reproducibility Guide
 
-All analyses, models, figures, and benchmark tables can be reproduced from scratch using deterministic scripts:
+All analyses, models, figures, and benchmark tables can be reproduced using the unified `steam-forecast` CLI:
 
 ```bash
-# 1. Run the entire automated test suite (68 unit tests, 100% pass rate)
+# 1. Run the entire automated test suite (79 unit tests, 100% pass rate)
 pytest -v
 
 # 2. Re-run Phase 5 Test-Set Evaluation and generate benchmark CSVs
-python scripts/run_phase5_benchmarks.py
+steam-forecast phase5
 
 # 3. Generate all publication figures (Figures 17, 18, 19, 20)
-python scripts/generate_phase5_figures.py
+steam-forecast phase5-figures
 
-# 4. Build and execute demonstration notebook
-python scripts/build_phase5_notebook.py
-python scripts/execute_notebook.py 04_final_evaluation_and_synthesis.ipynb
-
-# 5. Launch interactive demonstration dashboard
+# 4. Launch interactive demonstration dashboard
+steam-forecast app
+# Or directly via Streamlit:
 streamlit run app/app.py
 ```

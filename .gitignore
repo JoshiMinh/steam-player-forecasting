@@ -103,13 +103,13 @@ wandb/
 # ------------------------------------------------------------------------------
 # 7. Figures & Visualizations (Track Exported Figures)
 # ------------------------------------------------------------------------------
-figures/*
-!figures/.gitkeep
-!figures/*.png
-!figures/*.jpg
-!figures/*.jpeg
-!figures/*.svg
-!figures/*.pdf
+assets/figures/*
+!assets/figures/.gitkeep
+!assets/figures/*.png
+!assets/figures/*.jpg
+!assets/figures/*.jpeg
+!assets/figures/*.svg
+!assets/figures/*.pdf
 
 # ------------------------------------------------------------------------------
 # 8. Jupyter Notebooks & Streamlit
@@ -153,7 +153,6 @@ kaggle.json
 # 12. Local AI Agent Indexes & Temporary Scratchpad Files
 # ------------------------------------------------------------------------------
 .codegraph/
-.agents/
 .claude/
 *.tmp
 *.bak

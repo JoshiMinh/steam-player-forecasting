@@ -21,7 +21,9 @@ def render_steam_header(assets_dir: Path) -> None:
     """Render clean, unified Steam top header bar without emojis or clutter."""
     logo_path = assets_dir / "steam_logo.png"
     if not logo_path.exists():
-        logo_path = assets_dir.parent.parent / "assets" / "steam_logo.png"
+        logo_path = assets_dir.parent / "images" / "steam_logo.png"
+    if not logo_path.exists():
+        logo_path = assets_dir.parent.parent / "images" / "steam_logo.png"
 
     b64_logo = get_base64_logo(logo_path)
     img_tag = (

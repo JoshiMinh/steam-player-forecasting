@@ -7,20 +7,20 @@ import pandas as pd
 import pytest
 from sklearn.exceptions import NotFittedError
 
-from steam_player_forecasting.features.diagnostics import (
+from src.features.diagnostics import (
     check_stationarity,
     compute_acf_pacf,
     compute_rolling_stats,
     decompose_time_series,
 )
-from steam_player_forecasting.features.scalers import TimeSeriesScaler
-from steam_player_forecasting.features.split import (
+from src.features.scalers import TimeSeriesScaler
+from src.features.split import (
     TimeSeriesSplitResult,
     expanding_window_cv,
     split_by_game,
     train_val_test_split,
 )
-from steam_player_forecasting.features.transforms import (
+from src.features.transforms import (
     BoxCoxTransformer,
     DifferencingTransformer,
     LogTransformer,

@@ -46,9 +46,9 @@ from components.plots import (
 # Path Resolution & Page Configuration
 # -----------------------------------------------------------------------------
 ROOT_DIR = APP_DIR.parent if (APP_DIR.parent / "data").exists() else APP_DIR
-ASSETS_DIR = APP_DIR / "assets"
+IMAGES_DIR = ROOT_DIR / "images"
 STYLES_DIR = APP_DIR / "styles"
-LOGO_PATH = ASSETS_DIR / "steam_logo.png"
+LOGO_PATH = IMAGES_DIR / "steam_logo.png"
 
 st.set_page_config(
     page_title="Steam Player Forecasting Lab",
@@ -123,6 +123,7 @@ GAME_INFO: dict[str, dict[str, str]] = {
 def load_forecast_cache() -> dict[str, Any]:
     """Load precomputed test forecasts cache."""
     for candidate in [
+        ROOT_DIR / "assets" / "reports" / "test_forecasts_cache.json",
         ROOT_DIR / "report" / "test_forecasts_cache.json",
         ROOT_DIR / "data" / "processed" / "test_forecasts_cache.json",
     ]:
@@ -135,7 +136,11 @@ def load_forecast_cache() -> dict[str, Any]:
 @st.cache_data
 def load_benchmarks_data() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """Load benchmark and leaderboard tables."""
-    rep_dir = ROOT_DIR / "report"
+    rep_dir = (
+        ROOT_DIR / "assets" / "reports"
+        if (ROOT_DIR / "assets" / "reports").exists()
+        else ROOT_DIR / "report"
+    )
     test_b = pd.DataFrame()
     lead_b = pd.DataFrame()
     val_comp = pd.DataFrame()
@@ -172,19 +177,158 @@ def load_game_raw_history(game_name: str) -> pd.DataFrame:
     return pd.DataFrame()
 
 
+@st.fragment
+def render_interactive_forecast_panel(
+    selected_game: str,
+    game_cache: dict[str, Any],
+    selected_models: list[str],
+    show_ci: bool,
+    history_window: int,
+    meta: dict[str, str],
+    paradigm_map: dict[str, str],
+) -> None:
+    """Render interactive forecasting workbench isolated in a fragment for responsive reruns."""
+    # Steam Game Capsule
+    render_game_capsule(selected_game, meta, game_cache)
+
+    # Interactive Control Toolbar
+    with st.container(border=True):
+        col_ctrl1, col_ctrl2 = st.columns([1, 1])
+
+        with col_ctrl1:
+            horizon = st.slider(
+                "Forecast evaluation horizon (months)",
+                min_value=1,
+                max_value=12,
+                value=12,
+                step=1,
+                help="Dynamically truncate the test window to evaluate short vs long-range multi-step performance.",
+                key="horizon",
+                bind="query-params",
+            )
+
+        with col_ctrl2:
+            rank_by = st.segmented_control(
+                "Rank models by",
+                options=["MASE", "MAE", "RMSE", "MAPE", "sMAPE"],
+                default="MASE",
+                help="Select performance metric to dynamically re-sort cards and determine top performer.",
+                key="rank_by",
+                bind="query-params",
+            )
+            if not rank_by:
+                rank_by = "MASE"
+
+        # Scenario Shock Simulator
+        with st.expander(":material/bolt: Scenario shock simulator (what-if demand surge / churn)"):
+            col_shock1, col_shock2 = st.columns([2, 1])
+            with col_shock1:
+                shock_pct = st.slider(
+                    "Simulate exogenous shock multiplier (%)",
+                    min_value=-30,
+                    max_value=50,
+                    value=0,
+                    step=5,
+                    format="%+d%%",
+                    help="Simulate an exogenous demand surge (e.g. viral streamer boom) or churn shock.",
+                    key="shock_pct",
+                )
+            with col_shock2:
+                shock_target_model = st.selectbox(
+                    "Target model for shock",
+                    options=selected_models,
+                    index=0 if selected_models else 0,
+                    help="Model baseline upon which to project simulated shock curve.",
+                    key="shock_target_model",
+                )
+
+    # Interactive Altair Chart
+    chart = create_interactive_forecast_chart(
+        game_cache=game_cache,
+        selected_models=selected_models,
+        horizon=horizon,
+        history_window=history_window,
+        show_ci=show_ci,
+        demand_shock_pct=float(shock_pct),
+        shock_target_model=shock_target_model if shock_pct != 0 else "",
+    )
+    st.altair_chart(chart, width="stretch")
+
+    # Dynamic Performance Scorecard
+    st.markdown(f"### Out-of-sample performance (H = {horizon} months)")
+
+    hist_vals = np.array(game_cache["history_values"])
+    seasonal_scale = (
+        float(np.mean(np.abs(hist_vals[12:] - hist_vals[:-12])))
+        if len(hist_vals) > 12
+        else 1.0
+    )
+
+    dynamic_metrics = compute_dynamic_metrics(
+        actuals=game_cache["test_actuals"],
+        forecasts_dict={
+            m: game_cache["test_forecasts"][m]
+            for m in selected_models
+            if m in game_cache["test_forecasts"]
+        },
+        seasonal_scale=seasonal_scale,
+        horizon=horizon,
+        paradigm_map=paradigm_map,
+    )
+
+    if not dynamic_metrics.empty:
+        render_scorecard(
+            game_metrics=dynamic_metrics,
+            rank_by=rank_by,
+            palette=STEAM_PALETTE,
+        )
+
+    # Month-by-Month Forecast Breakdown & CSV Export
+    with st.expander(f":material/table_chart: Month-by-month forecast breakdown (H = {horizon} months)"):
+        test_dates = pd.to_datetime(game_cache["test_dates"])[:horizon]
+        test_actuals = np.array(game_cache["test_actuals"])[:horizon]
+        month_rows: list[dict[str, Any]] = []
+
+        for h in range(len(test_dates)):
+            m_date = test_dates[h].strftime("%Y-%m")
+            actual_val = test_actuals[h]
+            m_row: dict[str, Any] = {"Month": m_date, "Actual Ground Truth": f"{actual_val:,.0f}"}
+            for m in selected_models:
+                if m in game_cache["test_forecasts"]:
+                    pred_val = game_cache["test_forecasts"][m][h]
+                    diff = pred_val - actual_val
+                    pct_err = (abs(diff) / max(actual_val, 1)) * 100
+                    m_row[f"{m} (Pred)"] = f"{pred_val:,.0f}"
+                    m_row[f"{m} (Err %)"] = f"{pct_err:.1f}%"
+            month_rows.append(m_row)
+
+        breakdown_df = pd.DataFrame(month_rows)
+        st.dataframe(breakdown_df, width="stretch")
+
+        csv_bytes = breakdown_df.to_csv(index=False).encode("utf-8")
+        game_slug = selected_game.lower().replace(" ", "_").replace(":", "").replace("'", "")
+        st.download_button(
+            label="Download forecast trajectories (CSV)",
+            data=csv_bytes,
+            file_name=f"{game_slug}_h{horizon}_forecasts.csv",
+            mime="text/csv",
+            icon=":material/download:",
+        )
+
+
 # -----------------------------------------------------------------------------
 # Main Application Flow
 # -----------------------------------------------------------------------------
 def main() -> None:
     # 1. Top Steam Header
-    render_steam_header(ASSETS_DIR)
+    render_steam_header(IMAGES_DIR)
 
     cache = load_forecast_cache()
     test_benchmarks, leaderboard_df, val_comp = load_benchmarks_data()
 
     if not cache:
         st.error(
-            "Forecast cache not found. Please run `python scripts/run_phase5_benchmarks.py` to generate benchmarking artifacts."
+            "Forecast cache not found. Please run `steam-forecast phase5` to generate benchmarking artifacts."
         )
         st.stop()
 
@@ -195,18 +339,20 @@ def main() -> None:
         else {}
     )
 
-    # 2. Sidebar Navigation & Filters (Clean, No Emojis)
+    # 2. Sidebar Navigation & Filters (Material Symbols, Sentence Casing)
     with st.sidebar:
-        st.markdown("**Game Selection**")
+        st.markdown("**:material/sports_esports: Game selection**")
         selected_game = st.selectbox(
-            "Select Steam Title:",
+            "Select Steam title:",
             games,
             index=0,
+            key="game",
+            bind="query-params",
             label_visibility="collapsed",
         )
 
         st.divider()
-        st.markdown("**Model Presets**")
+        st.markdown("**:material/auto_awesome: Model presets**")
         all_available_models = list(cache[selected_game]["test_forecasts"].keys())
 
         preset_options: dict[str, list[str]] = {
@@ -221,7 +367,7 @@ def main() -> None:
             st.session_state.active_models = preset_options["Core Quartet"]
 
         preset_choice = st.segmented_control(
-            "Model Preset",
+            "Model preset",
             options=list(preset_options.keys()),
             default=st.session_state.last_preset,
             label_visibility="collapsed",
@@ -231,11 +377,11 @@ def main() -> None:
             st.session_state.last_preset = preset_choice
             st.session_state.active_models = preset_options[preset_choice]
 
-        st.markdown("**Active Models**")
+        st.markdown("**:material/check_box: Active models**")
         selected_models = st.multiselect(
-            "Active Models:",
+            "Active models:",
             options=all_available_models,
-            default=st.session_state.active_models,
+            default=[m for m in st.session_state.active_models if m in all_available_models],
             label_visibility="collapsed",
             help="Select candidate models to overlay on the forecast chart.",
         )
@@ -244,10 +390,10 @@ def main() -> None:
             selected_models = preset_options["Core Quartet"]
 
         st.divider()
-        st.markdown("**Visualization Settings**")
-        show_ci = st.toggle("Show SARIMA 95% Confidence Bounds", value=True)
+        st.markdown("**:material/tune: Visualization settings**")
+        show_ci = st.toggle("Show SARIMA 95% confidence bounds", value=True)
         history_window = st.slider(
-            "Historical Context (Months):",
+            "Historical context (months):",
             min_value=6,
             max_value=36,
             value=24,
@@ -256,142 +402,33 @@ def main() -> None:
         )
 
         st.divider()
+        st.markdown("**:material/info: Title metadata**")
         meta = GAME_INFO.get(selected_game, {})
         st.markdown(f"**Genre:** <span style='color: #66c0f4;'>{meta.get('genre', 'N/A')}</span>", unsafe_allow_html=True)
-        st.markdown(f"**Steam Release:** <span style='color: #c7d5e0;'>{meta.get('release', 'N/A')}</span>", unsafe_allow_html=True)
+        st.markdown(f"**Steam release:** <span style='color: #c7d5e0;'>{meta.get('release', 'N/A')}</span>", unsafe_allow_html=True)
         st.caption(f"{meta.get('notes', '')}")
 
-    # 3. Main Tabs (Clean, No Emojis)
+    # 3. Main Tabs (Material Symbols & Sentence Casing)
     tab1, tab2, tab3, tab4 = st.tabs([
-        "Forecast Trajectories",
-        "Model Leaderboard",
-        "Historical Dynamics",
-        "Research Synthesis",
+        ":material/show_chart: Forecast trajectories",
+        ":material/leaderboard: Model leaderboard",
+        ":material/history: Historical dynamics",
+        ":material/science: Research synthesis",
     ])
 
     # -------------------------------------------------------------------------
-    # TAB 1: Forecast Trajectories (Interactive Controls & Altair Vector Chart)
+    # TAB 1: Forecast Trajectories (Isolated Fragment Workbench)
     # -------------------------------------------------------------------------
     with tab1:
-        # Steam Game Capsule
-        render_game_capsule(selected_game, meta, cache[selected_game])
-
-        # Interactive Control Toolbar
-        with st.container(border=True):
-            col_ctrl1, col_ctrl2 = st.columns([1, 1])
-
-            with col_ctrl1:
-                horizon = st.slider(
-                    "Forecast Evaluation Horizon (Months):",
-                    min_value=1,
-                    max_value=12,
-                    value=12,
-                    step=1,
-                    help="Dynamically truncate the test window to evaluate short vs long-range multi-step performance.",
-                )
-
-            with col_ctrl2:
-                rank_by = st.segmented_control(
-                    "Rank Models By:",
-                    options=["MASE", "MAE", "RMSE", "MAPE", "sMAPE"],
-                    default="MASE",
-                    help="Select performance metric to dynamically re-sort cards and determine Top Performer.",
-                )
-                if not rank_by:
-                    rank_by = "MASE"
-
-            # Scenario Shock Simulator
-            with st.expander("Scenario Shock Simulator (What-If Demand Surge / Churn)"):
-                col_shock1, col_shock2 = st.columns([2, 1])
-                with col_shock1:
-                    shock_pct = st.slider(
-                        "Simulate Exogenous Shock Multiplier (%):",
-                        min_value=-30,
-                        max_value=50,
-                        value=0,
-                        step=5,
-                        format="%+d%%",
-                        help="Simulate an exogenous demand surge (e.g. viral streamer boom) or churn shock.",
-                    )
-                with col_shock2:
-                    shock_target_model = st.selectbox(
-                        "Target Model For Shock:",
-                        options=selected_models,
-                        index=0 if selected_models else 0,
-                        help="Model baseline upon which to project simulated shock curve.",
-                    )
-
-        # Interactive Altair Chart
-        chart = create_interactive_forecast_chart(
+        render_interactive_forecast_panel(
+            selected_game=selected_game,
             game_cache=cache[selected_game],
             selected_models=selected_models,
-            horizon=horizon,
-            history_window=history_window,
             show_ci=show_ci,
-            demand_shock_pct=float(shock_pct),
-            shock_target_model=shock_target_model if shock_pct != 0 else "",
-        )
-        st.altair_chart(chart, width="stretch")
-
-        # Dynamic Performance Scorecard
-        st.markdown(f"### Out-of-Sample Performance (H = {horizon} Months)")
-
-        hist_vals = np.array(cache[selected_game]["history_values"])
-        seasonal_scale = (
-            float(np.mean(np.abs(hist_vals[12:] - hist_vals[:-12])))
-            if len(hist_vals) > 12
-            else 1.0
-        )
-
-        dynamic_metrics = compute_dynamic_metrics(
-            actuals=cache[selected_game]["test_actuals"],
-            forecasts_dict={
-                m: cache[selected_game]["test_forecasts"][m]
-                for m in selected_models
-                if m in cache[selected_game]["test_forecasts"]
-            },
-            seasonal_scale=seasonal_scale,
-            horizon=horizon,
+            history_window=history_window,
+            meta=meta,
             paradigm_map=paradigm_map,
         )
-
-        if not dynamic_metrics.empty:
-            render_scorecard(
-                game_metrics=dynamic_metrics,
-                rank_by=rank_by,
-                palette=STEAM_PALETTE,
-            )
-
-        # Month-by-Month Forecast Breakdown & CSV Export
-        with st.expander(f"Month-by-Month Forecast Breakdown (H = {horizon} Months)"):
-            test_dates = pd.to_datetime(cache[selected_game]["test_dates"])[:horizon]
-            test_actuals = np.array(cache[selected_game]["test_actuals"])[:horizon]
-            month_rows: list[dict[str, Any]] = []
-
-            for h in range(len(test_dates)):
-                m_date = test_dates[h].strftime("%Y-%m")
-                actual_val = test_actuals[h]
-                m_row: dict[str, Any] = {"Month": m_date, "Actual Ground Truth": f"{actual_val:,.0f}"}
-                for m in selected_models:
-                    if m in cache[selected_game]["test_forecasts"]:
-                        pred_val = cache[selected_game]["test_forecasts"][m][h]
-                        diff = pred_val - actual_val
-                        pct_err = (abs(diff) / max(actual_val, 1)) * 100
-                        m_row[f"{m} (Pred)"] = f"{pred_val:,.0f}"
-                        m_row[f"{m} (Err %)"] = f"{pct_err:.1f}%"
-                month_rows.append(m_row)
-
-            breakdown_df = pd.DataFrame(month_rows)
-            st.dataframe(breakdown_df, width="stretch")
-
-            csv_bytes = breakdown_df.to_csv(index=False).encode("utf-8")
-            game_slug = selected_game.lower().replace(" ", "_").replace(":", "").replace("'", "")
-            st.download_button(
-                label="Download Forecast Trajectories (CSV)",
-                data=csv_bytes,
-                file_name=f"{game_slug}_h{horizon}_forecasts.csv",
-                mime="text/csv",
-            )
 
     # -------------------------------------------------------------------------
     # TAB 2: Model Leaderboard & Multi-Step Error Growth
@@ -400,7 +437,7 @@ def main() -> None:
         st.markdown(
             """
             <div class="steam-callout-box">
-                <strong>Cross-Title Generalization Benchmark:</strong>
+                <strong>Cross-title generalization benchmark:</strong>
                 Models were evaluated across all 7 games with strict chronological holdout partitions.
                 MASE (Mean Absolute Scaled Error) &lt; 1.0 indicates performance superior to in-sample seasonal naive persistence.
             </div>
@@ -411,7 +448,7 @@ def main() -> None:
         col_l1, col_l2 = st.columns([1, 1])
 
         with col_l1:
-            st.markdown(f"#### Per-Model Standings: {selected_game}")
+            st.markdown(f"#### :material/military_tech: Per-model standings: {selected_game}")
             sub_game = test_benchmarks[test_benchmarks["Game"] == selected_game].sort_values("MASE")
             st.dataframe(
                 sub_game[["Model", "Paradigm", "MAE", "RMSE", "MAPE", "sMAPE", "MASE"]].style.format({
@@ -425,7 +462,7 @@ def main() -> None:
             )
 
         with col_l2:
-            st.markdown("#### Global Cross-Game Leaderboard (7 Games)")
+            st.markdown("#### :material/trophy: Global cross-game leaderboard (7 games)")
             if not leaderboard_df.empty:
                 st.dataframe(
                     leaderboard_df.style.format({
@@ -441,7 +478,7 @@ def main() -> None:
 
         # Multi-Step Horizon Error Compounding
         st.divider()
-        st.markdown("#### Multi-Step Error Compounding Across Forecast Steps (h = 1 to 12)")
+        st.markdown("#### :material/trending_up: Multi-step error compounding across forecast steps (h = 1 to 12)")
         st.caption(
             "Inspect step-by-step error accumulation to evaluate autoregressive feedback drift vs direct sequence head stability."
         )
@@ -453,7 +490,7 @@ def main() -> None:
         st.altair_chart(err_chart, width="stretch")
 
         st.divider()
-        st.markdown("#### Validation Tuning vs Test Out-of-Sample Drift")
+        st.markdown("#### :material/compare: Validation tuning vs test out-of-sample drift")
         st.caption(
             "Comparing validation window error (2019-09 to 2020-08) against unblinded test window error (2020-09 to 2021-08)."
         )
@@ -487,7 +524,7 @@ def main() -> None:
     # TAB 3: Historical Dynamics
     # -------------------------------------------------------------------------
     with tab3:
-        st.markdown(f"### Historical Trajectory & Regime Shifts: {selected_game}")
+        st.markdown(f"### :material/timeline: Historical trajectory & regime shifts: {selected_game}")
 
         raw_df = load_game_raw_history(selected_game)
 
@@ -498,58 +535,58 @@ def main() -> None:
             col_d1, col_d2 = st.columns(2)
             with col_d1:
                 with st.container(border=True):
-                    st.markdown("**Statistical Profile**")
-                    st.markdown(f"- **Total Monthly Records:** {len(raw_df)} months")
+                    st.markdown("**:material/analytics: Statistical profile**")
+                    st.markdown(f"- **Total monthly records:** {len(raw_df)} months")
                     st.markdown(
-                        f"- **Time Span:** {raw_df['Month_Year'].min().strftime('%Y-%m')} to {raw_df['Month_Year'].max().strftime('%Y-%m')}"
+                        f"- **Time span:** {raw_df['Month_Year'].min().strftime('%Y-%m')} to {raw_df['Month_Year'].max().strftime('%Y-%m')}"
                     )
-                    st.markdown(f"- **All-Time Average Players:** {raw_df['Avg_players'].mean():,.0f}")
-                    st.markdown(f"- **All-Time Peak Players:** {raw_df['Peak_Players'].max():,.0f}")
-                    st.markdown(f"- **Population Volatility (Std Dev):** {raw_df['Avg_players'].std():,.0f}")
+                    st.markdown(f"- **All-time average players:** {raw_df['Avg_players'].mean():,.0f}")
+                    st.markdown(f"- **All-time peak players:** {raw_df['Peak_Players'].max():,.0f}")
+                    st.markdown(f"- **Population volatility (std dev):** {raw_df['Avg_players'].std():,.0f}")
 
             with col_d2:
                 with st.container(border=True):
-                    st.markdown("**Documented Structural Shocks**")
+                    st.markdown("**:material/warning: Documented structural shocks**")
                     st.markdown(
-                        "- **COVID-19 Lockdown Shock (Mar–May 2020):** Global stay-at-home orders drove unprecedented surges across all titles."
+                        "- **COVID-19 lockdown shock (Mar–May 2020):** Global stay-at-home orders drove unprecedented surges across all titles."
                     )
                     st.markdown(
-                        "- **Steam Seasonal Sales:** Predictable annual peaks consistently recorded during Summer Sales (June/July) and Winter Sales (December)."
+                        "- **Steam seasonal sales:** Predictable annual peaks consistently recorded during Summer Sales (June/July) and Winter Sales (December)."
                     )
-                    st.markdown(f"- **Title Specific:** {meta.get('notes', 'None recorded.')}")
+                    st.markdown(f"- **Title specific:** {meta.get('notes', 'None recorded.')}")
 
     # -------------------------------------------------------------------------
     # TAB 4: Research Synthesis
     # -------------------------------------------------------------------------
     with tab4:
-        st.markdown("### Empirical Findings & Architectural Takeaways")
+        st.markdown("### :material/psychology: Empirical findings & architectural takeaways")
 
         st.markdown(
             """
-            > **Primary Research Question:**  
+            > **Primary research question:**  
             > *Can modern recurrent deep learning models (LSTM, GRU) or gradient-boosted trees (XGBoost) reliably outperform classical econometric benchmarks (SARIMA) when forecasting monthly active player populations for top multiplayer games on Steam?*
             """
         )
 
         st.markdown(
             r"""
-            #### Key Benchmark Insights
+            #### :material/lightbulb: Key benchmark insights
 
-            1. **The Core Quartet Split (SARIMA 3 wins, GRU 3 wins, LSTM 1 win, XGBoost 0 wins):**
-               * **SARIMA Dominates High-Cyclicality Games:** On games with strict annual cadence (*Dota 2*, *GTA V*, *Rust*), seasonal differencing ($s=12$) prevents error explosion and bounds long-term variance.
-               * **GRU/LSTM Excel on Regime Shifts & Plateaus:** On titles stabilizing after explosive growth (*CS:GO*, *Rainbow Six Siege*, *Warframe*, *TF2*), recurrent gating mechanisms adaptively model non-linear churn where linear differencing degrades.
-               * **XGBoost Struggles Under Recursive Long Horizons:** Autoregressive feature feedback cascades error step-by-step ($H=12$ mean MASE 0.923 vs SARIMA 0.672), highlighting the danger of recursive tree models for long-range planning.
+            1. **The Core Quartet split (SARIMA 3 wins, GRU 3 wins, LSTM 1 win, XGBoost 0 wins):**
+               * **SARIMA dominates high-cyclicality games:** On games with strict annual cadence (*Dota 2*, *GTA V*, *Rust*), seasonal differencing ($s=12$) prevents error explosion and bounds long-term variance.
+               * **GRU/LSTM excel on regime shifts & plateaus:** On titles stabilizing after explosive growth (*CS:GO*, *Rainbow Six Siege*, *Warframe*, *TF2*), recurrent gating mechanisms adaptively model non-linear churn where linear differencing degrades.
+               * **XGBoost struggles under recursive long horizons:** Autoregressive feature feedback cascades error step-by-step ($H=12$ mean MASE 0.923 vs SARIMA 0.672), highlighting the danger of recursive tree models for long-range planning.
 
-            2. **The Power of Parsimonious Baselines:**
-               * Across the complete 11-candidate arena, **Holt-Winters Exponential Smoothing** (Mean MASE: 0.526) and **L2-Regularized Ridge Regression** (Mean MASE: 0.561) posted the lowest overall cross-game error, proving that low-parameter regularized models remain crucial baselines for finite historical windows ($N < 100$ months).
+            2. **The power of parsimonious baselines:**
+               * Across the complete 11-candidate arena, **Holt-Winters exponential smoothing** (mean MASE: 0.526) and **L2-regularized Ridge regression** (mean MASE: 0.561) posted the lowest overall cross-game error, proving that low-parameter regularized models remain crucial baselines for finite historical windows ($N < 100$ months).
 
-            3. **Unprecedented Macro Shocks:**
+            3. **Unprecedented macro shocks:**
                * The viral **Rust Twitch boom of January 2021 (+92% surge)** showed that pure autoregression cannot anticipate influencer-driven shocks; however, state-space models stabilized error faster post-shock than unconstrained tree ensembles.
             """
         )
 
         st.divider()
-        st.markdown("#### Comparative Paradigm Tradeoff Matrix")
+        st.markdown("#### :material/table_view: Comparative paradigm tradeoff matrix")
 
         tradeoff_data = [
             {

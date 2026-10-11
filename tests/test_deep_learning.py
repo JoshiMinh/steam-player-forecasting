@@ -7,7 +7,7 @@ import pandas as pd
 import pytest
 import torch
 
-from steam_player_forecasting.models.deep_learning import (
+from src.models.deep_learning import (
     GRUForecaster,
     GRUModel,
     LSTMForecaster,

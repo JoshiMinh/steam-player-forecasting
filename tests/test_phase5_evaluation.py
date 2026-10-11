@@ -9,14 +9,14 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from steam_player_forecasting.data.loader import get_available_games, get_project_root
-from steam_player_forecasting.evaluation.metrics import calculate_metrics
+from src.data.loader import get_available_games, get_project_root
+from src.evaluation.metrics import calculate_metrics
 
 
 def test_phase5_report_files_exist():
     """Verify that all Phase 5 report artifacts are generated and valid."""
     root = get_project_root()
-    report_dir = root / "report"
+    report_dir = root / "assets" / "reports" if (root / "assets" / "reports").exists() else root / "report"
 
     expected_files = [
         "final_test_benchmarks.csv",
@@ -39,7 +39,7 @@ def test_phase5_report_files_exist():
 def test_phase5_figures_exist():
     """Verify that all Phase 5 publication-quality figures exist and are non-empty."""
     root = get_project_root()
-    fig_dir = root / "figures"
+    fig_dir = root / "assets" / "figures" if (root / "assets" / "figures").exists() else root / "figures"
 
     expected_figures = [
         "17_final_test_forecast_comparisons.png",
@@ -57,7 +57,8 @@ def test_phase5_figures_exist():
 def test_final_test_benchmarks_schema_and_coverage():
     """Verify final test benchmarks CSV covers all 7 games and expected candidate models."""
     root = get_project_root()
-    csv_path = root / "report" / "final_test_benchmarks.csv"
+    report_dir = root / "assets" / "reports" if (root / "assets" / "reports").exists() else root / "report"
+    csv_path = report_dir / "final_test_benchmarks.csv"
     df = pd.read_csv(csv_path)
 
     expected_cols = ["Game", "Model", "Paradigm", "MAE", "RMSE", "MAPE", "sMAPE", "MASE"]
@@ -84,7 +85,8 @@ def test_final_test_benchmarks_schema_and_coverage():
 def test_final_leaderboard_consistency():
     """Verify the final leaderboard correctly aggregates test metrics."""
     root = get_project_root()
-    csv_path = root / "report" / "final_leaderboard.csv"
+    report_dir = root / "assets" / "reports" if (root / "assets" / "reports").exists() else root / "report"
+    csv_path = report_dir / "final_leaderboard.csv"
     df = pd.read_csv(csv_path)
 
     assert "Model" in df.columns
@@ -99,7 +101,8 @@ def test_final_leaderboard_consistency():
 def test_forecast_cache_integrity():
     """Verify test_forecasts_cache.json is properly formatted and complete."""
     root = get_project_root()
-    cache_path = root / "report" / "test_forecasts_cache.json"
+    report_dir = root / "assets" / "reports" if (root / "assets" / "reports").exists() else root / "report"
+    cache_path = report_dir / "test_forecasts_cache.json"
     if not cache_path.exists():
         cache_path = root / "data" / "processed" / "test_forecasts_cache.json"
 
@@ -130,7 +133,8 @@ def test_forecast_cache_integrity():
 def test_error_by_horizon_structure():
     """Verify error by horizon dataset covers steps 1 to 12."""
     root = get_project_root()
-    csv_path = root / "report" / "error_by_horizon.csv"
+    report_dir = root / "assets" / "reports" if (root / "assets" / "reports").exists() else root / "report"
+    csv_path = report_dir / "error_by_horizon.csv"
     df = pd.read_csv(csv_path)
 
     assert set(df["Horizon_Step"].unique()) == set(range(1, 13))

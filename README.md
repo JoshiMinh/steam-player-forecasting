@@ -174,8 +174,6 @@ streamlit run app/app.py
 - Inspect peak-to-average player ratios, historical volatility, and documented structural breaks.
 - Check the **Backtest robustness** tab for rolling-origin results, seed variation and significance tests.
 
-**Hosting the demo:** the app reads only precomputed results committed under `assets/reports/`, so it needs no data download or model training. On [Streamlit Community Cloud](https://streamlit.io/cloud), create an app from this repository with main file `app/app.py`; the slim `app/requirements.txt` (next to the entrypoint) is used instead of the full modelling stack. Hosted copies show average-player history rebuilt from the forecast cache, without the peak-player statistics that need the local processed dataset.
-
 ---
 
 ## Final Research Findings & Leaderboard

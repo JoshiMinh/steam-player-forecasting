@@ -188,8 +188,9 @@ def load_game_raw_history(game_name: str) -> pd.DataFrame:
         df = pd.read_csv(p, parse_dates=["Month_Year"]).sort_values("Month_Year")
         return df
 
-    # Hosted demo fallback: data/processed is gitignored, so rebuild the monthly
-    # average-player series from the committed forecast cache (history + test window).
+    # Fallback when the gitignored data/processed CSVs are absent (e.g. a fresh clone
+    # before running the pipeline): rebuild the monthly average-player series from
+    # the committed forecast cache (history + test window).
     entry = load_forecast_cache().get(game_name)
     if entry:
         return pd.DataFrame(

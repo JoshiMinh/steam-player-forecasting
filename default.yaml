@@ -75,6 +75,11 @@ models:
     device: "cpu"
 
 evaluation:
+  backtest:
+    n_folds: 4            # maximum non-overlapping 12-month rolling origins per game
+    min_train_months: 28  # folds with a shorter training window are dropped
+    seeds: [42, 0, 1, 2, 3]  # RNN / LSTM / GRU seeds (42 reproduces the Phase 5 run)
+    n_boot: 5000          # bootstrap resamples for CIs and paired tests
   metrics:
     - "MAE"
     - "RMSE"

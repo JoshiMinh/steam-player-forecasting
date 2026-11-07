@@ -196,7 +196,7 @@ streamlit run app/app.py
 The entire project can be reproduced end-to-end via deterministic scripts:
 
 ```bash
-# 1. Run automated test suite (100% pass rate across 68 unit tests)
+# 1. Run automated test suite (100% pass rate across 98 tests)
 pytest -v
 
 # 2. Run Phase 5 Test-Set Evaluation and export benchmark CSVs
@@ -212,7 +212,33 @@ python scripts/execute_notebook.py 04_final_evaluation_and_synthesis.ipynb
 
 ---
 
-## 10. Threats to Validity & Limitations
+## 10. Robustness: Rolling-Origin Backtest & Significance
+
+To test whether the single-holdout ranking generalizes, all 11 models were re-evaluated on up to four non-overlapping 12-month origins per title (27 game-fold units; fold 0 is the holdout above). RNN, LSTM and GRU were repeated over five seeds, and uncertainty comes from a bootstrap over game-fold units plus per-game Diebold-Mariano tests (Bartlett-weighted long-run variance, Harvey small-sample correction). Per-unit MASE is capped at 5 for aggregation so that a single diverged fit does not dominate; raw values are retained.
+
+| Rank | Model | Mean MASE [95% CI] | Median MASE |
+| :---: | :--- | :---: | :---: |
+| 1 | Holt-Winters | 0.546 [0.471, 0.618] | 0.550 |
+| 2 | SARIMA | 0.801 [0.560, 1.185] | 0.605 |
+| 3 | Ridge | 0.857 [0.602, 1.243] | 0.704 |
+| 4 | GRU | 0.860 [0.746, 0.974] | 0.844 |
+| 5 | Random Forest | 0.918 [0.831, 1.006] | 0.882 |
+| 6 | LSTM | 0.922 [0.824, 1.025] | 0.898 |
+| 7 | XGBoost | 0.939 [0.851, 1.030] | 0.931 |
+| 8 | RNN | 0.949 [0.859, 1.037] | 0.971 |
+| 9 | Seasonal Naive | 1.036 [0.974, 1.101] | 1.051 |
+| 10 | ARIMA(1,1,1) | 1.116 [0.979, 1.295] | 1.024 |
+| 11 | Naive | 1.242 [1.010, 1.521] | 1.002 |
+
+**Conclusions that hold:** Holt-Winters is the most robust model overall; parsimonious baselines remain hard to beat; XGBoost does not outperform the classical or linear baselines.
+
+**Conclusions that weaken:** the holdout's "SARIMA 3 wins vs GRU 3 wins" split does not persist. Across origins SARIMA has the lower scaled error than GRU, LSTM and XGBoost in 6 of 7 games, although the pooled mean differences are not statistically distinguishable because one SARIMA fit diverged (Rust, fold 3). GRU's edge over LSTM (0.062 MASE, 95% CI −0.110 to −0.014) is comparable to seed-to-seed variation (standard deviation 0.077–0.095), so it should not be over-interpreted.
+
+**Caveats:** SARIMA orders and XGBoost parameters were tuned on the 2019-09 to 2020-08 validation window, which overlaps the test windows of folds 1 and older (flagged in the output), and the sample remains small. Full tables are in `backtest_summary.md`, `backtest_significance.md` and `backtest_fold_metrics.csv`; reproduce with `steam-forecast backtest`.
+
+---
+
+## 11. Threats to Validity & Limitations
 
 1. **Unobserved Exogenous Shock Variables:**
    - Player spikes induced by external influencer adoption (such as Rust on Twitch) or marketing campaigns are inherently unpredictable purely from historical concurrency levels.

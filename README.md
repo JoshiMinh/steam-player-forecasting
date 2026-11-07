@@ -36,19 +36,22 @@ See [`data/README.md`](data/README.md) for full ingestion, schema specifications
 
 ---
 
-## Planned Models
+## Models Evaluated
 
 The benchmark evaluates three major modeling paradigms:
 
 ### Core Quartet Comparison
-| Paradigm | Model | Description |
-| :--- | :--- | :--- |
-| **Statistical** | **SARIMA** | Seasonal Autoregressive Integrated Moving Average |
+
+
+| Paradigm             | Model       | Description                                                        |
+| :--------------------- | :------------ | :------------------------------------------------------------------- |
+| **Statistical**      | **SARIMA**  | Seasonal Autoregressive Integrated Moving Average                  |
 | **Machine Learning** | **XGBoost** | Gradient-boosted decision trees with lag & rolling window features |
-| **Deep Learning** | **LSTM** | Long Short-Term Memory recurrent neural network |
-| **Deep Learning** | **GRU** | Gated Recurrent Unit recurrent neural network |
+| **Deep Learning**    | **LSTM**    | Long Short-Term Memory recurrent neural network                    |
+| **Deep Learning**    | **GRU**     | Gated Recurrent Unit recurrent neural network                      |
 
 ### Baseline Models
+
 - **Heuristic:** Naive (last value), Seasonal Naive (prior year month)
 - **Exponential Smoothing:** Holt's Linear, Holt-Winters (additive/multiplicative)
 - **Autoregressive / Classical:** AR, ARIMA
@@ -60,6 +63,7 @@ The benchmark evaluates three major modeling paradigms:
 ## Evaluation Metrics
 
 All models are evaluated on identical, strictly chronological holdout test windows:
+
 - **Primary Metrics:**
   - **MAE** (Mean Absolute Error)
   - **RMSE** (Root Mean Squared Error)
@@ -78,7 +82,9 @@ steam-player-forecasting/
 ├── .github/
 │   └── workflows/
 │       └── ci.yml               # GitHub Actions continuous integration workflow
-├── default.yaml             # Central configuration (splits, hyperparameters, seeds)
+├── .streamlit/
+│   └── config.toml              # Streamlit theme and server settings
+├── default.yaml                 # Central configuration (splits, hyperparameters, seeds)
 ├── data/
 │   ├── raw/                     # Raw untouched datasets (.gitignore)
 │   ├── processed/               # Cleaned & standardized datasets (.gitignore)
@@ -109,18 +115,20 @@ steam-player-forecasting/
 ## Environment Setup
 
 ### Prerequisites
+
 - Python 3.11+ (Python 3.11, 3.12, or 3.13)
-- Git & GitHub CLI (`gh`)
+- Git
 
 ### Quickstart
 
 1. **Clone the repository:**
+
    ```bash
    git clone https://github.com/JoshiMinh/steam-player-forecasting.git
    cd steam-player-forecasting
    ```
-
 2. **Create and activate the virtual environment:**
+
    ```bash
    # Windows (PowerShell)
    python -m venv .venv
@@ -130,15 +138,15 @@ steam-player-forecasting/
    python3 -m venv .venv
    source .venv/bin/activate
    ```
-
 3. **Install dependencies:**
+
    ```bash
    pip install --upgrade pip
    pip install -r requirements.txt
    pip install -e .
    ```
-
 4. **Run tests:**
+
    ```bash
    pytest
    ```
@@ -153,7 +161,12 @@ Launch the interactive forecasting dashboard to explore historical trajectories,
 streamlit run app/app.py
 ```
 
+<p align="center">
+  <img src="images/screenshot.png" alt="Steam-style forecasting dashboard screenshot" width="850" />
+</p>
+
 **Demo Capabilities:**
+
 - Select any of the 7 evaluated Steam multiplayer flagships.
 - Toggle between Core Quartet models (SARIMA, XGBoost, LSTM, GRU) and baseline forecasters.
 - Adjust historical context windows (6 to 36 months).
@@ -165,46 +178,89 @@ streamlit run app/app.py
 ## Final Research Findings & Leaderboard
 
 ### Core Answer to Research Question
+
 > **Can modern recurrent deep learning models (LSTM, GRU) or gradient-boosted trees (XGBoost) reliably outperform classical econometric benchmarks (SARIMA)?**
 
 **Key Empirical Discoveries:**
+
 1. **The Core Quartet Split (SARIMA: 3 wins, GRU: 3 wins, LSTM: 1 win, XGBoost: 0 wins):**
-   - **SARIMA dominates on titles with regular, smooth annual cycles** (*Dota 2*, *GTA V*, *Rust*). Differencing ($d=1, D=1$) naturally enforces mean reversion and prevents runaway forecast drift.
+   - **SARIMA dominates on titles with regular, smooth annual cycles** (*Dota 2*, *GTA V*, *Rust*). Seasonal differencing ($d=1, D=1$) anchors forecasts to the prior year's seasonal pattern, avoiding the level drift that learned models can accumulate over a 12-month horizon.
    - **GRU & LSTM dominate on titles with non-linear retention plateaus and structural shifts** (*CS:GO*, *Rainbow Six Siege*, *Warframe*, *TF2*). Gated recurrent units effectively adapt to multi-scale cyclicality and retention dynamics.
    - **XGBoost consistently struggled across all 7 games (Mean MASE: 0.923 vs SARIMA: 0.672, GRU: 0.776):** Recursive multi-step forecasting in tree ensembles suffers from compounding autoregressive error drift over long ($H=12$) horizons.
 2. **Parsimonious Baselines Excel Overall:**
    - Across all 11 candidate models, **Holt-Winters (Mean MASE: 0.526)** and **Ridge Regression (Mean MASE: 0.561)** achieved the lowest overall average error across titles, underscoring the value of strong regularization in sample-constrained time-series regimes.
 
 ### Final Holdout Test Leaderboard (2020-09-01 to 2021-08-01, $H=12$)
-*Ranked by Mean MASE across all 7 evaluated Steam titles:*
 
-| Rank | Model | Paradigm | Mean MAE | Median MAE | Mean RMSE | Mean MAPE | Mean MASE | Titles Won |
-| :---: | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **1** | **Holt-Winters** | Exponential Smoothing | 8,049.45 | 5,781.39 | 10,143.88 | 4.72% | **0.526** | **3** |
-| **2** | **Ridge** | Linear ML | 7,966.24 | 5,149.47 | 9,872.49 | 4.99% | **0.561** | **3** |
-| **3** | **SARIMA** | Classical Econometric | 11,605.70 | 5,565.80 | 13,665.33 | 6.03% | **0.672** | **1** |
-| **4** | **GRU** | Recurrent Deep Learning | 13,018.31 | 7,866.74 | 16,468.70 | 6.82% | **0.776** | **0** |
-| **5** | **LSTM** | Recurrent Deep Learning | 12,998.59 | 8,557.04 | 16,674.17 | 7.13% | **0.802** | **0** |
-| **6** | **Random Forest** | Tree Ensemble ML | 14,184.20 | 7,302.51 | 17,260.98 | 7.45% | **0.832** | **0** |
-| **7** | **RNN** | Vanilla Recurrent DL | 13,261.02 | 9,092.99 | 16,793.54 | 7.94% | **0.857** | **0** |
-| **8** | **XGBoost** | Gradient Boosted ML | 14,770.90 | 10,062.14 | 17,556.75 | 8.40% | **0.923** | **0** |
-| **9** | **Seasonal Naive** | Seasonal Baseline | 19,471.53 | 11,339.65 | 21,978.68 | 10.45% | **1.119** | **0** |
-| **10** | **ARIMA(1,1,1)** | Classical Econometric | 19,978.06 | 12,486.85 | 23,490.15 | 11.08% | **1.294** | **0** |
-| **11** | **Naive** | Heuristic Baseline | 21,386.35 | 10,543.99 | 24,870.34 | 11.21% | **1.357** | **0** |
+*Ranked by Mean MASE across all 7 evaluated Steam titles. "Titles Won" counts wins among all 11 models here, whereas the Core Quartet split above counts wins among only SARIMA, XGBoost, LSTM and GRU.*
+
+
+|  Rank  | Model              | Paradigm                | Mean MAE | Median MAE | Mean RMSE | Mean MAPE | Mean MASE | Titles Won |
+| :------: | :------------------- | :------------------------ | :---------: | :----------: | :---------: | :---------: | :---------: | :----------: |
+| **1** | **Holt-Winters**   | Exponential Smoothing   | 8,049.45 |  5,781.39  | 10,143.88 |   4.72%   | **0.526** |   **3**   |
+| **2** | **Ridge**          | Linear ML               | 7,966.24 |  5,149.47  | 9,872.49 |   4.99%   | **0.561** |   **3**   |
+| **3** | **SARIMA**         | Classical Econometric   | 11,605.70 |  5,565.80  | 13,665.33 |   6.03%   | **0.672** |   **1**   |
+| **4** | **GRU**            | Recurrent Deep Learning | 13,018.31 |  7,866.74  | 16,468.70 |   6.82%   | **0.776** |   **0**   |
+| **5** | **LSTM**           | Recurrent Deep Learning | 12,998.59 |  8,557.04  | 16,674.17 |   7.13%   | **0.802** |   **0**   |
+| **6** | **Random Forest**  | Tree Ensemble ML        | 14,184.20 |  7,302.51  | 17,260.98 |   7.45%   | **0.832** |   **0**   |
+| **7** | **RNN**            | Vanilla Recurrent DL    | 13,261.02 |  9,092.99  | 16,793.54 |   7.94%   | **0.857** |   **0**   |
+| **8** | **XGBoost**        | Gradient Boosted ML     | 14,770.90 | 10,062.14 | 17,556.75 |   8.40%   | **0.923** |   **0**   |
+| **9** | **Seasonal Naive** | Seasonal Baseline       | 19,471.53 | 11,339.65 | 21,978.68 |  10.45%  | **1.119** |   **0**   |
+| **10** | **ARIMA(1,1,1)**   | Classical Econometric   | 19,978.06 | 12,486.85 | 23,490.15 |  11.08%  | **1.294** |   **0**   |
+| **11** | **Naive**          | Heuristic Baseline      | 21,386.35 | 10,543.99 | 24,870.34 |  11.21%  | **1.357** |   **0**   |
 
 ### Core Quartet Head-to-Head Performance by Game
 
-| Game | SARIMA MAE (MASE) | XGBoost MAE (MASE) | LSTM MAE (MASE) | GRU MAE (MASE) | Best Paradigm |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| **Counter-Strike: Global Offensive** | 31,473.4 (0.589) | 36,494.2 (0.683) | 31,094.8 (0.582) | **24,360.5 (0.456)** | **GRU (DL)** |
-| **Dota 2** | **23,463.9 (0.811)** | 25,401.8 (0.878) | 26,687.0 (0.923) | 35,996.4 (1.245) | **SARIMA (Econometric)** |
-| **Grand Theft Auto V** | **5,565.8 (0.444)** | 9,469.6 (0.755) | 7,295.7 (0.582) | 8,269.6 (0.660) | **SARIMA (Econometric)** |
-| **Rust** | **3,888.2 (0.394)** | 10,062.1 (1.019) | 8,557.0 (0.867) | 7,030.8 (0.712) | **SARIMA (Econometric)** |
-| **Team Fortress 2** | 4,440.2 (1.037) | 5,284.5 (1.234) | **3,929.5 (0.917)** | 4,532.6 (1.058) | **LSTM (DL)** |
-| **Tom Clancy's Rainbow Six Siege** | 9,206.8 (0.694) | 12,569.2 (0.948) | 8,681.1 (0.655) | **7,866.7 (0.593)** | **GRU (DL)** |
-| **Warframe** | 3,201.6 (0.734) | 4,114.9 (0.944) | 4,745.1 (1.089) | **3,071.4 (0.705)** | **GRU (DL)** |
+
+| Game                                 |  SARIMA MAE (MASE)  | XGBoost MAE (MASE) |   LSTM MAE (MASE)   |    GRU MAE (MASE)    |      Best Paradigm      |
+| :------------------------------------- | :--------------------: | :------------------: | :-------------------: | :--------------------: | :------------------------: |
+| **Counter-Strike: Global Offensive** |   31,473.4 (0.589)   |  36,494.2 (0.683)  |  31,094.8 (0.582)  | **24,360.5 (0.456)** |       **GRU (DL)**       |
+| **Dota 2**                           | **23,463.9 (0.811)** |  25,401.8 (0.878)  |  26,687.0 (0.923)  |   35,996.4 (1.245)   | **SARIMA (Econometric)** |
+| **Grand Theft Auto V**               | **5,565.8 (0.444)** |  9,469.6 (0.755)  |   7,295.7 (0.582)   |   8,269.6 (0.660)   | **SARIMA (Econometric)** |
+| **Rust**                             | **3,888.2 (0.394)** |  10,062.1 (1.019)  |   8,557.0 (0.867)   |   7,030.8 (0.712)   | **SARIMA (Econometric)** |
+| **Team Fortress 2**                  |   4,440.2 (1.037)   |  5,284.5 (1.234)  | **3,929.5 (0.917)** |   4,532.6 (1.058)   |      **LSTM (DL)**      |
+| **Tom Clancy's Rainbow Six Siege**   |   9,206.8 (0.694)   |  12,569.2 (0.948)  |   8,681.1 (0.655)   | **7,866.7 (0.593)** |       **GRU (DL)**       |
+| **Warframe**                         |   3,201.6 (0.734)   |  4,114.9 (0.944)  |   4,745.1 (1.089)   | **3,071.4 (0.705)** |       **GRU (DL)**       |
 
 Detailed discussion and qualitative case studies available in [`assets/reports/final_report.md`](assets/reports/final_report.md).
+
+### Robustness: Rolling-Origin Backtest, Seeds & Significance
+
+The single holdout above is re-checked on up to four non-overlapping 12-month forecast origins per game (27 game-fold units in total: 4 folds for six titles, 3 for Rainbow Six Siege), with RNN/LSTM/GRU repeated over 5 seeds (42, 0, 1, 2, 3) and uncertainty from a bootstrap over the game-fold units. Fold 0 is the published holdout.
+
+| Rank | Model | Mean MASE [95% CI] | Median MASE | Fold-0 MASE | Seed Std |
+| :---: | :--- | :---: | :---: | :---: | :---: |
+| 1 | **Holt-Winters** | **0.546** [0.471, 0.618] | 0.550 | 0.526 | — |
+| 2 | SARIMA | 0.801 [0.560, 1.185] ¹ | 0.605 | 0.672 | — |
+| 3 | Ridge | 0.857 [0.602, 1.243] ¹ | 0.704 | 0.562 | — |
+| 4 | GRU | 0.860 [0.746, 0.974] | 0.844 | 0.735 | 0.095 |
+| 5 | Random Forest | 0.918 [0.831, 1.006] | 0.882 | 0.832 | — |
+| 6 | LSTM | 0.922 [0.824, 1.025] | 0.898 | 0.834 | 0.077 |
+| 7 | XGBoost | 0.939 [0.851, 1.030] | 0.931 | 0.923 | — |
+| 8 | RNN | 0.949 [0.859, 1.037] | 0.971 | 0.913 | 0.093 |
+| 9 | Seasonal Naive | 1.036 [0.974, 1.101] | 1.051 | 1.119 | — |
+| 10 | ARIMA(1,1,1) | 1.116 [0.979, 1.295] | 1.024 | 1.294 | — |
+| 11 | Naive | 1.242 [1.010, 1.521] | 1.002 | 1.357 | — |
+
+¹ One fit diverged: SARIMA on Rust fold 3 (raw MASE ≈ 3.9 × 10⁹) and Ridge on GTA V fold 3 (raw MASE 14.7, 29 training months). Each unit's MASE is capped at 5 for the mean, CI and tests so a single runaway fit cannot dominate, and the median is robust to it. Raw values are kept in `assets/reports/backtest_fold_metrics.csv`. Fold-0 values for RNN/LSTM/GRU are seed-averaged, so they differ from the single-seed (42) numbers in the leaderboard above.
+
+**What the backtest says:**
+
+- **Holt-Winters is the most robust model.** It has the lowest mean MASE, and its paired-bootstrap difference to every other model excludes zero. Per game, a Diebold-Mariano test finds it significantly better than the recurrent, tree and naive models in most titles (5–7 of 7). It is not separable from SARIMA or Ridge at the game level (0 of 7 games each).
+- **Deep learning does not reliably beat SARIMA.** The pooled MASE differences of GRU, LSTM and XGBoost against SARIMA all have intervals that include zero. SARIMA has the lower scaled error in 6 of 7 games against each of them. The "GRU 3 wins vs SARIMA 3 wins" split in the holdout is specific to that window.
+- **GRU edges LSTM, but narrowly.** The gap is 0.062 MASE (95% CI −0.110 to −0.014; GRU lower in 5 of 7 games, significant per game in 3), which is comparable to the seed-to-seed standard deviation of either model (0.077–0.095). Single-seed rankings between them should not be over-read.
+- **XGBoost does not beat any classical or linear baseline** and was never the best tree model (Random Forest has the lower mean MASE).
+- **Caveat on SARIMA and XGBoost:** their orders and parameters were tuned on the 2019-09 to 2020-08 validation window, which overlaps the test windows of folds 1 and older. Their rows are flagged `Params_Tuned_On_Test` and are, if anything, optimistic.
+
+Reproduce with `steam-forecast backtest`; the full tables are `assets/reports/backtest_summary.md` and `backtest_significance.md`.
+
+### Limitations
+
+- **Short rolling history:** the backtest covers about four yearly origins per title (three for Rainbow Six Siege), and the two most recent origins span the 2020 COVID-era surge in player counts, so the evidence is stronger than a single holdout but still limited.
+- **Small sample:** only 7 titles and short monthly histories, which limits how much data the deep learning models can learn from and keeps the confidence intervals wide.
+- **Fixed hyperparameters:** SARIMA orders and XGBoost parameters are not re-tuned per fold (see the caveat above), and the recurrent networks use one configuration for all titles.
+- **Unstable fits are reported, not hidden:** an unconstrained SARIMA fit and a recursive Ridge forecast each diverged once; the capped aggregation limits their influence but they count against those models.
+- **Single target:** benchmark results cover `Avg_players` only; `Peak_Players` is used for diagnostics (e.g., peak-to-average ratios), not forecast.
 
 ---
 
@@ -212,12 +268,12 @@ Detailed discussion and qualitative case studies available in [`assets/reports/f
 
 The project followed a strict 5-phase sequential architecture:
 
-- [x] **Phase 0:** Repository Initialization & Standards Setup *(Completed)*
-- [x] **Phase 1:** Dataset Acquisition & Validation *(Completed)*
-- [x] **Phase 2:** EDA & Time-Series Preprocessing *(Completed)*
-- [x] **Phase 3:** Statistical Forecasting (Baselines & SARIMA) *(Completed)*
-- [x] **Phase 4:** Machine Learning & Deep Learning (XGBoost, LSTM, GRU) *(Completed)*
-- [x] **Phase 5:** Final Evaluation, Report & Interactive Demo *(Completed)*
+- [X]  **Phase 0:** Repository Initialization & Standards Setup *(Completed)*
+- [X]  **Phase 1:** Dataset Acquisition & Validation *(Completed)*
+- [X]  **Phase 2:** EDA & Time-Series Preprocessing *(Completed)*
+- [X]  **Phase 3:** Statistical Forecasting (Baselines & SARIMA) *(Completed)*
+- [X]  **Phase 4:** Machine Learning & Deep Learning (XGBoost, LSTM, GRU) *(Completed)*
+- [X]  **Phase 5:** Final Evaluation, Report & Interactive Demo *(Completed)*
 
 ---
 
@@ -226,7 +282,7 @@ The project followed a strict 5-phase sequential architecture:
 All analyses, models, figures, and benchmark tables can be reproduced using the unified `steam-forecast` CLI:
 
 ```bash
-# 1. Run the entire automated test suite (79 unit tests, 100% pass rate)
+# 1. Run the entire automated test suite (98 tests, 100% pass rate)
 pytest -v
 
 # 2. Re-run Phase 5 Test-Set Evaluation and generate benchmark CSVs
@@ -235,7 +291,11 @@ steam-forecast phase5
 # 3. Generate all publication figures (Figures 17, 18, 19, 20)
 steam-forecast phase5-figures
 
-# 4. Launch interactive demonstration dashboard
+# 4. Rolling-origin backtest with 5-seed deep learning and significance tests (~6 min on CPU)
+steam-forecast backtest
+# Quick check on one game: steam-forecast backtest --games "Dota 2" --folds 2 --seeds 2 --output-dir <tmp>
+
+# 5. Launch interactive demonstration dashboard
 steam-forecast app
 # Or directly via Streamlit:
 streamlit run app/app.py

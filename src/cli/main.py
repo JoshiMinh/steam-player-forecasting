@@ -50,6 +50,16 @@ def main(argv: list[str] | None = None) -> None:
     # 6. Phase 5 Figures
     subparsers.add_parser("phase5-figures", help="Generate all 4 publication test figures (Figures 17, 18, 19, 20)")
 
+    # 6b. Rolling-origin backtest
+    p_bt = subparsers.add_parser(
+        "backtest",
+        help="Rolling-origin backtest with multi-seed deep learning and significance tests",
+    )
+    p_bt.add_argument("--games", nargs="*", default=None, help="Subset of games (default: all)")
+    p_bt.add_argument("--folds", type=int, default=None, help="Maximum folds per game (default: from default.yaml)")
+    p_bt.add_argument("--seeds", type=int, default=None, help="Number of seeds for RNN/LSTM/GRU (default: from default.yaml)")
+    p_bt.add_argument("--output-dir", default=None, help="Output directory (default: assets/reports)")
+
     # 7. Interactive Streamlit App
     subparsers.add_parser("app", help="Launch the interactive Steam Store Streamlit dashboard")
 
@@ -85,6 +95,15 @@ def main(argv: list[str] | None = None) -> None:
     elif args.subcommand == "phase5-figures":
         from src.cli.phase5_figures import main as run_figures
         run_figures()
+
+    elif args.subcommand == "backtest":
+        from src.cli.backtest import run_backtest
+        run_backtest(
+            games=args.games,
+            n_folds=args.folds,
+            n_seeds=args.seeds,
+            output_dir=args.output_dir,
+        )
 
     elif args.subcommand == "app":
         run_app()

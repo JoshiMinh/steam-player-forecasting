@@ -37,6 +37,8 @@ from components.cards import compute_dynamic_metrics, render_game_capsule, rende
 from components.header import render_steam_header
 from components.plots import (
     STEAM_PALETTE,
+    create_backtest_fold_chart,
+    create_backtest_summary_chart,
     create_horizon_error_chart,
     create_interactive_forecast_chart,
     plot_historical_dynamics,
@@ -161,6 +163,17 @@ def load_benchmarks_data() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
 
 
 @st.cache_data
+def load_backtest_data() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """Load rolling-origin backtest summary, fold metrics and significance tables."""
+    rep_dir = ROOT_DIR / "assets" / "reports"
+    out: list[pd.DataFrame] = []
+    for name in ("backtest_summary.csv", "backtest_fold_metrics.csv", "backtest_significance.csv"):
+        path = rep_dir / name
+        out.append(pd.read_csv(path) if path.exists() else pd.DataFrame())
+    return out[0], out[1], out[2]
+
+
+@st.cache_data
 def load_game_raw_history(game_name: str) -> pd.DataFrame:
     """Load full historical CSV for a given game."""
     slug = (
@@ -174,6 +187,17 @@ def load_game_raw_history(game_name: str) -> pd.DataFrame:
     if p.exists():
         df = pd.read_csv(p, parse_dates=["Month_Year"]).sort_values("Month_Year")
         return df
+
+    # Hosted demo fallback: data/processed is gitignored, so rebuild the monthly
+    # average-player series from the committed forecast cache (history + test window).
+    entry = load_forecast_cache().get(game_name)
+    if entry:
+        return pd.DataFrame(
+            {
+                "Month_Year": pd.to_datetime(list(entry["history_dates"]) + list(entry["test_dates"])),
+                "Avg_players": list(entry["history_values"]) + list(entry["test_actuals"]),
+            }
+        )
     return pd.DataFrame()
 
 
@@ -409,11 +433,12 @@ def main() -> None:
         st.caption(f"{meta.get('notes', '')}")
 
     # 3. Main Tabs (Material Symbols & Sentence Casing)
-    tab1, tab2, tab3, tab4 = st.tabs([
+    tab1, tab2, tab3, tab4, tab5 = st.tabs([
         ":material/show_chart: Forecast trajectories",
         ":material/leaderboard: Model leaderboard",
         ":material/history: Historical dynamics",
         ":material/science: Research synthesis",
+        ":material/verified: Backtest robustness",
     ])
 
     # -------------------------------------------------------------------------
@@ -541,7 +566,10 @@ def main() -> None:
                         f"- **Time span:** {raw_df['Month_Year'].min().strftime('%Y-%m')} to {raw_df['Month_Year'].max().strftime('%Y-%m')}"
                     )
                     st.markdown(f"- **All-time average players:** {raw_df['Avg_players'].mean():,.0f}")
-                    st.markdown(f"- **All-time peak players:** {raw_df['Peak_Players'].max():,.0f}")
+                    if "Peak_Players" in raw_df.columns:
+                        st.markdown(f"- **All-time peak players:** {raw_df['Peak_Players'].max():,.0f}")
+                    else:
+                        st.caption("Peak-player statistics need the local processed dataset (`steam-forecast pipeline`).")
                     st.markdown(f"- **Population volatility (std dev):** {raw_df['Avg_players'].std():,.0f}")
 
             with col_d2:
@@ -623,6 +651,101 @@ def main() -> None:
             },
         ]
         st.dataframe(pd.DataFrame(tradeoff_data), width="stretch")
+
+        st.info(
+            "The holdout-based findings above come from a single 12-month window. "
+            "See the **Backtest robustness** tab for results across several forecast origins, "
+            "multiple seeds and significance tests; some of these conclusions weaken there."
+        )
+
+    # -------------------------------------------------------------------------
+    # TAB 5: Rolling-Origin Backtest Robustness
+    # -------------------------------------------------------------------------
+    with tab5:
+        bt_summary, bt_folds, bt_sig = load_backtest_data()
+        st.markdown("### :material/verified: Rolling-origin backtest, seeds & significance")
+
+        if bt_summary.empty or bt_folds.empty:
+            st.warning(
+                "Backtest results not found. Run `steam-forecast backtest` to generate "
+                "`assets/reports/backtest_*.csv`."
+            )
+        else:
+            n_units = bt_folds[["Game", "Fold"]].drop_duplicates().shape[0]
+            seeded = bt_folds["Seed"].dropna().nunique()
+            st.markdown(
+                f"""
+                <div class="steam-callout-box">
+                    <strong>{n_units} game-fold units</strong> (up to four non-overlapping 12-month forecast origins per title),
+                    RNN/LSTM/GRU averaged over <strong>{seeded} seeds</strong>. Intervals are bootstrap 95% CIs over the units.
+                    Two diverged fits (SARIMA, Ridge) were replaced by a fallback and flagged in the CSVs; any MASE above 5 would be capped at 5.
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+            st.markdown("#### :material/leaderboard: Cross-origin leaderboard")
+            st.altair_chart(create_backtest_summary_chart(bt_summary), width="stretch")
+            st.caption("Dashed line: MASE = 1 (in-sample seasonal naive). Lower is better; overlapping intervals mean the models are not clearly separable.")
+
+            show_cols = [
+                c for c in [
+                    "Rank", "Model", "Paradigm", "Mean_MASE", "CI_Low", "CI_High", "Median_MASE",
+                    "Fold0_Mean_MASE", "Mean_Seed_Std", "Fallback_Units", "Units",
+                ] if c in bt_summary.columns
+            ]
+            st.dataframe(
+                bt_summary[show_cols].style.format({
+                    "Mean_MASE": "{:.3f}",
+                    "CI_Low": "{:.3f}",
+                    "CI_High": "{:.3f}",
+                    "Median_MASE": "{:.3f}",
+                    "Fold0_Mean_MASE": "{:.3f}",
+                    "Mean_Seed_Std": "{:.3f}",
+                }, na_rep="—"),
+                width="stretch",
+                hide_index=True,
+            )
+
+            st.divider()
+            st.markdown(f"#### :material/timeline: MASE by forecast origin: {selected_game}")
+            st.caption(
+                "Fold 0 is the published holdout (2020-09 to 2021-08); older origins step back 12 months at a time. "
+                "SARIMA and XGBoost parameters were tuned on the 2019-09 to 2020-08 validation window, "
+                "so their older folds are optimistic."
+            )
+            if selected_game in set(bt_folds["Game"]):
+                st.altair_chart(
+                    create_backtest_fold_chart(bt_folds, selected_game, selected_models),
+                    width="stretch",
+                )
+            else:
+                st.info("No backtest folds recorded for this title.")
+
+            if not bt_sig.empty:
+                st.divider()
+                st.markdown("#### :material/compare_arrows: Paired comparisons")
+                st.caption(
+                    "Mean MASE difference A − B (negative: A is better) with a paired bootstrap interval, plus per-game "
+                    "Diebold-Mariano tests on scaled absolute errors (games where A has lower error / games significant at 5%)."
+                )
+                sig_view = bt_sig.copy()
+                sig_view["DM: A better"] = sig_view["DM_Games_A_Better"].astype(str) + " / " + sig_view["DM_Games_Tested"].astype(str)
+                sig_view["DM: significant"] = sig_view["DM_Games_Significant"].astype(str) + " / " + sig_view["DM_Games_Tested"].astype(str)
+                sig_view["Clear gap"] = sig_view["Bootstrap_Significant"].map({True: "yes", False: "no"})
+                st.dataframe(
+                    sig_view[[
+                        "Model_A", "Model_B", "Mean_MASE_Diff", "CI_Low", "CI_High", "Boot_P",
+                        "Clear gap", "DM: A better", "DM: significant",
+                    ]].style.format({
+                        "Mean_MASE_Diff": "{:+.3f}",
+                        "CI_Low": "{:+.3f}",
+                        "CI_High": "{:+.3f}",
+                        "Boot_P": "{:.3f}",
+                    }),
+                    width="stretch",
+                    hide_index=True,
+                )
 
 
 if __name__ == "__main__":

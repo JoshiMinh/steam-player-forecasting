@@ -1,0 +1,8 @@
+# Slim runtime dependencies for hosting the Streamlit demo (e.g. Streamlit Community
+# Cloud). The demo reads precomputed results from assets/reports, so it does not
+# need the modelling stack (torch, xgboost, statsmodels) from the root requirements.txt.
+streamlit>=1.65.0   # uses st.fragment, st.segmented_control and widget `bind=`; 1.65 is what it was tested with
+pandas>=2.2.0
+numpy>=1.26.0
+matplotlib>=3.8.0
+altair>=5.0.0

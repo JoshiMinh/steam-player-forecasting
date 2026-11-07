@@ -196,7 +196,7 @@ streamlit run app/app.py
 The entire project can be reproduced end-to-end via deterministic scripts:
 
 ```bash
-# 1. Run automated test suite (100% pass rate across 98 tests)
+# 1. Run automated test suite (100% pass rate across 107 tests)
 pytest -v
 
 # 2. Run Phase 5 Test-Set Evaluation and export benchmark CSVs
@@ -214,13 +214,13 @@ python scripts/execute_notebook.py 04_final_evaluation_and_synthesis.ipynb
 
 ## 10. Robustness: Rolling-Origin Backtest & Significance
 
-To test whether the single-holdout ranking generalizes, all 11 models were re-evaluated on up to four non-overlapping 12-month origins per title (27 game-fold units; fold 0 is the holdout above). RNN, LSTM and GRU were repeated over five seeds, and uncertainty comes from a bootstrap over game-fold units plus per-game Diebold-Mariano tests (Bartlett-weighted long-run variance, Harvey small-sample correction). Per-unit MASE is capped at 5 for aggregation so that a single diverged fit does not dominate; raw values are retained.
+To test whether the single-holdout ranking generalizes, all 11 models were re-evaluated on up to four non-overlapping 12-month origins per title (27 game-fold units; fold 0 is the holdout above). RNN, LSTM and GRU were repeated over five seeds, and uncertainty comes from a bootstrap over game-fold units plus per-game Diebold-Mariano tests (Bartlett-weighted long-run variance, Harvey small-sample correction). Two fits diverged (SARIMA on Rust fold 3 and Ridge on GTA V fold 3) and were replaced by a constrained SARIMA refit and Seasonal Naive respectively; every substitution is flagged in `backtest_fold_metrics.csv`. As a safety net, any fit with MASE above 5 would be capped at 5 in the aggregates.
 
 | Rank | Model | Mean MASE [95% CI] | Median MASE |
 | :---: | :--- | :---: | :---: |
 | 1 | Holt-Winters | 0.546 [0.471, 0.618] | 0.550 |
-| 2 | SARIMA | 0.801 [0.560, 1.185] | 0.605 |
-| 3 | Ridge | 0.857 [0.602, 1.243] | 0.704 |
+| 2 | SARIMA | 0.657 [0.550, 0.768] | 0.605 |
+| 3 | Ridge | 0.706 [0.579, 0.843] | 0.704 |
 | 4 | GRU | 0.860 [0.746, 0.974] | 0.844 |
 | 5 | Random Forest | 0.918 [0.831, 1.006] | 0.882 |
 | 6 | LSTM | 0.922 [0.824, 1.025] | 0.898 |
@@ -232,9 +232,9 @@ To test whether the single-holdout ranking generalizes, all 11 models were re-ev
 
 **Conclusions that hold:** Holt-Winters is the most robust model overall; parsimonious baselines remain hard to beat; XGBoost does not outperform the classical or linear baselines.
 
-**Conclusions that weaken:** the holdout's "SARIMA 3 wins vs GRU 3 wins" split does not persist. Across origins SARIMA has the lower scaled error than GRU, LSTM and XGBoost in 6 of 7 games, although the pooled mean differences are not statistically distinguishable because one SARIMA fit diverged (Rust, fold 3). GRU's edge over LSTM (0.062 MASE, 95% CI −0.110 to −0.014) is comparable to seed-to-seed variation (standard deviation 0.077–0.095), so it should not be over-interpreted.
+**Conclusions that change:** the holdout's "SARIMA 3 wins vs GRU 3 wins" split does not persist. Across origins SARIMA has the lower scaled error than GRU, LSTM and XGBoost in all 7 games, with pooled mean MASE advantages of 0.203, 0.265 and 0.282 whose 95% CIs exclude zero. Holt-Winters is still significantly better than SARIMA pooled (−0.111, CI −0.175 to −0.052) but not within individual games. GRU's edge over LSTM (0.062 MASE, 95% CI −0.110 to −0.014) is comparable to seed-to-seed variation (standard deviation 0.077–0.095), so it should not be over-interpreted.
 
-**Caveats:** SARIMA orders and XGBoost parameters were tuned on the 2019-09 to 2020-08 validation window, which overlaps the test windows of folds 1 and older (flagged in the output), and the sample remains small. Full tables are in `backtest_summary.md`, `backtest_significance.md` and `backtest_fold_metrics.csv`; reproduce with `steam-forecast backtest`.
+**Caveats:** SARIMA orders and XGBoost parameters were tuned on the 2019-09 to 2020-08 validation window, which overlaps the test windows of folds 1 and older (flagged in the output), so older-fold results favor them; on the leak-free latest holdout alone SARIMA (0.672) still leads GRU (0.735, seed-averaged), LSTM (0.834) and XGBoost (0.923). SARIMA's and Ridge's scores each include one fallback substitution, and the sample remains small. Full tables are in `backtest_summary.md`, `backtest_significance.md` and `backtest_fold_metrics.csv`; reproduce with `steam-forecast backtest`.
 
 ---
 

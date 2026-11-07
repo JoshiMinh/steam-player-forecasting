@@ -15,6 +15,8 @@ data:
   game_identifier_column: "Game_Name"
   frequency: "MS"
 
+# Apex Legends is a candidate but is dropped by game selection (too little history
+# for 12-month seasonal models; see data/README.md), so 7 of these 8 titles are evaluated.
 candidate_games:
   - "Counter-Strike: Global Offensive"
   - "Dota 2"
@@ -38,6 +40,10 @@ features:
     - "month"
     - "quarter"
 
+# Model hyperparameters used by Phase 4, Phase 5 and the backtest (read through
+# src/cli/model_settings.py). Phase 3's SARIMA order grid and Phase 4's XGBoost
+# tuning grid are search spaces and stay in code; the selected per-game SARIMA
+# orders are read from assets/reports/sarima_order_selection.csv.
 models:
   statistical:
     naive:
@@ -48,31 +54,45 @@ models:
       seasonal_periods: 12
       trend: "add"
       seasonal: "add"
-    sarima:
+    arima:
       order: [1, 1, 1]
-      seasonal_order: [1, 1, 1, 12]
-      auto_arima: false
+    sarima:
+      # Used only for a game missing from the Phase 3 order-selection report.
+      fallback_order: [1, 1, 1]
+      fallback_seasonal_order: [1, 1, 0, 12]
+      maxiter: 50
   machine_learning:
     ridge:
       alpha: 1.0
     random_forest:
       n_estimators: 100
-      max_depth: 10
+      max_depth: 6
       random_state: 42
     xgboost:
-      n_estimators: 100
-      max_depth: 4
-      learning_rate: 0.05
-      random_state: 42
+      defaults:
+        n_estimators: 100
+        max_depth: 3
+        learning_rate: 0.05
+        random_state: 42
+      # Tuned on the 2019-09 to 2020-08 validation window in Phase 4.
+      per_game:
+        "Counter-Strike: Global Offensive": {n_estimators: 200, max_depth: 4, learning_rate: 0.05}
+        "Dota 2": {n_estimators: 200, max_depth: 4, learning_rate: 0.05}
+        "Grand Theft Auto V": {n_estimators: 150, max_depth: 3, learning_rate: 0.02}
+        "Rust": {n_estimators: 200, max_depth: 4, learning_rate: 0.05}
+        "Team Fortress 2": {n_estimators: 200, max_depth: 4, learning_rate: 0.05}
+        "Tom Clancy's Rainbow Six Siege": {n_estimators: 200, max_depth: 4, learning_rate: 0.05}
+        "Warframe": {n_estimators: 100, max_depth: 3, learning_rate: 0.05}
   deep_learning:
-    sequence_length: 12
-    batch_size: 16
-    epochs: 50
-    learning_rate: 0.001
-    hidden_dim: 64
-    num_layers: 2
-    dropout: 0.1
-    device: "cpu"
+    # Shared by RNN, LSTM and GRU. `seed` is the published single-seed run.
+    seq_length: 12
+    horizon: 12
+    hidden_dim: 32
+    num_layers: 1
+    epochs: 60
+    learning_rate: 0.01
+    patience: 15
+    seed: 42
 
 evaluation:
   backtest:

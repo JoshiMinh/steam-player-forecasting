@@ -9,6 +9,10 @@ Hyperparameters mirror ``src/cli/phase5.py`` exactly. SARIMA orders and XGBoost
 parameters were tuned on the 2019-09 to 2020-08 validation window, so for
 folds k >= 1 (whose test windows reach back into or before that window) those
 two models are flagged with ``Params_Tuned_On_Test``.
+
+Diverged fits (non-finite or beyond [-max, 3 * max] of the training history)
+are replaced through an ordered fallback chain (constrained SARIMA refit, then
+Seasonal Naive). Every substitution is recorded in the ``Fallback`` column.
 """
 
 from __future__ import annotations
@@ -21,7 +25,20 @@ from typing import Any, Callable
 import numpy as np
 import pandas as pd
 
-from src.cli.phase5 import OPTIMAL_XGB_PARAMS, df_to_markdown, load_sarima_orders
+from src.cli.model_settings import (
+    arima_from_settings,
+    holt_winters_from_settings,
+    load_model_settings,
+    naive_from_settings,
+    random_forest_from_settings,
+    recurrent_from_settings,
+    ridge_from_settings,
+    sarima_fallback_orders,
+    sarima_from_settings,
+    seasonal_naive_from_settings,
+    xgboost_from_settings,
+)
+from src.cli.phase5 import df_to_markdown, load_sarima_orders
 from src.data.loader import (
     get_available_games,
     get_project_root,
@@ -35,18 +52,6 @@ from src.evaluation.backtest import (
 )
 from src.evaluation.metrics import calculate_metrics
 from src.models.deep_learning import GRUForecaster, LSTMForecaster, RNNForecaster
-from src.models.statistical import (
-    ARIMAForecaster,
-    HoltWintersForecaster,
-    NaiveForecaster,
-    SARIMAForecaster,
-    SeasonalNaiveForecaster,
-)
-from src.models.tabular import (
-    RandomForestForecaster,
-    RidgeForecaster,
-    XGBoostForecaster,
-)
 
 HORIZON = 12
 SEEDED_MODELS = ("RNN", "LSTM", "GRU")
@@ -84,75 +89,109 @@ def _forecast(model: Any, history: pd.Series, steps: int) -> np.ndarray:
     return np.asarray(model.predict(steps=steps), dtype=float).ravel()
 
 
-def _recurrent(cls: type, seed: int, epochs: int) -> Any:
-    return cls(
-        seq_length=12,
-        horizon=HORIZON,
-        hidden_dim=32,
-        num_layers=1,
-        epochs=epochs,
-        learning_rate=0.01,
-        patience=15,
-        seed=seed,
-    )
-
-
 def build_forecasters(
     game: str,
     sarima_orders: dict[str, Any],
-    dl_epochs: int = 60,
+    dl_epochs: int | None = None,
+    settings: dict[str, Any] | None = None,
 ) -> dict[str, Callable[[pd.Series, int, int], np.ndarray]]:
     """Return ``name -> f(history, steps, seed) -> forecast`` for every model.
 
-    Mirrors the Phase 5 configuration. ``seed`` only affects RNN, LSTM and GRU.
+    Hyperparameters come from the ``models`` block of ``default.yaml`` (the same
+    values Phase 5 uses). ``seed`` only affects RNN, LSTM and GRU; ``dl_epochs``
+    overrides the configured epochs (used by fast tests).
     """
-    order, sorder = sarima_orders.get(game, ((1, 1, 1), (1, 1, 0, 12)))
-    xgb = OPTIMAL_XGB_PARAMS.get(game, {"n_estimators": 100, "max_depth": 3, "learning_rate": 0.05})
+    settings = settings or load_model_settings()
+    order, sorder = sarima_orders.get(game, sarima_fallback_orders(settings))
 
     def holt_winters(history: pd.Series, steps: int, seed: int) -> np.ndarray:
         try:
-            return _forecast(HoltWintersForecaster(seasonal_periods=12, trend="add", seasonal="add"), history, steps)
+            return _forecast(holt_winters_from_settings(settings), history, steps)
         except Exception:
-            return _forecast(
-                HoltWintersForecaster(seasonal_periods=12, trend="add", seasonal="add", damped_trend=True),
-                history,
-                steps,
-            )
+            return _forecast(holt_winters_from_settings(settings, damped=True), history, steps)
+
+    def recurrent(cls: type) -> Callable[[pd.Series, int, int], np.ndarray]:
+        return lambda h, s, seed: _forecast(
+            recurrent_from_settings(cls, settings, seed=seed, epochs=dl_epochs), h, s
+        )
 
     return {
-        "Naive": lambda h, s, seed: _forecast(NaiveForecaster(), h, s),
-        "Seasonal Naive": lambda h, s, seed: _forecast(SeasonalNaiveForecaster(seasonal_period=12), h, s),
+        "Naive": lambda h, s, seed: _forecast(naive_from_settings(settings), h, s),
+        "Seasonal Naive": lambda h, s, seed: _forecast(seasonal_naive_from_settings(settings), h, s),
         "Holt-Winters": holt_winters,
-        "ARIMA(1,1,1)": lambda h, s, seed: _forecast(ARIMAForecaster(order=(1, 1, 1)), h, s),
-        "SARIMA": lambda h, s, seed: _forecast(
-            SARIMAForecaster(
-                order=order,
-                seasonal_order=sorder,
-                enforce_stationarity=False,
-                enforce_invertibility=False,
-                maxiter=50,
-            ),
-            h,
-            s,
-        ),
-        "Ridge": lambda h, s, seed: _forecast(RidgeForecaster(alpha=1.0), h, s),
-        "Random Forest": lambda h, s, seed: _forecast(
-            RandomForestForecaster(n_estimators=100, max_depth=6, random_state=42), h, s
-        ),
-        "XGBoost": lambda h, s, seed: _forecast(
-            XGBoostForecaster(
-                n_estimators=xgb["n_estimators"],
-                max_depth=xgb["max_depth"],
-                learning_rate=xgb["learning_rate"],
-                random_state=42,
-            ),
-            h,
-            s,
-        ),
-        "RNN": lambda h, s, seed: _forecast(_recurrent(RNNForecaster, seed, dl_epochs), h, s),
-        "LSTM": lambda h, s, seed: _forecast(_recurrent(LSTMForecaster, seed, dl_epochs), h, s),
-        "GRU": lambda h, s, seed: _forecast(_recurrent(GRUForecaster, seed, dl_epochs), h, s),
+        "ARIMA(1,1,1)": lambda h, s, seed: _forecast(arima_from_settings(settings), h, s),
+        "SARIMA": lambda h, s, seed: _forecast(sarima_from_settings(settings, order, sorder), h, s),
+        "Ridge": lambda h, s, seed: _forecast(ridge_from_settings(settings), h, s),
+        "Random Forest": lambda h, s, seed: _forecast(random_forest_from_settings(settings), h, s),
+        "XGBoost": lambda h, s, seed: _forecast(xgboost_from_settings(settings, game), h, s),
+        "RNN": recurrent(RNNForecaster),
+        "LSTM": recurrent(LSTMForecaster),
+        "GRU": recurrent(GRUForecaster),
     }
+
+
+PLAUSIBLE_UPPER_MULT = 3.0
+"""Forecasts above this multiple of the training maximum are treated as diverged."""
+
+
+def build_constrained_refits(
+    game: str,
+    sarima_orders: dict[str, Any],
+    settings: dict[str, Any] | None = None,
+) -> dict[str, Callable[[pd.Series, int, int], np.ndarray]]:
+    """Stage-1 fallbacks: a constrained refit of the same model family.
+
+    SARIMA is fitted with ``enforce_stationarity=False`` in Phase 5, which can
+    produce explosive roots on short windows; refit with both constraints on.
+    """
+    settings = settings or load_model_settings()
+    order, sorder = sarima_orders.get(game, sarima_fallback_orders(settings))
+    return {
+        "SARIMA": lambda h, s, seed: _forecast(
+            sarima_from_settings(settings, order, sorder, constrained=True), h, s
+        ),
+    }
+
+
+def is_plausible_forecast(fc: np.ndarray, history: np.ndarray) -> bool:
+    """Finite and within [-max, 3 * max] of the training history."""
+    if fc.shape != (HORIZON,) or not np.all(np.isfinite(fc)):
+        return False
+    hist_max = float(np.max(history))
+    return bool(fc.max() <= PLAUSIBLE_UPPER_MULT * hist_max and fc.min() >= -hist_max)
+
+
+def forecast_with_guard(
+    name: str,
+    forecasters: dict[str, Callable[[pd.Series, int, int], np.ndarray]],
+    refits: dict[str, Callable[[pd.Series, int, int], np.ndarray]],
+    history: pd.Series,
+    seed: int,
+) -> tuple[np.ndarray, str]:
+    """Forecast with an ordered fallback chain; return (forecast, fallback label).
+
+    Order: the Phase 5 configuration, a constrained refit (if defined), then
+    Seasonal Naive. The label is "" when the primary fit was used, so every
+    substitution is visible in the output rather than silently absorbed.
+    """
+    chain: list[tuple[str, Callable[[pd.Series, int, int], np.ndarray]]] = [("", forecasters[name])]
+    if name in refits:
+        chain.append(("constrained refit", refits[name]))
+    if name not in ("Naive", "Seasonal Naive"):
+        chain.append(("Seasonal Naive", forecasters["Seasonal Naive"]))
+
+    last_error: Exception | None = None
+    for label, fn in chain:
+        try:
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                fc = fn(history, HORIZON, seed)
+        except Exception as exc:  # noqa: BLE001 - falls through to the next stage
+            last_error = exc
+            continue
+        if is_plausible_forecast(fc, history.values):
+            return fc, label
+    raise ValueError(f"no plausible forecast produced ({last_error})")
 
 
 def resolve_seeds(n_seeds: int | None, configured: list[int]) -> list[int]:
@@ -175,7 +214,7 @@ def run_backtest_for_series(
     n_folds: int,
     min_train: int,
     seeds: list[int],
-    dl_epochs: int = 60,
+    dl_epochs: int | None = None,
     models: list[str] | None = None,
     verbose: bool = True,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
@@ -185,6 +224,7 @@ def run_backtest_for_series(
         (metric records, per-step error records, failure records)
     """
     forecasters = build_forecasters(game, sarima_orders, dl_epochs=dl_epochs)
+    refits = build_constrained_refits(game, sarima_orders)
     paradigms = dict(MODEL_META)
     names = [m for m, _ in MODEL_META if models is None or m in models]
     folds = rolling_origin_folds(series, n_folds=n_folds, horizon=HORIZON, min_train=min_train)
@@ -206,11 +246,9 @@ def run_backtest_for_series(
             for seed in model_seeds:
                 t0 = time.time()
                 try:
-                    with warnings.catch_warnings():
-                        warnings.simplefilter("ignore")
-                        fc = forecasters[name](fold.train, HORIZON, seed)
-                    if fc.shape != (HORIZON,) or not np.all(np.isfinite(fc)):
-                        raise ValueError(f"invalid forecast shape/values: {fc.shape}")
+                    fc, fallback = forecast_with_guard(name, forecasters, refits, fold.train, seed)
+                    if fallback and verbose:
+                        print(f"    ~ {name} (seed {seed}) diverged; used {fallback}")
                 except Exception as exc:  # noqa: BLE001 - recorded and reported, never silent
                     failures.append(
                         {"Game": game, "Fold": fold.k, "Model": name, "Seed": seed, "Error": f"{type(exc).__name__}: {exc}"}
@@ -233,6 +271,7 @@ def run_backtest_for_series(
                         "sMAPE": mets["sMAPE"],
                         "MASE": mets["MASE"],
                         "Params_Tuned_On_Test": bool(name in TUNED_ON_VALIDATION and fold.k >= 1),
+                        "Fallback": fallback,
                         "Fit_Seconds": round(time.time() - t0, 2),
                     }
                 )
@@ -306,7 +345,7 @@ def run_backtest(
     n_folds: int | None = None,
     n_seeds: int | None = None,
     output_dir: str | Path | None = None,
-    dl_epochs: int = 60,
+    dl_epochs: int | None = None,
 ) -> dict[str, Any]:
     """Execute the full rolling-origin backtest and write reports."""
     root = get_project_root()

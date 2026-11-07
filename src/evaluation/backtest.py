@@ -133,7 +133,9 @@ def summarize_models(
 
     Columns: Rank, Model, Paradigm, Mean_MASE (units capped at ``MASE_CAP``),
     CI_Low, CI_High, Std_MASE (across units), Median_MASE, Raw_Mean_MASE
-    (uncapped), Diverged_Units (raw MASE above the cap), Fold0_Mean_MASE
+    (uncapped), Diverged_Units (raw MASE above the cap), Fallback_Units (units
+    where the primary fit was replaced by a constrained refit or Seasonal
+    Naive because it diverged), Fold0_Mean_MASE
     (mean over games on the latest holdout), Mean_Seed_Std (average MASE std
     across seeds; NaN for deterministic models), Mean_Rank (average per-unit
     rank), Units.
@@ -150,6 +152,13 @@ def summarize_models(
     mean_seed_std = seeded.groupby("Model")["std"].mean()
 
     units["Unit_Rank"] = units.groupby(UNIT_COLS)["MASE"].rank(method="average")
+
+    fallback_units: pd.Series
+    if "Fallback" in fold_metrics.columns:
+        used = fold_metrics.assign(_fb=fold_metrics["Fallback"].fillna("").astype(str) != "")
+        fallback_units = used.groupby(["Model", "Game", "Fold"])["_fb"].any().groupby("Model").sum()
+    else:
+        fallback_units = pd.Series(dtype=int)
     rows = []
     for model, grp in units.groupby("Model", sort=False):
         mean, lo, hi = block_bootstrap_ci(grp["MASE"].values, n_boot=n_boot, seed=seed)
@@ -165,6 +174,7 @@ def summarize_models(
                 "Median_MASE": float(grp["MASE"].median()),
                 "Raw_Mean_MASE": float(grp["MASE_Raw"].mean()),
                 "Diverged_Units": int((grp["MASE_Raw"] > MASE_CAP).sum()),
+                "Fallback_Units": int(fallback_units.get(model, 0)),
                 "Fold0_Mean_MASE": float(fold0.mean()) if len(fold0) else float("nan"),
                 "Mean_Seed_Std": float(mean_seed_std.get(model, np.nan)),
                 "Mean_Rank": float(grp["Unit_Rank"].mean()),

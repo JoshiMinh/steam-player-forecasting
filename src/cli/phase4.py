@@ -24,6 +24,14 @@ from src.data.loader import (
     get_project_root,
     load_processed_data,
 )
+from src.cli.model_settings import (
+    load_model_settings,
+    random_forest_from_settings,
+    recurrent_from_settings,
+    ridge_from_settings,
+    sarima_fallback_orders,
+    sarima_from_settings,
+)
 from src.evaluation.metrics import calculate_metrics
 from src.features.split import train_val_test_split
 from src.models.deep_learning import (
@@ -31,13 +39,7 @@ from src.models.deep_learning import (
     LSTMForecaster,
     RNNForecaster,
 )
-from src.models.statistical import SARIMAForecaster
-from src.models.tabular import (
-    RandomForestForecaster,
-    RidgeForecaster,
-    XGBoostForecaster,
-    tune_tabular_forecaster,
-)
+from src.models.tabular import tune_tabular_forecaster
 
 
 def df_to_markdown(df: pd.DataFrame) -> str:
@@ -83,6 +85,7 @@ def run_phase4_pipeline() -> dict[str, Any]:
     print("=================================================================\n")
 
     sarima_orders = load_sarima_orders(root)
+    settings = load_model_settings()
 
     all_benchmark_records: list[dict[str, Any]] = []
     core_quartet_records: list[dict[str, Any]] = []
@@ -121,17 +124,11 @@ def run_phase4_pipeline() -> dict[str, Any]:
         if game in sarima_orders:
             order, sorder = sarima_orders[game]
         else:
-            order, sorder = (1, 1, 1), (1, 1, 0, 12)
+            order, sorder = sarima_fallback_orders(settings)
 
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            sarima_model = SARIMAForecaster(
-                order=order,
-                seasonal_order=sorder,
-                enforce_stationarity=False,
-                enforce_invertibility=False,
-                maxiter=50,
-            )
+            sarima_model = sarima_from_settings(settings, order, sorder)
             sarima_model.fit(train_series)
             sarima_fc = np.asarray(sarima_model.predict(steps=val_steps), dtype=float).ravel()
             forecasts["SARIMA"] = sarima_fc
@@ -142,7 +139,7 @@ def run_phase4_pipeline() -> dict[str, Any]:
         # ----------------------------------------------------------------------
         # 2. Tabular ML: Ridge Regression
         # ----------------------------------------------------------------------
-        ridge_model = RidgeForecaster(alpha=1.0)
+        ridge_model = ridge_from_settings(settings)
         ridge_model.fit(train_series)
         ridge_fc = np.asarray(ridge_model.predict(steps=val_steps), dtype=float).ravel()
         forecasts["Ridge"] = ridge_fc
@@ -152,7 +149,7 @@ def run_phase4_pipeline() -> dict[str, Any]:
         # ----------------------------------------------------------------------
         # 3. Tabular ML: Random Forest
         # ----------------------------------------------------------------------
-        rf_model = RandomForestForecaster(n_estimators=100, max_depth=6, random_state=42)
+        rf_model = random_forest_from_settings(settings)
         rf_model.fit(train_series)
         rf_fc = np.asarray(rf_model.predict(steps=val_steps), dtype=float).ravel()
         forecasts["Random Forest"] = rf_fc
@@ -184,16 +181,7 @@ def run_phase4_pipeline() -> dict[str, Any]:
         # ----------------------------------------------------------------------
         # 5. Deep Learning: Standard RNN
         # ----------------------------------------------------------------------
-        rnn_model = RNNForecaster(
-            seq_length=12,
-            horizon=12,
-            hidden_dim=32,
-            num_layers=1,
-            epochs=60,
-            learning_rate=0.01,
-            patience=15,
-            seed=42,
-        )
+        rnn_model = recurrent_from_settings(RNNForecaster, settings)
         rnn_model.fit(train_series)
         rnn_fc = np.asarray(rnn_model.predict(steps=val_steps), dtype=float).ravel()
         forecasts["RNN"] = rnn_fc
@@ -203,16 +191,7 @@ def run_phase4_pipeline() -> dict[str, Any]:
         # ----------------------------------------------------------------------
         # 6. Deep Learning: LSTM
         # ----------------------------------------------------------------------
-        lstm_model = LSTMForecaster(
-            seq_length=12,
-            horizon=12,
-            hidden_dim=32,
-            num_layers=1,
-            epochs=60,
-            learning_rate=0.01,
-            patience=15,
-            seed=42,
-        )
+        lstm_model = recurrent_from_settings(LSTMForecaster, settings)
         lstm_model.fit(train_series)
         lstm_fc = np.asarray(lstm_model.predict(steps=val_steps), dtype=float).ravel()
         forecasts["LSTM"] = lstm_fc
@@ -222,16 +201,7 @@ def run_phase4_pipeline() -> dict[str, Any]:
         # ----------------------------------------------------------------------
         # 7. Deep Learning: GRU
         # ----------------------------------------------------------------------
-        gru_model = GRUForecaster(
-            seq_length=12,
-            horizon=12,
-            hidden_dim=32,
-            num_layers=1,
-            epochs=60,
-            learning_rate=0.01,
-            patience=15,
-            seed=42,
-        )
+        gru_model = recurrent_from_settings(GRUForecaster, settings)
         gru_model.fit(train_series)
         gru_fc = np.asarray(gru_model.predict(steps=val_steps), dtype=float).ravel()
         forecasts["GRU"] = gru_fc

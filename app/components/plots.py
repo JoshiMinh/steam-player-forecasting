@@ -286,6 +286,107 @@ def create_horizon_error_chart(
     return chart
 
 
+def _dark_chart_config(chart: alt.Chart | alt.LayerChart) -> alt.Chart | alt.LayerChart:
+    """Apply the Steam dark theme used by the other Altair charts."""
+    return (
+        chart.configure_view(strokeWidth=0, fill="#0e141b")
+        .configure_axis(
+            gridColor="#2a475e",
+            gridOpacity=0.35,
+            domainColor="#2a475e",
+            tickColor="#2a475e",
+            labelColor="#c7d5e0",
+            titleColor="#ffffff",
+        )
+        .configure_legend(
+            labelColor="#c7d5e0",
+            titleColor="#ffffff",
+            fillColor="#171a21",
+            strokeColor="#2a475e",
+        )
+    )
+
+
+def create_backtest_summary_chart(summary_df: pd.DataFrame) -> alt.LayerChart:
+    """Mean MASE with 95% bootstrap interval per model (rolling-origin backtest)."""
+    df = summary_df.copy()
+    order = df.sort_values("Mean_MASE")["Model"].tolist()
+    domain = order
+    colors = [STEAM_PALETTE.get(m, "#66c0f4") for m in order]
+    color = alt.Color("Model:N", scale=alt.Scale(domain=domain, range=colors), legend=None)
+    y = alt.Y("Model:N", sort=order, title=None)
+
+    base = alt.Chart(df)
+    bars = base.mark_rule(strokeWidth=3).encode(
+        y=y,
+        x=alt.X("CI_Low:Q", title="Mean MASE (95% bootstrap CI)", scale=alt.Scale(zero=False)),
+        x2="CI_High:Q",
+        color=color,
+    )
+    points = base.mark_point(filled=True, size=90, opacity=1.0).encode(
+        y=y,
+        x="Mean_MASE:Q",
+        color=color,
+        tooltip=[
+            alt.Tooltip("Model:N"),
+            alt.Tooltip("Mean_MASE:Q", title="Mean MASE", format=".3f"),
+            alt.Tooltip("CI_Low:Q", title="CI low", format=".3f"),
+            alt.Tooltip("CI_High:Q", title="CI high", format=".3f"),
+            alt.Tooltip("Median_MASE:Q", title="Median MASE", format=".3f"),
+        ],
+    )
+    ref = (
+        alt.Chart(pd.DataFrame({"x": [1.0]}))
+        .mark_rule(color="#e5c158", strokeDash=[6, 4], strokeWidth=1.5)
+        .encode(x="x:Q")
+    )
+    chart = alt.layer(bars, points, ref).properties(height=max(260, 28 * len(df)))
+    return _dark_chart_config(chart)
+
+
+def create_backtest_fold_chart(
+    fold_df: pd.DataFrame,
+    game: str,
+    selected_models: list[str],
+    mase_cap: float = 5.0,
+) -> alt.Chart:
+    """Per-fold MASE for one game, seed-averaged and capped for display."""
+    df = fold_df[(fold_df["Game"] == game) & (fold_df["Model"].isin(selected_models))].copy()
+    df["MASE"] = df["MASE"].clip(upper=mase_cap)
+    df = df.groupby(["Model", "Fold", "Origin"], as_index=False)["MASE"].mean()
+    df["Test window"] = df["Origin"].apply(
+        lambda o: f"{(pd.Period(o, 'M') + 1).strftime('%Y-%m')} to {(pd.Period(o, 'M') + 12).strftime('%Y-%m')}"
+    )
+    models = [m for m in selected_models if m in set(df["Model"])]
+    colors = [STEAM_PALETTE.get(m, "#66c0f4") for m in models]
+
+    chart = (
+        alt.Chart(df)
+        .mark_line(point=True, strokeWidth=2.0)
+        .encode(
+            x=alt.X(
+                "Origin:O",
+                title="Forecast origin (last training month)",
+                sort=alt.SortField("Origin", order="ascending"),
+            ),
+            y=alt.Y("MASE:Q", title=f"MASE (capped at {mase_cap:g})"),
+            color=alt.Color(
+                "Model:N",
+                scale=alt.Scale(domain=models, range=colors),
+                legend=alt.Legend(title="Model", orient="top"),
+            ),
+            tooltip=[
+                alt.Tooltip("Model:N"),
+                alt.Tooltip("Test window:N", title="Test window"),
+                alt.Tooltip("Fold:O", title="Fold (0 = latest)"),
+                alt.Tooltip("MASE:Q", format=".3f"),
+            ],
+        )
+        .properties(height=320)
+    )
+    return _dark_chart_config(chart).interactive()
+
+
 def plot_historical_dynamics(raw_df: pd.DataFrame, game_name: str) -> plt.Figure:
     """Generate Steam-themed two-panel historical dynamics plot."""
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(13, 7.5), sharex=True)

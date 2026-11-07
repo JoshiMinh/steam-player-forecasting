@@ -172,6 +172,9 @@ streamlit run app/app.py
 - Adjust historical context windows (6 to 36 months).
 - Review real-time performance scorecards and monthly error breakdowns.
 - Inspect peak-to-average player ratios, historical volatility, and documented structural breaks.
+- Check the **Backtest robustness** tab for rolling-origin results, seed variation and significance tests.
+
+**Hosting the demo:** the app reads only precomputed results committed under `assets/reports/`, so it needs no data download or model training. On [Streamlit Community Cloud](https://streamlit.io/cloud), create an app from this repository with main file `app/app.py`; the slim `app/requirements.txt` (next to the entrypoint) is used instead of the full modelling stack. Hosted copies show average-player history rebuilt from the forecast cache, without the peak-player statistics that need the local processed dataset.
 
 ---
 
@@ -231,8 +234,8 @@ The single holdout above is re-checked on up to four non-overlapping 12-month fo
 | Rank | Model | Mean MASE [95% CI] | Median MASE | Fold-0 MASE | Seed Std |
 | :---: | :--- | :---: | :---: | :---: | :---: |
 | 1 | **Holt-Winters** | **0.546** [0.471, 0.618] | 0.550 | 0.526 | — |
-| 2 | SARIMA | 0.801 [0.560, 1.185] ¹ | 0.605 | 0.672 | — |
-| 3 | Ridge | 0.857 [0.602, 1.243] ¹ | 0.704 | 0.562 | — |
+| 2 | SARIMA | 0.657 [0.550, 0.768] ¹ | 0.605 | 0.672 | — |
+| 3 | Ridge | 0.706 [0.579, 0.843] ¹ | 0.704 | 0.562 | — |
 | 4 | GRU | 0.860 [0.746, 0.974] | 0.844 | 0.735 | 0.095 |
 | 5 | Random Forest | 0.918 [0.831, 1.006] | 0.882 | 0.832 | — |
 | 6 | LSTM | 0.922 [0.824, 1.025] | 0.898 | 0.834 | 0.077 |
@@ -242,15 +245,15 @@ The single holdout above is re-checked on up to four non-overlapping 12-month fo
 | 10 | ARIMA(1,1,1) | 1.116 [0.979, 1.295] | 1.024 | 1.294 | — |
 | 11 | Naive | 1.242 [1.010, 1.521] | 1.002 | 1.357 | — |
 
-¹ One fit diverged: SARIMA on Rust fold 3 (raw MASE ≈ 3.9 × 10⁹) and Ridge on GTA V fold 3 (raw MASE 14.7, 29 training months). Each unit's MASE is capped at 5 for the mean, CI and tests so a single runaway fit cannot dominate, and the median is robust to it. Raw values are kept in `assets/reports/backtest_fold_metrics.csv`. Fold-0 values for RNN/LSTM/GRU are seed-averaged, so they differ from the single-seed (42) numbers in the leaderboard above.
+¹ Two fits diverged and were replaced by a fallback, each flagged in the `Fallback` column of `assets/reports/backtest_fold_metrics.csv`: SARIMA on Rust fold 3 (explosive roots, forecast near −3 × 10¹³; replaced by a refit with stationarity and invertibility enforced) and Ridge on GTA V fold 3 (29 training months, recursive forecast reached 5× the series maximum; replaced by Seasonal Naive). The replacement counts as that model's score on the unit. As a safety net, any single fit with MASE above 5 would be capped at 5 in the aggregates, which did not trigger after the fallbacks. Fold-0 values for RNN/LSTM/GRU are seed-averaged, so they differ from the single-seed (42) numbers in the leaderboard above.
 
 **What the backtest says:**
 
-- **Holt-Winters is the most robust model.** It has the lowest mean MASE, and its paired-bootstrap difference to every other model excludes zero. Per game, a Diebold-Mariano test finds it significantly better than the recurrent, tree and naive models in most titles (5–7 of 7). It is not separable from SARIMA or Ridge at the game level (0 of 7 games each).
-- **Deep learning does not reliably beat SARIMA.** The pooled MASE differences of GRU, LSTM and XGBoost against SARIMA all have intervals that include zero. SARIMA has the lower scaled error in 6 of 7 games against each of them. The "GRU 3 wins vs SARIMA 3 wins" split in the holdout is specific to that window.
+- **Holt-Winters is the most robust model.** It has the lowest mean MASE, and its paired-bootstrap difference to every other model excludes zero, including SARIMA (−0.111, 95% CI −0.175 to −0.052) and Ridge (−0.159, CI −0.251 to −0.082). Per game, a Diebold-Mariano test finds it significantly better than the recurrent, tree and naive models in most titles (5–7 of 7), but it is not separable from SARIMA or Ridge within individual games (0 and 1 of 7).
+- **SARIMA beats the deep and tree models across origins.** Its pooled MASE advantage over GRU, LSTM and XGBoost is 0.203, 0.265 and 0.282 (all 95% CIs exclude zero), and SARIMA has the lower scaled error in all 7 games against each of them (significant per game in 2, 4 and 4 games). The "GRU 3 wins vs SARIMA 3 wins" split in the holdout is specific to that window. SARIMA and Ridge are not separable (+0.048, CI −0.049 to 0.153).
 - **GRU edges LSTM, but narrowly.** The gap is 0.062 MASE (95% CI −0.110 to −0.014; GRU lower in 5 of 7 games, significant per game in 3), which is comparable to the seed-to-seed standard deviation of either model (0.077–0.095). Single-seed rankings between them should not be over-read.
 - **XGBoost does not beat any classical or linear baseline** and was never the best tree model (Random Forest has the lower mean MASE).
-- **Caveat on SARIMA and XGBoost:** their orders and parameters were tuned on the 2019-09 to 2020-08 validation window, which overlaps the test windows of folds 1 and older. Their rows are flagged `Params_Tuned_On_Test` and are, if anything, optimistic.
+- **Caveat on SARIMA and XGBoost:** their orders and parameters were tuned on the 2019-09 to 2020-08 validation window, which overlaps the test windows of folds 1 and older, so their older-fold rows (flagged `Params_Tuned_On_Test`) are optimistic. On the leak-free latest holdout alone, SARIMA (0.672) is still ahead of GRU (0.735, seed-averaged), LSTM (0.834) and XGBoost (0.923).
 
 Reproduce with `steam-forecast backtest`; the full tables are `assets/reports/backtest_summary.md` and `backtest_significance.md`.
 
@@ -259,7 +262,7 @@ Reproduce with `steam-forecast backtest`; the full tables are `assets/reports/ba
 - **Short rolling history:** the backtest covers about four yearly origins per title (three for Rainbow Six Siege), and the two most recent origins span the 2020 COVID-era surge in player counts, so the evidence is stronger than a single holdout but still limited.
 - **Small sample:** only 7 titles and short monthly histories, which limits how much data the deep learning models can learn from and keeps the confidence intervals wide.
 - **Fixed hyperparameters:** SARIMA orders and XGBoost parameters are not re-tuned per fold (see the caveat above), and the recurrent networks use one configuration for all titles.
-- **Unstable fits are reported, not hidden:** an unconstrained SARIMA fit and a recursive Ridge forecast each diverged once; the capped aggregation limits their influence but they count against those models.
+- **Unstable fits are replaced, not hidden:** an unconstrained SARIMA fit and a recursive Ridge forecast each diverged once. The backtest substitutes a constrained refit or Seasonal Naive and flags every substitution, so those two models' scores partly reflect the fallback rather than the original specification.
 - **Single target:** benchmark results cover `Avg_players` only; `Peak_Players` is used for diagnostics (e.g., peak-to-average ratios), not forecast.
 
 ---
@@ -282,7 +285,7 @@ The project followed a strict 5-phase sequential architecture:
 All analyses, models, figures, and benchmark tables can be reproduced using the unified `steam-forecast` CLI:
 
 ```bash
-# 1. Run the entire automated test suite (98 tests, 100% pass rate)
+# 1. Run the entire automated test suite (107 tests, 100% pass rate)
 pytest -v
 
 # 2. Re-run Phase 5 Test-Set Evaluation and generate benchmark CSVs

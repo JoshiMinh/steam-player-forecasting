@@ -26,24 +26,26 @@ from src.data.loader import (
     get_project_root,
     load_processed_data,
 )
+from src.cli.model_settings import (
+    arima_from_settings,
+    holt_winters_from_settings,
+    load_model_settings,
+    naive_from_settings,
+    random_forest_from_settings,
+    recurrent_from_settings,
+    ridge_from_settings,
+    sarima_fallback_orders,
+    sarima_from_settings,
+    seasonal_naive_from_settings,
+    xgboost_from_settings,
+    xgboost_params_for_game,
+)
 from src.evaluation.metrics import calculate_metrics
 from src.features.split import train_val_test_split
 from src.models.deep_learning import (
     GRUForecaster,
     LSTMForecaster,
     RNNForecaster,
-)
-from src.models.statistical import (
-    ARIMAForecaster,
-    HoltWintersForecaster,
-    NaiveForecaster,
-    SARIMAForecaster,
-    SeasonalNaiveForecaster,
-)
-from src.models.tabular import (
-    RandomForestForecaster,
-    RidgeForecaster,
-    XGBoostForecaster,
 )
 
 
@@ -74,21 +76,10 @@ def load_sarima_orders(root: Path) -> dict[str, tuple[tuple[int, int, int], tupl
     return orders
 
 
-# Tuned validation hyperparameters from Phase 4
-OPTIMAL_XGB_PARAMS = {
-    "Counter-Strike: Global Offensive": {"n_estimators": 200, "max_depth": 4, "learning_rate": 0.05},
-    "Dota 2": {"n_estimators": 200, "max_depth": 4, "learning_rate": 0.05},
-    "Grand Theft Auto V": {"n_estimators": 150, "max_depth": 3, "learning_rate": 0.02},
-    "Rust": {"n_estimators": 200, "max_depth": 4, "learning_rate": 0.05},
-    "Team Fortress 2": {"n_estimators": 200, "max_depth": 4, "learning_rate": 0.05},
-    "Tom Clancy's Rainbow Six Siege": {"n_estimators": 200, "max_depth": 4, "learning_rate": 0.05},
-    "Warframe": {"n_estimators": 100, "max_depth": 3, "learning_rate": 0.05},
-}
-
-
 def run_phase5_evaluation() -> dict[str, Any]:
     """Execute complete Phase 5 test evaluation and benchmarking pipeline."""
     root = get_project_root()
+    settings = load_model_settings()
     report_dir = root / "assets" / "reports"
     figures_dir = root / "assets" / "figures"
     data_dir = root / "data" / "processed"
@@ -162,12 +153,12 @@ def run_phase5_evaluation() -> dict[str, Any]:
         # ----------------------------------------------------------------------
         # 1. Baselines: Naive & Seasonal Naive
         # ----------------------------------------------------------------------
-        naive_model = NaiveForecaster()
+        naive_model = naive_from_settings(settings)
         naive_model.fit(history_series)
         fc_naive = np.asarray(naive_model.predict(steps=test_steps), dtype=float).ravel()
         test_forecasts["Naive"] = fc_naive
 
-        snaive_model = SeasonalNaiveForecaster(seasonal_period=12)
+        snaive_model = seasonal_naive_from_settings(settings)
         snaive_model.fit(history_series)
         fc_snaive = np.asarray(snaive_model.predict(steps=test_steps), dtype=float).ravel()
         test_forecasts["Seasonal Naive"] = fc_snaive
@@ -177,20 +168,20 @@ def run_phase5_evaluation() -> dict[str, Any]:
         # ----------------------------------------------------------------------
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            hw_model = HoltWintersForecaster(seasonal_periods=12, trend="add", seasonal="add")
+            hw_model = holt_winters_from_settings(settings)
             try:
                 hw_model.fit(history_series)
                 fc_hw = np.asarray(hw_model.predict(steps=test_steps), dtype=float).ravel()
             except Exception:
                 # Damped fallback if optimization struggles
-                hw_model = HoltWintersForecaster(seasonal_periods=12, trend="add", seasonal="add", damped_trend=True)
+                hw_model = holt_winters_from_settings(settings, damped=True)
                 hw_model.fit(history_series)
                 fc_hw = np.asarray(hw_model.predict(steps=test_steps), dtype=float).ravel()
             test_forecasts["Holt-Winters"] = fc_hw
 
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            arima_model = ARIMAForecaster(order=(1, 1, 1))
+            arima_model = arima_from_settings(settings)
             arima_model.fit(history_series)
             fc_arima = np.asarray(arima_model.predict(steps=test_steps), dtype=float).ravel()
             test_forecasts["ARIMA(1,1,1)"] = fc_arima
@@ -198,16 +189,10 @@ def run_phase5_evaluation() -> dict[str, Any]:
         # ----------------------------------------------------------------------
         # 3. Econometric Benchmark: Tuned SARIMA (Core Quartet #1)
         # ----------------------------------------------------------------------
-        order, sorder = sarima_orders.get(game, ((1, 1, 1), (1, 1, 0, 12)))
+        order, sorder = sarima_orders.get(game, sarima_fallback_orders(settings))
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            sarima_model = SARIMAForecaster(
-                order=order,
-                seasonal_order=sorder,
-                enforce_stationarity=False,
-                enforce_invertibility=False,
-                maxiter=50,
-            )
+            sarima_model = sarima_from_settings(settings, order, sorder)
             sarima_model.fit(history_series)
             fc_sarima, ci = sarima_model.predict_conf_int(steps=test_steps, alpha=0.05)
             fc_sarima = np.asarray(fc_sarima, dtype=float).ravel()
@@ -217,12 +202,12 @@ def run_phase5_evaluation() -> dict[str, Any]:
         # ----------------------------------------------------------------------
         # 4. Tabular Baselines: Ridge & Random Forest
         # ----------------------------------------------------------------------
-        ridge_model = RidgeForecaster(alpha=1.0)
+        ridge_model = ridge_from_settings(settings)
         ridge_model.fit(history_series)
         fc_ridge = np.asarray(ridge_model.predict(steps=test_steps), dtype=float).ravel()
         test_forecasts["Ridge"] = fc_ridge
 
-        rf_model = RandomForestForecaster(n_estimators=100, max_depth=6, random_state=42)
+        rf_model = random_forest_from_settings(settings)
         rf_model.fit(history_series)
         fc_rf = np.asarray(rf_model.predict(steps=test_steps), dtype=float).ravel()
         test_forecasts["Random Forest"] = fc_rf
@@ -230,13 +215,8 @@ def run_phase5_evaluation() -> dict[str, Any]:
         # ----------------------------------------------------------------------
         # 5. Gradient Boosted ML: Tuned XGBoost (Core Quartet #2)
         # ----------------------------------------------------------------------
-        xgb_params = OPTIMAL_XGB_PARAMS.get(game, {"n_estimators": 100, "max_depth": 3, "learning_rate": 0.05})
-        xgb_model = XGBoostForecaster(
-            n_estimators=xgb_params["n_estimators"],
-            max_depth=xgb_params["max_depth"],
-            learning_rate=xgb_params["learning_rate"],
-            random_state=42,
-        )
+        xgb_params = xgboost_params_for_game(settings, game)
+        xgb_model = xgboost_from_settings(settings, game)
         xgb_model.fit(history_series)
         fc_xgb = np.asarray(xgb_model.predict(steps=test_steps), dtype=float).ravel()
         test_forecasts["XGBoost"] = fc_xgb
@@ -244,16 +224,7 @@ def run_phase5_evaluation() -> dict[str, Any]:
         # ----------------------------------------------------------------------
         # 6. Deep Learning: RNN Baseline
         # ----------------------------------------------------------------------
-        rnn_model = RNNForecaster(
-            seq_length=12,
-            horizon=12,
-            hidden_dim=32,
-            num_layers=1,
-            epochs=60,
-            learning_rate=0.01,
-            patience=15,
-            seed=42,
-        )
+        rnn_model = recurrent_from_settings(RNNForecaster, settings)
         rnn_model.fit(history_series)
         fc_rnn = np.asarray(rnn_model.predict(steps=test_steps), dtype=float).ravel()
         test_forecasts["RNN"] = fc_rnn
@@ -261,16 +232,7 @@ def run_phase5_evaluation() -> dict[str, Any]:
         # ----------------------------------------------------------------------
         # 7. Deep Learning: LSTM (Core Quartet #3)
         # ----------------------------------------------------------------------
-        lstm_model = LSTMForecaster(
-            seq_length=12,
-            horizon=12,
-            hidden_dim=32,
-            num_layers=1,
-            epochs=60,
-            learning_rate=0.01,
-            patience=15,
-            seed=42,
-        )
+        lstm_model = recurrent_from_settings(LSTMForecaster, settings)
         lstm_model.fit(history_series)
         fc_lstm = np.asarray(lstm_model.predict(steps=test_steps), dtype=float).ravel()
         test_forecasts["LSTM"] = fc_lstm
@@ -278,16 +240,7 @@ def run_phase5_evaluation() -> dict[str, Any]:
         # ----------------------------------------------------------------------
         # 8. Deep Learning: GRU (Core Quartet #4)
         # ----------------------------------------------------------------------
-        gru_model = GRUForecaster(
-            seq_length=12,
-            horizon=12,
-            hidden_dim=32,
-            num_layers=1,
-            epochs=60,
-            learning_rate=0.01,
-            patience=15,
-            seed=42,
-        )
+        gru_model = recurrent_from_settings(GRUForecaster, settings)
         gru_model.fit(history_series)
         fc_gru = np.asarray(gru_model.predict(steps=test_steps), dtype=float).ravel()
         test_forecasts["GRU"] = fc_gru
@@ -364,7 +317,7 @@ def run_phase5_evaluation() -> dict[str, Any]:
             "sarima_ci_lower": [float(x) for x in sarima_ci[0]] if sarima_ci else [],
             "sarima_ci_upper": [float(x) for x in sarima_ci[1]] if sarima_ci else [],
             "optimal_sarima_order": f"SARIMA{order}x{sorder}",
-            "optimal_xgb_params": xgb_params,
+            "optimal_xgb_params": {k: xgb_params[k] for k in ("n_estimators", "max_depth", "learning_rate")},
         }
 
     # ==========================================================================

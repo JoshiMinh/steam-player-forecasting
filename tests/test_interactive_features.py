@@ -151,4 +151,4 @@ def test_streamlit_app_test_execution() -> None:
     app_path = Path(__file__).resolve().parent.parent / "app" / "app.py"
     at = AppTest.from_file(str(app_path)).run(timeout=15)
     assert len(at.exception) == 0, f"AppTest raised exceptions: {at.exception}"
-    assert len(at.tabs) == 4
+    assert len(at.tabs) == 5

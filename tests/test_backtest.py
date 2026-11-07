@@ -149,6 +149,52 @@ def test_summary_reports_seed_std_only_for_seeded_models():
     assert list(summary["Rank"]) == [1, 2]
 
 
+def test_plausibility_check():
+    from src.cli.backtest import is_plausible_forecast
+
+    hist = np.array([100.0, 200.0, 150.0])
+    assert is_plausible_forecast(np.full(12, 180.0), hist)
+    assert not is_plausible_forecast(np.full(12, 1e6), hist)          # runaway upward
+    assert not is_plausible_forecast(np.full(12, -1e6), hist)         # runaway downward
+    assert not is_plausible_forecast(np.r_[np.full(11, 100.0), np.nan], hist)
+    assert not is_plausible_forecast(np.full(11, 100.0), hist)        # wrong length
+
+
+def test_guard_falls_back_in_order_and_labels_it():
+    from src.cli.backtest import forecast_with_guard
+
+    hist = _series(40)
+    good = lambda h, s, seed: np.full(12, float(h.mean()))
+    bad = lambda h, s, seed: np.full(12, 1e12)
+    boom = lambda h, s, seed: (_ for _ in ()).throw(RuntimeError("fit failed"))
+    forecasters = {"Seasonal Naive": good, "Primary": bad, "Crashy": boom, "Fine": good}
+
+    # Primary diverges -> constrained refit used
+    fc, label = forecast_with_guard("Primary", forecasters, {"Primary": good}, hist, 0)
+    assert label == "constrained refit" and np.isfinite(fc).all()
+    # Primary diverges, no refit -> Seasonal Naive
+    _, label = forecast_with_guard("Primary", forecasters, {}, hist, 0)
+    assert label == "Seasonal Naive"
+    # Exceptions also fall through
+    _, label = forecast_with_guard("Crashy", forecasters, {}, hist, 0)
+    assert label == "Seasonal Naive"
+    # Healthy primary is untouched
+    _, label = forecast_with_guard("Fine", forecasters, {"Fine": bad}, hist, 0)
+    assert label == ""
+    # Nothing plausible anywhere -> error, never a silent bad forecast
+    with pytest.raises(ValueError):
+        forecast_with_guard("Seasonal Naive", {"Seasonal Naive": bad}, {}, hist, 0)
+
+
+def test_summary_counts_fallback_units():
+    fm = _toy_fold_metrics()
+    fm["Fallback"] = ""
+    fm.loc[(fm["Model"] == "Stable") & (fm["Game"] == "A"), "Fallback"] = "Seasonal Naive"
+    summary = summarize_models(fm, n_boot=200).set_index("Model")
+    assert summary.loc["Stable", "Fallback_Units"] == 2  # game A, folds 0 and 1
+    assert summary.loc["Noisy", "Fallback_Units"] == 0
+
+
 def test_diverged_forecast_is_capped_but_reported_raw():
     from src.evaluation.backtest import MASE_CAP
 
@@ -230,7 +276,8 @@ def test_end_to_end_shapes(tiny_run):
     assert len(metrics) == 2 * (3 + 2)
     assert len(errors) == len(metrics) * 12
     assert set(metrics["Fold"]) == {0, 1}
-    assert {"MAE", "RMSE", "MAPE", "sMAPE", "MASE", "Params_Tuned_On_Test"} <= set(metrics.columns)
+    assert {"MAE", "RMSE", "MAPE", "sMAPE", "MASE", "Params_Tuned_On_Test", "Fallback"} <= set(metrics.columns)
+    assert (metrics["Fallback"] == "").all()  # nothing diverges on the synthetic series
     assert metrics.loc[metrics["Model"] == "LSTM", "Seed"].tolist() == [42, 0, 42, 0]
     assert (errors["Scale"] > 0).all()
 
